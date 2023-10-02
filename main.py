@@ -36,13 +36,16 @@ def count_characters(path):
 
 
 def report(path):
-    print(f'-| Book report of {path} |-')
-    print(f'Total words: {count_words(path)}')
-    character_dict = count_characters(path)
+    report_text = f'---| Book report of {path} |---\n'+ f'Total words: {count_words(path)}\n'
 
-    for character, amount in dict(sorted(character_dict.items(), key=lambda item : item[1], reverse = True)).items():
-        print(f'The character {character} appears {amount} times.')
+    sorted_chr_dict = dict(sorted(count_characters(path).items(), key=lambda item: item[1], reverse= True))
+    filtered_dict = dict(filter(lambda item: item[0].isalpha(), sorted_chr_dict.items()))
 
-    print('-| End of book report |-')
+    for character, amount in filtered_dict.items():
+        report_text += (f'The character {character} appears {amount} times.\n')
 
+    report_text += ('---| End of book report |---')
+    return report_text
+
+    
 main()
