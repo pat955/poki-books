@@ -1,8 +1,8 @@
 def main():
     frank_path = 'books/frankenstein.txt'
-    print(count_characters(frank_path))
-    #print(count_words(frank_path))
-    #print(get_book_text(frank_path))
+    print(report(frank_path))
+    # print(count_words(frank_path))
+    # print(get_book_text(frank_path))
 
 def get_book_text(path):
     book = open(path, 'r')
@@ -24,18 +24,25 @@ def count_characters(path):
                 count_dict[i] += 1
             else:
                 count_dict[i] = 1
+        elif i == ' ' or i == '\t' or i == '\n':
+            continue
         else:
             if i in count_dict:
                 count_dict[i] += 1 
             else:
-                count_dict[i] = 1  
-
-            
+                count_dict[i] = 1      
 
     return count_dict
 
 
 def report(path):
-    pass
+    print(f'-| Book report of {path} |-')
+    print(f'Total words: {count_words(path)}')
+    character_dict = count_characters(path)
+
+    for character, amount in dict(sorted(character_dict.items(), key=lambda item : item[1], reverse = True)).items():
+        print(f'The character {character} appears {amount} times.')
+
+    print('-| End of book report |-')
 
 main()
