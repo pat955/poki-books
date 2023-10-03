@@ -1,6 +1,9 @@
+import re
+from nltk import tokenize
 def main():
     frank_path = 'books/frankenstein.txt'
-    print(report(frank_path))
+    print(search(frank_path, 'english'))
+    # print(report(frank_path))
     # print(count_words(frank_path))
     # print(get_book_text(frank_path))
 
@@ -46,6 +49,28 @@ def report(path):
 
     report_text += ('---| End of book report |---')
     return report_text
+
+def search(path, keyword):
+    snt_with_keyword = []
+    line_num = 0
+    text_in_sentences = tokenize.sent_tokenize(get_book_text(path))
+
+    for sentence in text_in_sentences:
+        line_num += 1
+        #print(sentence + '\n\n')
+        if line_num == 5:
+            exit()
+        for word in sentence.split(' '):
+            
+            count+= 1
+            word = word.strip(',;:."[]()*\\n')
+            print(word)
+            if word.lower() == keyword.lower():
+                #print(snt_with_keyword)
+                snt_with_keyword.append((sentence, line_num))
+
+    return snt_with_keyword
+
 
     
 main()
