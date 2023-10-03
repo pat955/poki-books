@@ -1,8 +1,14 @@
 import re
 from nltk import tokenize
+
 def main():
     frank_path = 'books/frankenstein.txt'
-    print(search(frank_path, 'english'))
+    keyword = 'present'
+    search_finds = search(frank_path, keyword)
+    print(f'The word {keyword} was found here:')
+    for sentence, instance in search_finds.items():
+        print(f'{keyword.} was found here:\n{sentence}\nAt line {instance}.\n')
+
     # print(report(frank_path))
     # print(count_words(frank_path))
     # print(get_book_text(frank_path))
@@ -23,12 +29,16 @@ def count_characters(path):
       
         if i.isalpha():
             i = i.lower()
+
             if i in count_dict:
                 count_dict[i] += 1
+
             else:
                 count_dict[i] = 1
+
         elif i == ' ' or i == '\t' or i == '\n':
             continue
+
         else:
             if i in count_dict:
                 count_dict[i] += 1 
@@ -51,23 +61,22 @@ def report(path):
     return report_text
 
 def search(path, keyword):
-    snt_with_keyword = []
+    snt_with_keyword = {}
     line_num = 0
     text_in_sentences = tokenize.sent_tokenize(get_book_text(path))
 
     for sentence in text_in_sentences:
         line_num += 1
-        #print(sentence + '\n\n')
-        if line_num == 5:
-            exit()
+
         for word in sentence.split(' '):
             
-            count+= 1
-            word = word.strip(',;:."[]()*\\n')
-            print(word)
+            word = word.strip(',,\n ;:."[]()*\\n')
+
             if word.lower() == keyword.lower():
-                #print(snt_with_keyword)
-                snt_with_keyword.append((sentence, line_num))
+                
+                snt_with_keyword[sentence] = line_num
+
+     
 
     return snt_with_keyword
 
