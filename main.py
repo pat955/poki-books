@@ -16,22 +16,28 @@ def main():
     # print(count_words(frank_path))
     # print(get_book_text(frank_path))
 
+
 def give_bookpath_name(path):
     pass 
+
 
 def add_book_to_folder(path):
     pass 
 
+
 def get_list_of_books():
     pass 
+
 
 def get_book_text(path):
     book = open(path, 'r')
     return book.read()
 
+
 def count_words(path):
     book_text = get_book_text(path)
     return len(book_text.split(' '))
+
 
 def count_characters(path):
     count_dict = {}
@@ -64,6 +70,7 @@ def report(path):
 
     report_text += ('-'*15 +'| End of book report |'+ '-'*15)
     return report_text
+
 
 def search(path, keyword):
     snt_with_keyword = {}

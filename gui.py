@@ -16,7 +16,7 @@ class Window():
         self.__root.rowconfigure(0, weight=1)
 
         # Frames
-        self.text_frame = Frame(self.__root, bg='white')
+        self.text_frame = TextScrollCombo(self.__root, bg='lavender')
         self.text_frame.grid(column=0, row=0, sticky="nsew")
         
         self.option_frame = Frame(self.__root, bg='white')
@@ -27,23 +27,24 @@ class Window():
         self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg='lavender', command=self.frankenstein)
         self.frankenstein_button.pack(side="top", fill="x", pady=10)
 
-        self.combo = TextScrollCombo(self.__root)
-
-        self.combo.txt.config(font=("consolas", 12), undo=True, wrap='word')
-        self.combo.txt.config(borderwidth=3, relief="sunken")
-
-        style = ttk.Style()
-        style.theme_use('clam')
-
-        
+        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice)
+        self.pap_button.pack(side="top", fill="x")
+        self.combo = TextScrollCombo(self.text_frame)
         self.__root.mainloop()
 
     
     def frankenstein(self):
         if os.path.exists('books/frankenstein.txt'):
             with open('books/frankenstein.txt', 'r') as file:
-                text = Text(self.text_frame, font=('Times New Roman', 15), highlightthickness=0, borderwidth=0)
-                self.combo.insert(file.read())               
+                for line in file:
+                    self.text_frame.insert(line)      
+                
+
+    def pride_and_prejudice(self):
+        if os.path.exists('books/pap.txt'):
+            with open('books/pap.txt', 'r') as file:
+                for line in file:
+                    self.text_frame.insert(line)    
 
 
     def _quit(self):
@@ -54,29 +55,33 @@ class Window():
         self.__root.quit()
         self.__root.destroy()
 
+
     def redraw(self):
         # Updates the screen to match whats happening
         self.__root.update_idletasks()
         self.__root.update()
 
-class TextScrollCombo(ttk.Frame):
+
+class TextScrollCombo(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    # ensure a consistent GUI size
-        self.grid_propagate(False)
+        #self.config (bg = 'lavender', bd=0, highlightthickness=0)
+    
     # implement stretchability
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-
+        
     # create a Text widget
         self.txt = tk.Text(self)
+        self.txt.config(font=('Times New Roman', 15), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
 
     # create a Scrollbar and associate it with txt
         scrollb = ttk.Scrollbar(self, command=self.txt.yview)
         scrollb.grid(row=0, column=1, sticky='nsew')
         self.txt['yscrollcommand'] = scrollb.set
     
+
     def insert(self, text):
         self.txt.insert('insert', text)
-        self.pack(side="top", fill='both', pady=10, expand=True, padx=30)
+        self.txt.grid(row=0, column=0, sticky='nsew')
+        #self.pack(side="top", fill='both', pady=10, expand=True, padx=30)
