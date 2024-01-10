@@ -1,44 +1,87 @@
 import tkinter as tk 
 
-from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label
+from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton
 import os
+
+COLOR = 'white'
+FONT_COLOR = 'black'
 
 class Window():
     def __init__(self, width, height):
         self.__root = Tk()
         self.__running = False
-        self.__root.bg = 'white'
+        self.__root.bg = COLOR
         self.__root.title("BookBot")
-        self.__root.configure(background='white')
+        self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
         self.__root.attributes('-zoomed', True)
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
 
         # Frames
-        self.text_frame = TextScrollCombo(self.__root, bg='lavender')
+        self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
         
-        self.option_frame = Frame(self.__root, bg='white')
+        self.option_frame = Frame(self.__root, bg=COLOR)
         self.option_frame.grid(column=1, row=0, sticky="ens")
         
-        # Buttons and labels:
-        self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg='lavender', command=self.frankenstein)
+        # Buttons:
+        self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg='lavender', command=self.frankenstein, highlightthickness=0)
         self.frankenstein_button.pack(side="top", fill="x", pady=10)
 
-        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice)
+        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice, highlightthickness=0)
         self.pap_button.pack(side="top", fill="x")
 
-        self.text_size_label = Label(self.option_frame, text='Text Size', bg='white')
+        # Entries and Labels
+        self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR)
         self.text_size_label.pack(side='top', fill='x', pady=5)
 
-        self.text_size_entry = Entry(self.option_frame, bg='lavender')
+        self.text_size_entry = Entry(self.option_frame, bg='lavender', highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
 
+        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme)
+        self.light_theme.pack(side="bottom", fill='x', anchor='w', padx=2)
+
+        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme)
+        self.dark_theme.pack(side="bottom", fill='x', anchor='w', padx=2)
+
+        self.light_theme.select()
+
+        #self.theme3 = Radiobutton(self.option_frame, text="Option 3", variable=var, value=3, command=sel)
+        #self.theme3.pack(side="top", fill="x")
 
         self.__root.mainloop()
 
+
+    def dark_theme(self):
+        self.change_theme('gray11', 'white', 'steel blue')
+
+
+    def light_theme(self):
+        self.change_theme('white', 'black', 'lavender')
+
+
+    def change_theme(self, color, font_color, button_color):
+        COLOR = color
+        FONT_COLOR = font_color
+        BUTTON_COLOR = button_color
+        frames = [self.__root, self.option_frame, self.text_frame]
+
+        for frame in frames:
+            for widget in frame.winfo_children():
+                widget.config(bg=COLOR)
+
+                if type(widget) in [Button, Entry]:
+                    widget.config(bg=BUTTON_COLOR)
+        
+                try: 
+                    widget.config(fg=FONT_COLOR)
+                except Exception as e:
+                    pass
+        
+        widget.update()
     
+
     def frankenstein(self):
         self.clear_text()
         self.check_entries()
@@ -111,4 +154,3 @@ class TextScrollCombo(tk.Frame):
     def insert(self, text):
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
-        #self.pack(side="top", fill='both', pady=10, expand=True, padx=30)
