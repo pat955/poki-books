@@ -22,24 +22,30 @@ class Window():
         # Frames
         self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
+
+        self.books_menu = TextScrollCombo(self.__root, bg=COLOR)
+        
         
         self.option_frame = Frame(self.__root, bg=COLOR)
         self.option_frame.grid(column=1, row=0, sticky="ens")
-
         
         # Menus
         self.menubar = Menu(self.__root, bg=COLOR, bd=1)
         settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
         settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
+        settings_menu.add_separator()
         settings_menu.add_command(label="Hide Sidebar", command=self.hide_sidebar)
         settings_menu.add_command(label="Show sidebar", command=self.show_sidebar)
         settings_menu.add_separator()
         settings_menu.add_command(label="Exit", command=self._quit)
-        self.menubar.add_cascade(label="File", menu=settings_menu)
+        self.menubar.add_cascade(label="Settings", menu=settings_menu)
 
         books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
-        books_menu.add_command(label="Go to book menu", command=self.donothing)
+        books_menu.add_command(label="Go to book menu", command=self.go_to_books)
         books_menu.add_separator()
+        books_menu.add_command(label="Frankenstein", command=self.frankenstein)
+        books_menu.add_command(label="Pride and prejudice", command=self.pride_and_prejudice)
+
         books_menu.add_command(label="Previous book", command=self.donothing)
         books_menu.add_command(label="Add book", command=self.donothing)
         books_menu.add_command(label="Remove book", command=self.donothing)
@@ -79,6 +85,12 @@ class Window():
 
         self.light_theme.select()
         self.__root.mainloop()
+
+
+    def go_to_books(self):
+        self.text_frame.grid_forget()
+        self.books_menu.config(bg='coral')
+        self.books_menu.grid(column=0, row=0, sticky="nsew")
 
 
     def fullscreen(self):
