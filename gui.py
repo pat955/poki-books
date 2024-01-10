@@ -1,6 +1,6 @@
 import tkinter as tk 
 
-from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton
+from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu
 import os
 
 COLOR = 'white'
@@ -26,6 +26,31 @@ class Window():
         self.option_frame = Frame(self.__root, bg=COLOR)
         self.option_frame.grid(column=1, row=0, sticky="ens")
         
+        # Menus
+        self.menubar = Menu(self.__root, bg=COLOR, bd=1)
+        settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
+        settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
+        settings_menu.add_command(label="setting 1", command=self.donothing)
+        settings_menu.add_separator()
+        settings_menu.add_command(label="Exit", command=self._quit)
+        self.menubar.add_cascade(label="File", menu=settings_menu)
+
+        books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
+        books_menu.add_command(label="Go to book menu", command=self.donothing)
+        books_menu.add_separator()
+        books_menu.add_command(label="Previous book", command=self.donothing)
+        books_menu.add_command(label="Add book", command=self.donothing)
+        books_menu.add_command(label="Remove book", command=self.donothing)
+        self.menubar.add_cascade(label="Books", menu=books_menu)
+
+        helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
+        helpmenu.add_command(label="Contact", command=self.donothing)
+        helpmenu.add_command(label="About", command=self.donothing)
+        self.menubar.add_cascade(label="Help", menu=helpmenu)
+        
+
+        self.__root.config(menu=self.menubar)
+
         # Buttons:
         self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg=BUTTON_COLOR, command=self.frankenstein, highlightthickness=0)
         self.frankenstein_button.pack(side="top", fill="x", pady=10)
@@ -49,11 +74,22 @@ class Window():
 
         self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme)
         self.pistacchio.pack(side="bottom", fill='x', anchor='w', padx=3)
-    
+
         self.light_theme.select()
         self.__root.mainloop()
 
+
+    def fullscreen(self):
+        self.__root.attributes("-fullscreen", True)
+        self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
+
+    
+    def donothing():
+        filewin = Toplevel(root)
+        button = Button(filewin, text="Do nothing button")
+        button.pack()
         
+
     def pistacchio_theme(self):
         self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
 
@@ -70,7 +106,7 @@ class Window():
         COLOR = color
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
-        frames = [self.__root, self.option_frame, self.text_frame]
+        frames = [self.__root, self.option_frame, self.text_frame, self.menubar]
 
         for frame in frames:
             for widget in frame.winfo_children():
