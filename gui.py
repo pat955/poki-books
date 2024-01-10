@@ -29,11 +29,19 @@ class Window():
         self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice)
         self.pap_button.pack(side="top", fill="x")
 
+        self.text_size_label = Label(self.option_frame, text='Text Size', bg='white')
+        self.text_size_label.pack(side='top', fill='x', pady=5)
+
+        self.text_size_entry = Entry(self.option_frame, bg='lavender')
+        self.text_size_entry.pack(side="top", fill="x")
+
+
         self.__root.mainloop()
 
     
     def frankenstein(self):
         self.clear_text()
+        self.check_entries()
         if os.path.exists('books/frankenstein.txt'):
             with open('books/frankenstein.txt', 'r') as file:
                 for line in file:
@@ -42,10 +50,24 @@ class Window():
 
     def pride_and_prejudice(self):
         self.clear_text()
+        self.check_entries()
         if os.path.exists('books/pap.txt'):
             with open('books/pap.txt', 'r') as file:
                 for line in file:
                     self.text_frame.insert(line)    
+    
+    
+    def check_entries(self):
+        entries = {
+            self.text_size_entry: self.change_text_size
+            }
+        for entry, func in entries.items():
+            if entry.get():
+                func()
+
+
+    def change_text_size(self):
+        self.text_frame.txt.config(font=('Times New Roman', self.text_size_entry.get()))
 
 
     def clear_text(self):
