@@ -1,16 +1,18 @@
 import re
 from nltk import tokenize
+from gui import Window
 
 def main():
     #print('Put all text files in bookbot folder before starting program.')
     #book_path = input('Name of book with (ex. frankenstein.txt): ')
+    win = Window(900, 900)
     book_path = 'books/frankenstein.txt'
 
-    print('Top 10 most used words:')
-    for word, value in most_used_words(book_path, 10).items():
-        print(f'{word} '+ '-'*(7-len(word))+f'was found {value} times!')
+    #print('Top 10 most used words:')
+    #for word, value in most_used_words(book_path, 10).items():
+        #print(f'{word} '+ '-'*(7-len(word))+f'was found {value} times!')
 
-    print(report(book_path))
+    #print(report(book_path))
     # print(count_words(frank_path))
     # print(get_book_text(frank_path))
 
@@ -73,24 +75,27 @@ def search(path, keyword):
 
         for word in sentence.split(' '):
             
-            word = word.strip(',\n ;:."[]()*\@{}`\'12345679_=€$£&%#! ')
+            word = word.strip(',\n ;:."[]()*\\@{}`\'12345679_=€$£&%#! ')
 
             if word.lower() == keyword.lower():
                 
                 snt_with_keyword[sentence] = line_num
 
     return snt_with_keyword
+
+
 def get_wordlist(path):
     wordlist = {}
     
     for word in get_book_text(path).split(' '):
-        word = word.strip(',\n ;:."[]()*\@{}`\'12345679_=€$£&%#! ')
+        word = word.strip(',\n ;:."[]()*\\@{}`\'12345679_=€$£&%#! ')
         if word == '':
             continue
         if word not in wordlist:
             wordlist[word] = 0
         wordlist[word] += 1
     return wordlist
+
 
 def most_used_words(path, num):
     wordlist = get_wordlist(path)
