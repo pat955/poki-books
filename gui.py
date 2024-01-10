@@ -1,6 +1,6 @@
 import tkinter as tk 
 
-from tkinter import Canvas, Frame, Button, Tk, Text, ttk
+from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label
 import os
 
 class Window():
@@ -22,18 +22,18 @@ class Window():
         self.option_frame = Frame(self.__root, bg='white')
         self.option_frame.grid(column=1, row=0, sticky="ens")
         
-        
         # Buttons and labels:
         self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg='lavender', command=self.frankenstein)
         self.frankenstein_button.pack(side="top", fill="x", pady=10)
 
         self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice)
         self.pap_button.pack(side="top", fill="x")
-        self.combo = TextScrollCombo(self.text_frame)
+
         self.__root.mainloop()
 
     
     def frankenstein(self):
+        self.clear_text()
         if os.path.exists('books/frankenstein.txt'):
             with open('books/frankenstein.txt', 'r') as file:
                 for line in file:
@@ -41,11 +41,16 @@ class Window():
                 
 
     def pride_and_prejudice(self):
+        self.clear_text()
         if os.path.exists('books/pap.txt'):
             with open('books/pap.txt', 'r') as file:
                 for line in file:
                     self.text_frame.insert(line)    
 
+
+    def clear_text(self):
+        self.text_frame.txt.delete('1.0', 'end')
+        
 
     def _quit(self):
         # Force quits, error: _tkinter.TclError: invalid command name ".!frame.!canvas"
