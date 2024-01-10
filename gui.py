@@ -25,12 +25,14 @@ class Window():
         
         self.option_frame = Frame(self.__root, bg=COLOR)
         self.option_frame.grid(column=1, row=0, sticky="ens")
+
         
         # Menus
         self.menubar = Menu(self.__root, bg=COLOR, bd=1)
         settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
         settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
-        settings_menu.add_command(label="setting 1", command=self.donothing)
+        settings_menu.add_command(label="Hide Sidebar", command=self.hide_sidebar)
+        settings_menu.add_command(label="Show sidebar", command=self.show_sidebar)
         settings_menu.add_separator()
         settings_menu.add_command(label="Exit", command=self._quit)
         self.menubar.add_cascade(label="File", menu=settings_menu)
@@ -83,7 +85,15 @@ class Window():
         self.__root.attributes("-fullscreen", True)
         self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
+
+    def hide_sidebar(self):
+        self.option_frame.grid_forget()
     
+    
+    def show_sidebar(self):
+        self.option_frame.grid(column=1, row=0, sticky="ens")
+
+
     def donothing():
         filewin = Toplevel(root)
         button = Button(filewin, text="Do nothing button")
