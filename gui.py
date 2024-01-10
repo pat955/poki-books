@@ -5,6 +5,7 @@ import os
 
 COLOR = 'white'
 FONT_COLOR = 'black'
+BUTTON_COLOR = 'lavender'
 
 class Window():
     def __init__(self, width, height):
@@ -26,31 +27,35 @@ class Window():
         self.option_frame.grid(column=1, row=0, sticky="ens")
         
         # Buttons:
-        self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg='lavender', command=self.frankenstein, highlightthickness=0)
+        self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg=BUTTON_COLOR, command=self.frankenstein, highlightthickness=0)
         self.frankenstein_button.pack(side="top", fill="x", pady=10)
 
-        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg='lavender', command=self.pride_and_prejudice, highlightthickness=0)
+        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg=BUTTON_COLOR, command=self.pride_and_prejudice, highlightthickness=0)
         self.pap_button.pack(side="top", fill="x")
 
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR)
         self.text_size_label.pack(side='top', fill='x', pady=5)
 
-        self.text_size_entry = Entry(self.option_frame, bg='lavender', highlightthickness=0)
+        self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
 
+        #Themes
         self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme)
-        self.light_theme.pack(side="bottom", fill='x', anchor='w', padx=2)
+        self.light_theme.pack(side="bottom", fill='x', anchor='w', padx=3)
 
         self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme)
-        self.dark_theme.pack(side="bottom", fill='x', anchor='w', padx=2)
+        self.dark_theme.pack(side="bottom", fill='x', anchor='w', padx=3)
 
+        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme)
+        self.pistacchio.pack(side="bottom", fill='x', anchor='w', padx=3)
+    
         self.light_theme.select()
-
-        #self.theme3 = Radiobutton(self.option_frame, text="Option 3", variable=var, value=3, command=sel)
-        #self.theme3.pack(side="top", fill="x")
-
         self.__root.mainloop()
+
+        
+    def pistacchio_theme(self):
+        self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
 
 
     def dark_theme(self):
@@ -69,7 +74,10 @@ class Window():
 
         for frame in frames:
             for widget in frame.winfo_children():
-                widget.config(bg=COLOR)
+                try:
+                    widget.config(bg=COLOR)
+                except:
+                    pass
 
                 if type(widget) in [Button, Entry]:
                     widget.config(bg=BUTTON_COLOR)
@@ -135,7 +143,6 @@ class Window():
 class TextScrollCombo(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        #self.config (bg = 'lavender', bd=0, highlightthickness=0)
     
     # implement stretchability
         self.grid_rowconfigure(0, weight=1)
