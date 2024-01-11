@@ -4,9 +4,24 @@ from functools import partial
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu
 from PIL import Image, ImageTk
 import os
+import json
 
 # Colors are on light mode in book menu regardless of option selected
-#
+# Add notes for each book
+# Add more themes
+# Add drag and drop function
+# Pictures
+# Logo
+# Add info
+# Clean up code
+# Add documentation
+# Search
+# Bookmark
+# Highlight
+# Make the cache useful now
+# Keybinds
+# Back to top button and stuff
+# Page num?
 
 COLOR = 'white'
 FONT_COLOR = 'black'
@@ -18,7 +33,6 @@ FONT_SIZE2 = 15
 class Window():
     def __init__(self, width, height):
         self.__root = Tk()
-        self.__running = False
         self.__root.bg = COLOR
         self.__root.title("BookBot")
         self.__root.configure(background=COLOR)
@@ -26,6 +40,7 @@ class Window():
         self.__root.attributes('-zoomed', True)
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
+        self.current_book = None
 
         # Frames and textscrollcombos
         self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
@@ -56,7 +71,7 @@ class Window():
         books_menu.add_separator()
         books_menu.add_command(label="Placeholder 1", command=self.donothing)
         books_menu.add_command(label="Placeholder 2", command=self.donothing)
-        books_menu.add_command(label="Placeholder 3", command=self.donothing)
+        books_menu.add_command(label="Clear Cache", command=self.clear_cache)
         books_menu.add_command(label="Add book", command=self.donothing)
         books_menu.add_command(label="Remove book", command=self.donothing)
 
@@ -71,27 +86,34 @@ class Window():
         self.__root.config(menu=self.menubar)
 
         # Buttons
-        self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0)
+        self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE1))
         self.refresh_button.pack(side='top', fill='x')
 
         # Entries and Labels
-        self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR)
+        self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE1))
         self.text_size_label.pack(side='top', fill='x', pady=5)
 
         self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
 
         #Themes
-        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme, anchor='w')
+        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme, anchor='w', font=(FONT, FONT_SIZE1))
         self.light_theme.pack(side="bottom", fill='x', padx=3)
 
-        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme, anchor='w')
+        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme, anchor='w', font=(FONT, FONT_SIZE1))
         self.dark_theme.pack(side="bottom", fill='x', padx=3)
 
-        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme, anchor='w')
+        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme, anchor='w', font=(FONT, FONT_SIZE1))
         self.pistacchio.pack(side="bottom", fill='x', padx=3)
 
+        
+
         self.light_theme.select()
+
+            
+        if not os.path.exists('cache.json'):
+            with open('cache.json', 'w') as file:
+                json.dump({'books': {}}, file, indent=4)
 
         self.__root.mainloop()
 
@@ -101,7 +123,6 @@ class Window():
         self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
         self.books_menu.txt.grid(row=0, column=0, sticky='nsew')
         self.books_menu.grid(column=0, row=0, sticky="nsew")
-        print(self.books_menu.txt.winfo_height())
 
         i = 0
         j = 0
@@ -111,14 +132,38 @@ class Window():
                 i = 0
             
             path =f'books/{file.name}'
-            print(path)
             button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), command=partial(self.read_book, path), width=16)
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
+
+
+    def clear_cache(self):
+        os.remove('cache.json')
+        if not os.path.exists('cache.json'):
+            with open('cache.json', 'w') as file:
+                json.dump({'books': {}}, file, indent=4)
+
+
+    def save_current_book_position(self):
+        if self.current_book is not None:
+            file_data = None
+            with open('cache.json', 'r+') as file:
+                file_data = json.load(file)
+                if self.current_book in file_data['books']:
+                    file_data['books'][self.current_book].update(str(self.text_frame.scrollb.get()))
+
+                else:
+                    file_data['books'][self.current_book] = {'scrollbar': str(self.text_frame.scrollb.get())}
+
             
+            with open('cache.json', 'w') as file:
+                json.dump(file_data, file, indent=4)
 
 
     def read_book(self, path):
+        self.save_current_book_position()
+        self.current_book = path
+
         self.clear_text()
         self.check_entries()
         self.books_menu.grid_forget()
@@ -199,9 +244,6 @@ class Window():
         
 
     def _quit(self):
-        with open ('cache.txt', 'w') as file:
-            # Add which book the position is for.
-            file.write(str(self.text_frame.scrollb.get()))
         self.__root.quit()
         self.__root.destroy()
 
@@ -222,7 +264,7 @@ class TextScrollCombo(tk.Frame):
         
     # create a Text widget
         self.txt = tk.Text(self)
-        self.txt.config(font=('Times New Roman', 15), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
+        self.txt.config(font=(FONT, FONT_SIZE2), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
 
     # create a Scrollbar and associate it with txt
         self.scrollb = ttk.Scrollbar(self, command=self.txt.yview)

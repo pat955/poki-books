@@ -4,4 +4,5 @@ __pycache__/
 *txt
 *png
 *jpg
+*json
 .python-version
