@@ -1,12 +1,11 @@
 import tkinter as tk 
 from functools import partial
-
-from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu
+from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
 from PIL import Image, ImageTk
 import os
 import json
-
-# Colors are on light mode in book menu regardless of option selected
+import shutil
+from pathlib import Path
 # Add notes for each book
 # Add more themes
 # Add drag and drop function
@@ -18,11 +17,10 @@ import json
 # Search
 # Bookmark
 # Highlight
-# Make the cache useful now
 # Keybinds
 # Back to top button and stuff
 # Page num?
-
+# BUggY BEANS show sidebar
 COLOR = 'white'
 FONT_COLOR = 'black'
 BUTTON_COLOR = 'lavender'
@@ -41,6 +39,9 @@ class Window():
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.current_book = None
+
+        if not os.path.exists('books/'):
+            os.makedirs('books')
 
         # Frames and textscrollcombos
         self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
@@ -72,8 +73,8 @@ class Window():
         books_menu.add_command(label="Placeholder 1", command=self.donothing)
         books_menu.add_command(label="Placeholder 2", command=self.donothing)
         books_menu.add_command(label="Clear Cache", command=self.clear_cache)
-        books_menu.add_command(label="Add book", command=self.donothing)
-        books_menu.add_command(label="Remove book", command=self.donothing)
+        books_menu.add_command(label="Add book", command=self.add_book)
+        books_menu.add_command(label="Remove book", command=self.remove_book)
 
             # Help Menu
         helpmenu.add_command(label="Contact", command=self.donothing)
@@ -118,6 +119,16 @@ class Window():
                 json.dump({'books': {}}, file, indent=4)
 
         self.__root.mainloop()
+
+
+    def remove_book(self):
+        pass
+
+
+    def add_book(self):
+        path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
+        if path:
+            shutil.move(path, "books/")
 
 
     def clear_text_frame(self):
@@ -192,8 +203,7 @@ class Window():
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
         frames = [self.__root, self.option_frame, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt]
-        for w in self.books_menu.txt.winfo_children():
-            print(w)
+        
         for frame in frames:
             for widget in frame.winfo_children():
                 try:
