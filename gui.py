@@ -1,6 +1,7 @@
 import tkinter as tk 
 
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu
+from PIL import Image, ImageTk
 import os
 
 COLOR = 'white'
@@ -66,6 +67,9 @@ class Window():
         self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg=BUTTON_COLOR, command=self.pride_and_prejudice, highlightthickness=0)
         self.pap_button.pack(side="top", fill="x")
 
+        self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0)
+        self.refresh_button.pack(side='top', fill='x', pady=10)
+
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR)
         self.text_size_label.pack(side='top', fill='x', pady=5)
@@ -89,8 +93,25 @@ class Window():
 
     def go_to_books(self):
         self.text_frame.grid_forget()
-        self.books_menu.config(bg='coral')
+        self.books_menu.config(bg='lavender')
         self.books_menu.grid(column=0, row=0, sticky="nsew")
+        
+       
+        for file in os.scandir('books/'):
+            
+            path =f'books/{file.name}'
+            label = Button(self.books_menu, text=f'{file.name.capitalize().split('.')[0]}', bg=COLOR, font=('Times New Roman', 15), command=(self.read_book(path)))
+            label.grid(sticky='n', pady=10, padx=20)
+            
+
+    def read_book(self, path):
+        self.clear_text()
+        self.check_entries()
+        with open(path, 'r') as file:
+            for line in file:
+                self.text_frame.insert(line) 
+        self.books_menu.grid_forget()
+        self.text_frame.grid(column=0, row=0, sticky="nsew") 
 
 
     def fullscreen(self):
@@ -185,8 +206,9 @@ class Window():
 
     def _quit(self):
         # Force quits, error: _tkinter.TclError: invalid command name ".!frame.!canvas"
-        if os.path.exists('cache.txt'):
-            os.remove('cache.txt')
+        with open ('cache.txt', 'w') as file:
+            # Add which book the position is for.
+            file.write(str(self.text_frame.scrollb.get()))
         self.__running = False
         self.__root.quit()
         self.__root.destroy()
@@ -211,9 +233,10 @@ class TextScrollCombo(tk.Frame):
         self.txt.config(font=('Times New Roman', 15), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
 
     # create a Scrollbar and associate it with txt
-        scrollb = ttk.Scrollbar(self, command=self.txt.yview)
-        scrollb.grid(row=0, column=1, sticky='nsew')
-        self.txt['yscrollcommand'] = scrollb.set
+        self.scrollb = ttk.Scrollbar(self, command=self.txt.yview)
+        self.scrollb.grid(row=0, column=1, sticky='nsew')
+        self.txt['yscrollcommand'] = self.scrollb.set
+
     
 
     def insert(self, text):

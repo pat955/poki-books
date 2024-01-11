@@ -1,4 +1,6 @@
 books/
 __pycache__/
 *pyc
+*txt
+*png
 .python-version
