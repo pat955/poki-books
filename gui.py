@@ -86,12 +86,14 @@ class Window():
         self.__root.config(menu=self.menubar)
 
         # Buttons
+        self.all_books_button = Button(self.option_frame, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE1))
+        self.all_books_button.pack(side='top', fill='x')
         self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE1))
-        self.refresh_button.pack(side='top', fill='x')
+        self.refresh_button.pack(side='top', fill='x', pady=10)
 
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE1))
-        self.text_size_label.pack(side='top', fill='x', pady=5)
+        self.text_size_label.pack(side='top', fill='x')
 
         self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
