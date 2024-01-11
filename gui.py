@@ -61,8 +61,8 @@ class Window():
             #Settings
         settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
         settings_menu.add_separator()
-        settings_menu.add_command(label="Hide Sidebar", command=self.hide_sidebar)
-        settings_menu.add_command(label="Show sidebar", command=self.show_sidebar)
+        settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
+        settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
         settings_menu.add_separator()
         settings_menu.add_command(label="Exit", command=self._quit)
         
@@ -149,11 +149,7 @@ class Window():
             file_data = None
             with open('cache.json', 'r+') as file:
                 file_data = json.load(file)
-                if self.current_book in file_data['books']:
-                    file_data['books'][self.current_book].update(str(self.text_frame.scrollb.get()))
-
-                else:
-                    file_data['books'][self.current_book] = {'scrollbar': str(self.text_frame.scrollb.get())}
+                file_data['books'][self.current_book] = {'scrollbar': self.text_frame.scrollb.get()}
 
             
             with open('cache.json', 'w') as file:
@@ -171,35 +167,13 @@ class Window():
         with open(path, 'r') as file:
             for line in file:
                 self.text_frame.insert(line)
+        self.text_frame.txt.config(state='disabled')
+        self.text_frame.set_scrollbar(path)
     
 
     def fullscreen(self):
         self.__root.attributes("-fullscreen", True)
         self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
-
-
-    def hide_sidebar(self):
-        self.option_frame.grid_forget()
-    
-    
-    def show_sidebar(self):
-        self.option_frame.grid(column=1, row=0, sticky="ens")
-
-
-    def donothing():
-        return
-
-
-    def pistacchio_theme(self):
-        self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
-
-
-    def dark_theme(self):
-        self.change_theme('gray11', 'white', 'steel blue')
-
-
-    def light_theme(self):
-        self.change_theme('white', 'black', 'lavender')
 
 
     def change_theme(self, color, font_color, button_color):
@@ -222,8 +196,19 @@ class Window():
                     widget.config(fg=FONT_COLOR)
                 except Exception as e:
                     pass
-        
         widget.update()
+
+    
+    def pistacchio_theme(self):
+        self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
+
+
+    def dark_theme(self):
+        self.change_theme('gray11', 'white', 'steel blue')
+
+
+    def light_theme(self):
+        self.change_theme('white', 'black', 'lavender')
     
     
     def check_entries(self):
@@ -244,6 +229,7 @@ class Window():
         
 
     def _quit(self):
+        self.save_current_book_position()
         self.__root.quit()
         self.__root.destroy()
 
@@ -252,6 +238,10 @@ class Window():
         # Updates the screen to match whats happening
         self.__root.update_idletasks()
         self.__root.update()
+
+
+    def donothing():
+        return
 
 
 class TextScrollCombo(tk.Frame):
@@ -271,9 +261,16 @@ class TextScrollCombo(tk.Frame):
         self.scrollb.grid(row=0, column=1, sticky='nsew')
         self.txt['yscrollcommand'] = self.scrollb.set
 
-    
 
     def insert(self, text):
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
+    
+    def set_scrollbar(self, book_path):
+        with open('cache.json', 'r') as file:
+            books_info = json.load(file)['books']
+            if book_path in books_info:
+                scrollbar_position = books_info[book_path]['scrollbar']
+                self.scrollb.set(*books_info[book_path]['scrollbar'])
+                self.txt.yview_moveto(scrollbar_position[0])
     
