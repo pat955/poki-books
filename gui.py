@@ -120,6 +120,12 @@ class Window():
         self.__root.mainloop()
 
 
+    def clear_text_frame(self):
+        self.text_frame = TextScrollCombo(self.__root)
+        self.text_frame.txt.config(bg=COLOR, fg=FONT_COLOR)
+        self.text_frame.grid(column=0, row=0, sticky="nsew")
+
+
     def go_to_books(self):
         self.text_frame.grid_forget()
         self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
@@ -162,7 +168,7 @@ class Window():
         self.save_current_book_position()
         self.current_book = path
 
-        self.clear_text()
+        self.clear_text_frame()
         self.check_entries()
         self.books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
@@ -179,11 +185,15 @@ class Window():
 
 
     def change_theme(self, color, font_color, button_color):
+        global COLOR
+        global FONT_COLOR
+        global BUTTON_COLOR
         COLOR = color
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
         frames = [self.__root, self.option_frame, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt]
-
+        for w in self.books_menu.txt.winfo_children():
+            print(w)
         for frame in frames:
             for widget in frame.winfo_children():
                 try:
@@ -191,13 +201,12 @@ class Window():
                 except:
                     pass
 
-                if type(widget) in [Button, Entry]:
-                    widget.config(bg=BUTTON_COLOR)
-        
                 try: 
                     widget.config(fg=FONT_COLOR)
                 except Exception as e:
                     pass
+                if type(widget) in [Button, Entry]:
+                    widget.config(bg=BUTTON_COLOR)
         widget.update()
 
     
