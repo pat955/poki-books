@@ -26,7 +26,7 @@ def add_book_to_folder(path):
 
 
 def get_list_of_books():
-    pass 
+    print(os.searchdir('books/')) 
 
 
 def get_book_text(path):

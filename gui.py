@@ -5,6 +5,9 @@ from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, La
 from PIL import Image, ImageTk
 import os
 
+# Colors are on light mode in book menu regardless of option selected
+#
+
 COLOR = 'white'
 FONT_COLOR = 'black'
 BUTTON_COLOR = 'lavender'
@@ -24,12 +27,11 @@ class Window():
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
 
-        # Frames
+        # Frames and textscrollcombos
         self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
         self.books_menu = TextScrollCombo(self.__root, bg=COLOR)
-        
         
         self.option_frame = Frame(self.__root, bg=COLOR)
         self.option_frame.grid(column=1, row=0, sticky="ens")
@@ -49,7 +51,7 @@ class Window():
         settings_menu.add_separator()
         settings_menu.add_command(label="Exit", command=self._quit)
         
-
+            # Book menu
         books_menu.add_command(label="Go to all books", command=self.go_to_books)
         books_menu.add_separator()
         books_menu.add_command(label="Placeholder 1", command=self.donothing)
@@ -58,6 +60,7 @@ class Window():
         books_menu.add_command(label="Add book", command=self.donothing)
         books_menu.add_command(label="Remove book", command=self.donothing)
 
+            # Help Menu
         helpmenu.add_command(label="Contact", command=self.donothing)
         helpmenu.add_command(label="About", command=self.donothing)
 
@@ -79,17 +82,16 @@ class Window():
         self.text_size_entry.pack(side="top", fill="x")
 
         #Themes
-        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme)
-        self.light_theme.pack(side="bottom", fill='x', anchor='w', padx=3)
+        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme, anchor='w')
+        self.light_theme.pack(side="bottom", fill='x', padx=3)
 
-        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme)
-        self.dark_theme.pack(side="bottom", fill='x', anchor='w', padx=3)
+        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme, anchor='w')
+        self.dark_theme.pack(side="bottom", fill='x', padx=3)
 
-        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme)
-        self.pistacchio.pack(side="bottom", fill='x', anchor='w', padx=3)
+        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme, anchor='w')
+        self.pistacchio.pack(side="bottom", fill='x', padx=3)
 
         self.light_theme.select()
-
 
         self.__root.mainloop()
 
@@ -99,13 +101,21 @@ class Window():
         self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
         self.books_menu.txt.grid(row=0, column=0, sticky='nsew')
         self.books_menu.grid(column=0, row=0, sticky="nsew")
+        print(self.books_menu.txt.winfo_height())
 
-        i = 0 
+        i = 0
+        j = 0
         for file in os.scandir('books/'):
+            if  i % 6 == 0:
+                j += 1
+                i = 0
+            
             path =f'books/{file.name}'
-            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=('Times New Roman', 15), command=partial(self.read_book, path), width=15)
-            button.grid(row=0, column=i, sticky='n', pady=10, padx=20)
+            print(path)
+            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), command=partial(self.read_book, path), width=16)
+            button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
+            
 
 
     def read_book(self, path):
@@ -151,7 +161,7 @@ class Window():
         COLOR = color
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
-        frames = [self.__root, self.option_frame, self.text_frame, self.menubar]
+        frames = [self.__root, self.option_frame, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt]
 
         for frame in frames:
             for widget in frame.winfo_children():
