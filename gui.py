@@ -1,4 +1,5 @@
 import tkinter as tk 
+from functools import partial
 
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu
 from PIL import Image, ImageTk
@@ -61,14 +62,14 @@ class Window():
         self.__root.config(menu=self.menubar)
 
         # Buttons:
-        self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg=BUTTON_COLOR, command=self.frankenstein, highlightthickness=0)
-        self.frankenstein_button.pack(side="top", fill="x", pady=10)
+        #self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg=BUTTON_COLOR, command=self.frankenstein, highlightthickness=0)
+        #self.frankenstein_button.pack(side="top", fill="x", pady=10)
 
-        self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg=BUTTON_COLOR, command=self.pride_and_prejudice, highlightthickness=0)
-        self.pap_button.pack(side="top", fill="x")
+        #self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg=BUTTON_COLOR, command=self.pride_and_prejudice, highlightthickness=0)
+        #self.pap_button.pack(side="top", fill="x")
 
         self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0)
-        self.refresh_button.pack(side='top', fill='x', pady=10)
+        self.refresh_button.pack(side='top', fill='x')
 
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR)
@@ -93,26 +94,27 @@ class Window():
 
     def go_to_books(self):
         self.text_frame.grid_forget()
-        self.books_menu.config(bg='lavender')
+        self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
+        self.books_menu.txt.grid(row=0, column=0, sticky='nsew')
         self.books_menu.grid(column=0, row=0, sticky="nsew")
-        
-       
+
+        i = 0 
         for file in os.scandir('books/'):
-            
             path =f'books/{file.name}'
-            label = Button(self.books_menu, text=f'{file.name.capitalize().split('.')[0]}', bg=COLOR, font=('Times New Roman', 15), command=(self.read_book(path)))
-            label.grid(sticky='n', pady=10, padx=20)
-            
+            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=('Times New Roman', 15), command=partial(self.read_book, path), width=15)
+            button.grid(row=0, column=i, sticky='n', pady=10, padx=20)
+            i += 1
+
 
     def read_book(self, path):
         self.clear_text()
         self.check_entries()
+        self.books_menu.grid_forget()
+        self.text_frame.grid(column=0, row=0, sticky="nsew")
         with open(path, 'r') as file:
             for line in file:
-                self.text_frame.insert(line) 
-        self.books_menu.grid_forget()
-        self.text_frame.grid(column=0, row=0, sticky="nsew") 
-
+                self.text_frame.insert(line)
+    
 
     def fullscreen(self):
         self.__root.attributes("-fullscreen", True)
@@ -242,3 +244,4 @@ class TextScrollCombo(tk.Frame):
     def insert(self, text):
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
+    
