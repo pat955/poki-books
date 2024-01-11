@@ -8,6 +8,9 @@ import os
 COLOR = 'white'
 FONT_COLOR = 'black'
 BUTTON_COLOR = 'lavender'
+FONT = 'Times New Roman'
+FONT_SIZE1 = 12
+FONT_SIZE2 = 15
 
 class Window():
     def __init__(self, width, height):
@@ -32,42 +35,39 @@ class Window():
         self.option_frame.grid(column=1, row=0, sticky="ens")
         
         # Menus
-        self.menubar = Menu(self.__root, bg=COLOR, bd=1)
-        settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
+            #Main Menus
+        self.menubar = Menu(self.__root, bg=COLOR, bd=1, font=(FONT, FONT_SIZE1))
+        settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
+        books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
+        helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
+
+            #Settings
         settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
         settings_menu.add_separator()
         settings_menu.add_command(label="Hide Sidebar", command=self.hide_sidebar)
         settings_menu.add_command(label="Show sidebar", command=self.show_sidebar)
         settings_menu.add_separator()
         settings_menu.add_command(label="Exit", command=self._quit)
-        self.menubar.add_cascade(label="Settings", menu=settings_menu)
+        
 
-        books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
-        books_menu.add_command(label="Go to book menu", command=self.go_to_books)
+        books_menu.add_command(label="Go to all books", command=self.go_to_books)
         books_menu.add_separator()
-        books_menu.add_command(label="Frankenstein", command=self.frankenstein)
-        books_menu.add_command(label="Pride and prejudice", command=self.pride_and_prejudice)
-
-        books_menu.add_command(label="Previous book", command=self.donothing)
+        books_menu.add_command(label="Placeholder 1", command=self.donothing)
+        books_menu.add_command(label="Placeholder 2", command=self.donothing)
+        books_menu.add_command(label="Placeholder 3", command=self.donothing)
         books_menu.add_command(label="Add book", command=self.donothing)
         books_menu.add_command(label="Remove book", command=self.donothing)
-        self.menubar.add_cascade(label="Books", menu=books_menu)
 
-        helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR)
         helpmenu.add_command(label="Contact", command=self.donothing)
         helpmenu.add_command(label="About", command=self.donothing)
+
+        self.menubar.add_cascade(label="Settings", menu=settings_menu)
+        self.menubar.add_cascade(label="Books", menu=books_menu)
         self.menubar.add_cascade(label="Help", menu=helpmenu)
-        
 
         self.__root.config(menu=self.menubar)
 
-        # Buttons:
-        #self.frankenstein_button = Button(self.option_frame, text='Read Frankenstein', bg=BUTTON_COLOR, command=self.frankenstein, highlightthickness=0)
-        #self.frankenstein_button.pack(side="top", fill="x", pady=10)
-
-        #self.pap_button = Button(self.option_frame, text='Read Pride and Prejudice', bg=BUTTON_COLOR, command=self.pride_and_prejudice, highlightthickness=0)
-        #self.pap_button.pack(side="top", fill="x")
-
+        # Buttons
         self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0)
         self.refresh_button.pack(side='top', fill='x')
 
@@ -89,6 +89,8 @@ class Window():
         self.pistacchio.pack(side="bottom", fill='x', anchor='w', padx=3)
 
         self.light_theme.select()
+
+
         self.__root.mainloop()
 
 
@@ -130,10 +132,8 @@ class Window():
 
 
     def donothing():
-        filewin = Toplevel(root)
-        button = Button(filewin, text="Do nothing button")
-        button.pack()
-        
+        return
+
 
     def pistacchio_theme(self):
         self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
@@ -170,24 +170,6 @@ class Window():
         
         widget.update()
     
-
-    def frankenstein(self):
-        self.clear_text()
-        self.check_entries()
-        if os.path.exists('books/frankenstein.txt'):
-            with open('books/frankenstein.txt', 'r') as file:
-                for line in file:
-                    self.text_frame.insert(line)      
-                
-
-    def pride_and_prejudice(self):
-        self.clear_text()
-        self.check_entries()
-        if os.path.exists('books/pap.txt'):
-            with open('books/pap.txt', 'r') as file:
-                for line in file:
-                    self.text_frame.insert(line)    
-    
     
     def check_entries(self):
         entries = {
@@ -199,7 +181,7 @@ class Window():
 
 
     def change_text_size(self):
-        self.text_frame.txt.config(font=('Times New Roman', self.text_size_entry.get()))
+        self.text_frame.txt.config(font=(FONT, self.text_size_entry.get()))
 
 
     def clear_text(self):
@@ -207,11 +189,9 @@ class Window():
         
 
     def _quit(self):
-        # Force quits, error: _tkinter.TclError: invalid command name ".!frame.!canvas"
         with open ('cache.txt', 'w') as file:
             # Add which book the position is for.
             file.write(str(self.text_frame.scrollb.get()))
-        self.__running = False
         self.__root.quit()
         self.__root.destroy()
 
