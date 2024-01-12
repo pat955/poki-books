@@ -1,1 +1,6 @@
 books/
+images/
+__pycache__/
+*pyc
+*json
+.python-version
