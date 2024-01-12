@@ -2,25 +2,26 @@ import tkinter as tk
 import os
 import json
 import shutil 
+from PyPDF2 import PdfReader
 from functools import partial
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
 from PIL import Image, ImageTk
 from pathlib import Path
 # Add notes for each book
-# Add drag and drop function
 # Pictures
 # Logo
-# Add info
 # Clean up code
 # Add documentation
 # Search
 # Bookmark
 # Highlight
 # Keybinds
-# Back to top button and stuff
+# Back to top button
 # Page num?
+# Change book menu, three dots?
 # BUggY BEANS show sidebar
 # Add error handling
+# Pdf support
 # theme with fonts and sizes
 
 # Default theme
@@ -106,7 +107,7 @@ class Window():
 
         self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
-
+        
         #Themes
         self.themes_button = Menu(self.option_frame, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
         i = 0
@@ -191,6 +192,16 @@ class Window():
                 json.dump(file_data, file, indent=4)
 
 
+    def read_pdf(self, path):
+        with open(path, 'rb') as file:
+            pdf = PdfReader(file)
+            i = 0
+            for page in pdf.pages:
+                i += 1
+                self.text_frame.insert(f'{page.extract_text()}  |||{i}|||\n')
+        self.text_frame.txt.config(state='disabled')
+        self.text_frame.set_scrollbar(path)
+
     def read_book(self, path):
         self.save_current_book_position()
         self.current_book = path
@@ -199,7 +210,11 @@ class Window():
         self.check_entries()
         self.books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
-        with open(path, 'r') as file:
+
+        if path.endswith('.pdf'):
+                self.read_pdf(path)
+                return
+        with open(path, 'r') as file:            
             self.text_frame.insert(file.read())
         self.text_frame.txt.config(state='disabled')
         self.text_frame.set_scrollbar(path)
@@ -300,4 +315,3 @@ class TextScrollCombo(tk.Frame):
                 scrollbar_position = books_info[book_path]['scrollbar']
                 self.scrollb.set(*books_info[book_path]['scrollbar'])
                 self.txt.yview_moveto(scrollbar_position[0])
-    

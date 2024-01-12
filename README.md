@@ -6,13 +6,14 @@ My first project using git and github!
 * Upload own files (txt)
 * Saves your scrollbar position for each book
 * Themes
+* Fullscreen
 
 # Plans
 * Add notes for each book
 * More themes, especially some that strain your eyes less
 * Drag and drop for book files
 * More format support
-* Add Contact and info
+* Add Contact
 * Pictures, maybe api gets book covers
 * Goodreads API?
 * Logo and better name
