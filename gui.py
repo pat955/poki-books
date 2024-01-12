@@ -1,13 +1,12 @@
-import tkinter as tk 
+import tkinter as tk
+import os
+import json
+import shutil 
 from functools import partial
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
 from PIL import Image, ImageTk
-import os
-import json
-import shutil
 from pathlib import Path
 # Add notes for each book
-# Add more themes
 # Add drag and drop function
 # Pictures
 # Logo
@@ -109,16 +108,14 @@ class Window():
         self.text_size_entry.pack(side="top", fill="x")
 
         #Themes
-        self.light_theme = Radiobutton(self.option_frame, text="Light Theme", bg=COLOR, bd=0, value=1, highlightthickness=0, command=self.light_theme, anchor='w', font=(FONT, FONT_SIZE1))
-        self.light_theme.pack(side="bottom", fill='x', padx=3)
-
-        self.dark_theme = Radiobutton(self.option_frame, text="Dark Theme", bg=COLOR, bd=0, highlightthickness=0, value=2, command=self.dark_theme, anchor='w', font=(FONT, FONT_SIZE1))
-        self.dark_theme.pack(side="bottom", fill='x', padx=3)
-
-        self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme, anchor='w', font=(FONT, FONT_SIZE1))
-        self.pistacchio.pack(side="bottom", fill='x', padx=3)
-
-        self.light_theme.select()
+        self.themes_button = Menu(self.option_frame, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
+        i = 0
+        with open('themes.txt', 'r') as file:
+            for theme in file:
+                name, color, font_color, button_color = theme.strip('\n').split(', ')
+                i += 1
+                self.themes_button.add_radiobutton(label=name, command=partial(self.change_theme, color, font_color, button_color), value=i, indicator=0)
+        self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
         # Make basic cache file 
         if not os.path.exists('cache.json'):
@@ -126,7 +123,7 @@ class Window():
                 json.dump({'books': {}}, file, indent=4)
 
         self.__root.mainloop()
-
+        
 
     def remove_book(self):
         pass
@@ -139,7 +136,7 @@ class Window():
 
 
     def add_book(self):
-        # if already exists
+        # add if already exists
         path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
         if path:
             shutil.move(path, "books/")
@@ -233,18 +230,6 @@ class Window():
                     widget.config(bg=BUTTON_COLOR)
         widget.update()
 
-    
-    def pistacchio_theme(self):
-        self.change_theme('azure', 'gray5', 'DarkOliveGreen3')
-
-
-    def dark_theme(self):
-        self.change_theme('gray11', 'white', 'steel blue')
-
-
-    def light_theme(self):
-        self.change_theme('white', 'black', 'lavender')
-    
     
     def check_entries(self):
         entries = {

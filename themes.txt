@@ -1,0 +1,5 @@
+Pistacchio, azure, gray5, DarkOliveGreen3
+Dark, gray11, white, steel blue
+Light, white, black, lavender
+Cute, #E4F1EE, black, #DEDAF4
+Barbie, #FFF5E4, #BOB5ED, #FFCAE9
