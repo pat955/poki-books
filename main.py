@@ -3,36 +3,9 @@ from nltk import tokenize
 from gui import Window
 
 def main():
-    #print('Put all text files in bookbot folder before starting program.')
-    #book_path = input('Name of book with (ex. frankenstein.txt): ')
     win = Window(900, 900)
     book_path = 'books/frankenstein.txt'
-
-    #print('Top 10 most used words:')
-    #for word, value in most_used_words(book_path, 10).items():
-        #print(f'{word} '+ '-'*(7-len(word))+f'was found {value} times!')
-
-    #print(report(book_path))
-    # print(count_words(frank_path))
-    # print(get_book_text(frank_path))
-
-
-def give_bookpath_name(path):
-    pass 
-
-
-def add_book_to_folder(path):
-    pass 
-
-
-def get_list_of_books():
-    print(os.searchdir('books/')) 
-
-
-def get_book_text(path):
-    book = open(path, 'r')
-    return book.read()
-
+   
 
 def count_words(path):
     book_text = get_book_text(path)
@@ -81,11 +54,9 @@ def search(path, keyword):
         line_num += 1
 
         for word in sentence.split(' '):
-            
             word = word.strip(',\n ;:."[]()*\\@{}`\'12345679_=€$£&%#! ')
 
             if word.lower() == keyword.lower():
-                
                 snt_with_keyword[sentence] = line_num
 
     return snt_with_keyword

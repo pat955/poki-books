@@ -21,6 +21,10 @@ from pathlib import Path
 # Back to top button and stuff
 # Page num?
 # BUggY BEANS show sidebar
+# Add error handling
+# theme with fonts and sizes
+
+# Default theme
 COLOR = 'white'
 FONT_COLOR = 'black'
 BUTTON_COLOR = 'lavender'
@@ -31,7 +35,6 @@ FONT_SIZE2 = 15
 class Window():
     def __init__(self, width, height):
         self.__root = Tk()
-        self.__root.bg = COLOR
         self.__root.title("BookBot")
         self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
@@ -71,7 +74,7 @@ class Window():
         books_menu.add_command(label="Go to all books", command=self.go_to_books)
         books_menu.add_separator()
         books_menu.add_command(label="Placeholder 1", command=self.donothing)
-        books_menu.add_command(label="Placeholder 2", command=self.donothing)
+        books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
         books_menu.add_command(label="Clear Cache", command=self.clear_cache)
         books_menu.add_command(label="Add book", command=self.add_book)
         books_menu.add_command(label="Remove book", command=self.remove_book)
@@ -79,6 +82,8 @@ class Window():
             # Help Menu
         helpmenu.add_command(label="Contact", command=self.donothing)
         helpmenu.add_command(label="About", command=self.donothing)
+        helpmenu.add_command(label="Stats", command=self.donothing)
+
 
         self.menubar.add_cascade(label="Settings", menu=settings_menu)
         self.menubar.add_cascade(label="Books", menu=books_menu)
@@ -89,12 +94,16 @@ class Window():
         # Buttons
         self.all_books_button = Button(self.option_frame, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE1))
         self.all_books_button.pack(side='top', fill='x')
+
+        self.add_n_read_button = Button(self.option_frame, text='Add n\' Read Book', bg=BUTTON_COLOR, command=self.add_and_read, highlightthickness=0, font=(FONT, FONT_SIZE1))
+        self.add_n_read_button.pack(side='top', fill='x', pady=10)
+
         self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE1))
-        self.refresh_button.pack(side='top', fill='x', pady=10)
+        self.refresh_button.pack(side='top', fill='x')
 
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE1))
-        self.text_size_label.pack(side='top', fill='x')
+        self.text_size_label.pack(side='top', fill='x', pady=5)
 
         self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
@@ -109,11 +118,9 @@ class Window():
         self.pistacchio = Radiobutton(self.option_frame, text="Pistacchio Theme", bg=COLOR, bd=0, highlightthickness=0, value=3, command=self.pistacchio_theme, anchor='w', font=(FONT, FONT_SIZE1))
         self.pistacchio.pack(side="bottom", fill='x', padx=3)
 
-        
-
         self.light_theme.select()
 
-            
+        # Make basic cache file 
         if not os.path.exists('cache.json'):
             with open('cache.json', 'w') as file:
                 json.dump({'books': {}}, file, indent=4)
@@ -125,10 +132,18 @@ class Window():
         pass
 
 
+    def add_and_read(self):
+        path = self.add_book()
+        if path:
+            self.read_book(f'books/{path.split('/')[-1]}')
+
+
     def add_book(self):
+        # if already exists
         path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
         if path:
             shutil.move(path, "books/")
+            return path
 
 
     def clear_text_frame(self):
@@ -142,7 +157,6 @@ class Window():
         self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
         self.books_menu.txt.grid(row=0, column=0, sticky='nsew')
         self.books_menu.grid(column=0, row=0, sticky="nsew")
-
         i = 0
         j = 0
         for file in os.scandir('books/'):
@@ -246,6 +260,7 @@ class Window():
 
 
     def clear_text(self):
+        # Not in use
         self.text_frame.txt.delete('1.0', 'end')
         
 
@@ -287,6 +302,7 @@ class TextScrollCombo(tk.Frame):
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
     
+
     def set_scrollbar(self, book_path):
         with open('cache.json', 'r') as file:
             books_info = json.load(file)['books']
