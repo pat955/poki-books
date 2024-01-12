@@ -80,7 +80,7 @@ class Window():
 
             # Help Menu
         helpmenu.add_command(label="Contact", command=self.donothing)
-        helpmenu.add_command(label="About", command=self.donothing)
+        helpmenu.add_command(label="About", command=self.info)
         helpmenu.add_command(label="Stats", command=self.donothing)
 
 
@@ -123,7 +123,12 @@ class Window():
                 json.dump({'books': {}}, file, indent=4)
 
         self.__root.mainloop()
-        
+
+
+    def info(self):
+        self.clear_text_frame()
+        self.text_frame.insert('This is my first actual project so i apologize for any bugs!\nUpload txt files and read them, change theme and enter fullscreen.\nMy GitHub: @pat955')
+
 
     def remove_book(self):
         pass
@@ -195,8 +200,7 @@ class Window():
         self.books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
         with open(path, 'r') as file:
-            for line in file:
-                self.text_frame.insert(line)
+            self.text_frame.insert(file.read())
         self.text_frame.txt.config(state='disabled')
         self.text_frame.set_scrollbar(path)
     
@@ -286,6 +290,7 @@ class TextScrollCombo(tk.Frame):
     def insert(self, text):
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
+        self.txt.config(state='disabled')
     
 
     def set_scrollbar(self, book_path):

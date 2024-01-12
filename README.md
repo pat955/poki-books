@@ -2,6 +2,7 @@
 My first project using git and github!
 
 # Functions
+* Read books and texts!
 * Upload own files (txt)
 * Saves your scrollbar position for each book
 * Themes
