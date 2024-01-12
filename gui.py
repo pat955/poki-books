@@ -2,11 +2,13 @@ import tkinter as tk
 import os
 import json
 import shutil 
+import ebooklib
 from PyPDF2 import PdfReader
 from functools import partial
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
 from PIL import Image, ImageTk
 from pathlib import Path
+from ebooklib import epub
 # Add notes for each book
 # Pictures
 # Logo
@@ -107,8 +109,19 @@ class Window():
 
         self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
+
+        self.padding_label = Label(self.option_frame, text='Padding', bg=COLOR, font=(FONT, FONT_SIZE1))
+        self.padding_label.pack(side='top', fill='x', pady=5)
+
+        self.padding_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
+        self.padding_entry.pack(side="top", fill="x")
+
+        # Checkboxes
+        self.center_var = tk.BooleanVar()
+        self.center = Checkbutton(self.option_frame, bg=COLOR, highlightthickness=0, command=self.center_text_clicked, text='Center text', font=(FONT, FONT_SIZE1), fg=FONT_COLOR, variable=self.center_var)
+        self.center.pack(side='top', fill='x', pady=10)
         
-        #Themes
+        # Themes
         self.themes_button = Menu(self.option_frame, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
         i = 0
         with open('themes.txt', 'r') as file:
@@ -187,7 +200,6 @@ class Window():
                 file_data = json.load(file)
                 file_data['books'][self.current_book] = {'scrollbar': self.text_frame.scrollb.get()}
 
-            
             with open('cache.json', 'w') as file:
                 json.dump(file_data, file, indent=4)
 
@@ -198,9 +210,10 @@ class Window():
             i = 0
             for page in pdf.pages:
                 i += 1
-                self.text_frame.insert(f'{page.extract_text()}  |||{i}|||\n')
+                self.text_frame.insert(f'{page.extract_text()}  ---{i}---\n')
         self.text_frame.txt.config(state='disabled')
         self.text_frame.set_scrollbar(path)
+
 
     def read_book(self, path):
         self.save_current_book_position()
@@ -212,8 +225,9 @@ class Window():
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
         if path.endswith('.pdf'):
-                self.read_pdf(path)
-                return
+            self.read_pdf(path)
+            return
+
         with open(path, 'r') as file:            
             self.text_frame.insert(file.read())
         self.text_frame.txt.config(state='disabled')
@@ -252,15 +266,32 @@ class Window():
     
     def check_entries(self):
         entries = {
-            self.text_size_entry: self.change_text_size
+            self.text_size_entry: self.change_text_size,
+            self.padding_entry: self.change_padding,
             }
         for entry, func in entries.items():
             if entry.get():
                 func()
+       
+
+    def change_padding(self):
+        self.text_frame.txt.config(padx=self.padding_entry.get())
 
 
     def change_text_size(self):
-        self.text_frame.txt.config(font=(FONT, self.text_size_entry.get()))
+        self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
+
+
+    def center_text_clicked(self):
+        print(self.center_var.get())
+        if self.center_var.get():
+            self.text_frame.txt.tag_configure("center", justify='center')
+            self.text_frame.txt.tag_add("center", "1.0", "end")
+            self.text_frame.grid()
+        else:
+            self.text_frame.txt.tag_configure("left", justify='left')
+            self.text_frame.txt.tag_add("left", "1.0", "end")
+            self.text_frame.grid()
 
 
     def clear_text(self):
