@@ -75,7 +75,6 @@ class Window():
             # Book menu
         books_menu.add_command(label="Go to all books", command=self.go_to_books)
         books_menu.add_separator()
-        books_menu.add_command(label="Placeholder 1", command=self.donothing)
         books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
         books_menu.add_command(label="Clear Cache", command=self.clear_cache)
         books_menu.add_command(label="Add book", command=self.add_book)
@@ -84,8 +83,6 @@ class Window():
             # Help Menu
         helpmenu.add_command(label="Contact", command=self.donothing)
         helpmenu.add_command(label="About", command=self.info)
-        helpmenu.add_command(label="Stats", command=self.donothing)
-
 
         self.menubar.add_cascade(label="Settings", menu=settings_menu)
         self.menubar.add_cascade(label="Books", menu=books_menu)
@@ -283,15 +280,12 @@ class Window():
 
 
     def center_text_clicked(self):
-        print(self.center_var.get())
         if self.center_var.get():
             self.text_frame.txt.tag_configure("center", justify='center')
             self.text_frame.txt.tag_add("center", "1.0", "end")
-            self.text_frame.grid()
         else:
-            self.text_frame.txt.tag_configure("left", justify='left')
-            self.text_frame.txt.tag_add("left", "1.0", "end")
-            self.text_frame.grid()
+            self.text_frame.txt.tag_delete('center')
+        self.text_frame.grid()
 
 
     def clear_text(self):
