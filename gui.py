@@ -9,6 +9,8 @@ from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, La
 from PIL import Image, ImageTk
 from pathlib import Path
 from ebooklib import epub
+from moveable_widgets import *
+from defaults import *
 # Add notes for each book
 # Pictures
 # Logo
@@ -26,13 +28,6 @@ from ebooklib import epub
 # Pdf support
 # theme with fonts and sizes
 
-# Default theme
-COLOR = 'white'
-FONT_COLOR = 'black'
-BUTTON_COLOR = 'lavender'
-FONT = 'Times New Roman'
-FONT_SIZE1 = 12
-FONT_SIZE2 = 15
 
 class Window():
     def __init__(self, width, height):
@@ -49,13 +44,20 @@ class Window():
             os.makedirs('books')
 
         # Frames and textscrollcombos
-        self.text_frame = TextScrollCombo(self.__root, bg=COLOR)
-        self.text_frame.grid(column=0, row=0, sticky="nsew")
+        self.contained_frame = Frame(self.__root)
+        self.contained_frame.columnconfigure(0, weight=1)
+        self.contained_frame.rowconfigure(0, weight=1)
+        self.contained_frame.grid(column=0, row=0, sticky="nsew")
 
+        self.text_frame = TextScrollCombo(self.contained_frame, bg=COLOR)
+        self.text_frame.grid(column=0, row=0, sticky="nsew")
+    
         self.books_menu = TextScrollCombo(self.__root, bg=COLOR)
         
-        self.option_frame = Frame(self.__root, bg=COLOR)
+        self.option_frame = Frame(self.contained_frame, bg=COLOR, highlightthickness=1)
         self.option_frame.grid(column=1, row=0, sticky="ens")
+
+        make_resizable(self.option_frame, self.contained_frame)
         
         # Menus
             #Main Menus
@@ -100,6 +102,9 @@ class Window():
         self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE1))
         self.refresh_button.pack(side='top', fill='x')
 
+        self.notes_button = Button(self.option_frame, text='Take notes', bg=BUTTON_COLOR, command=self.notes_by_book, highlightthickness=0, font=(FONT, FONT_SIZE1))
+        self.notes_button.pack(side='top', fill='x')
+
         # Entries and Labels
         self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE1))
         self.text_size_label.pack(side='top', fill='x', pady=5)
@@ -136,6 +141,11 @@ class Window():
         self.__root.mainloop()
 
 
+    def notes_by_book(self):
+        pass
+        
+
+
     def info(self):
         self.clear_text_frame()
         self.text_frame.insert('This is my first actual project so i apologize for any bugs!\nUpload txt files and read them, change theme and enter fullscreen.\nMy GitHub: @pat955')
@@ -160,7 +170,7 @@ class Window():
 
 
     def clear_text_frame(self):
-        self.text_frame = TextScrollCombo(self.__root)
+        self.text_frame = TextScrollCombo(self.contained_frame)
         self.text_frame.txt.config(bg=COLOR, fg=FONT_COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
@@ -312,7 +322,7 @@ class Window():
 class TextScrollCombo(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-    
+        
     # implement stretchability
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
