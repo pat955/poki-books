@@ -48,7 +48,7 @@ class Window():
         self.text_frame = TextScrollCombo(self.text_container, bg=COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
     
-        self.books_menu = TextScrollCombo(self.text_container, bg=COLOR)
+        self.all_books_menu = TextScrollCombo(self.text_container, bg=COLOR)
         
         self.option_frame = Frame(self.text_container, bg=COLOR, highlightthickness=1)
         self.option_frame.grid(column=1, row=0, sticky="ens")
@@ -57,36 +57,36 @@ class Window():
         
     # Menus
         #Main Menus
-        self.menubar = Menu(self.__root, bg=COLOR, bd=1, font=(FONT, FONT_SIZE1))
-        settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
-        books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
-        helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
+        self.menubar = Menu(self.__root, bg=COLOR, bd=1, font=(FONT, FONT_SIZE1), activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1), activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1), activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1), activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
 
     # Settings
-        settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
-        settings_menu.add_separator()
-        settings_menu.add_command(label='Set default theme', command=self.donothing)
-        settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
+        self.settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
+        self.settings_menu.add_separator()
+        self.settings_menu.add_command(label='Set default theme', command=self.donothing)
+        self.settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
         #lambda
-        settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
-        settings_menu.add_separator()
-        settings_menu.add_command(label="Exit", command=self._quit)
+        self.settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
+        self.settings_menu.add_separator()
+        self.settings_menu.add_command(label="Exit", command=self._quit)
         
     # Book menu
-        books_menu.add_command(label="Go to all books", command=self.go_to_books)
-        books_menu.add_separator()
-        books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
-        books_menu.add_command(label="Clear Cache", command=self.clear_cache)
-        books_menu.add_command(label="Add book", command=self.add_book)
-        books_menu.add_command(label="Remove book", command=self.remove_book)
+        self.books_menu.add_command(label="Go to all books", command=self.go_to_books)
+        self.books_menu.add_separator()
+        self.books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
+        self.books_menu.add_command(label="Clear Cache", command=self.clear_cache)
+        self.books_menu.add_command(label="Add book", command=self.add_book)
+        self.books_menu.add_command(label="Remove book", command=self.remove_book)
 
     # Help Menu
-        helpmenu.add_command(label="Contact", command=self.donothing)
-        helpmenu.add_command(label="About", command=self.info)
+        self.helpmenu.add_command(label="Contact", command=self.donothing)
+        self.helpmenu.add_command(label="About", command=self.info)
 
-        self.menubar.add_cascade(label="Settings", menu=settings_menu)
-        self.menubar.add_cascade(label="Books", menu=books_menu)
-        self.menubar.add_cascade(label="Help", menu=helpmenu)
+        self.menubar.add_cascade(label="Settings", menu=self.settings_menu)
+        self.menubar.add_cascade(label="Books", menu=self.books_menu)
+        self.menubar.add_cascade(label="Help", menu=self.helpmenu)
 
         self.__root.config(menu=self.menubar)
 
@@ -133,6 +133,7 @@ class Window():
         i = 0
         with open('themes.txt', 'r') as file:
             for theme in file:
+                
                 name, color, font_color, button_color, active_background, active_font = theme.strip('\n').split(', ')
                 i += 1
                 self.themes_button.add_radiobutton(label=name, command=partial(self.change_theme, color, font_color, button_color, active_background, active_font), value=i, indicator=0)
@@ -199,9 +200,9 @@ class Window():
 
     def go_to_books(self):
         self.text_frame.grid_forget()
-        self.books_menu.txt = Frame(self.books_menu, bg=COLOR)
-        self.books_menu.txt.grid(row=0, column=0, sticky='nsew')
-        self.books_menu.grid(column=0, row=0, sticky="nsew")
+        self.all_books_menu.txt = Frame(self.all_books_menu, bg=COLOR)
+        self.all_books_menu.txt.grid(row=0, column=0, sticky='nsew')
+        self.all_books_menu.grid(column=0, row=0, sticky="nsew")
         i = 0
         j = 0
         for file in os.scandir('books/'):
@@ -210,7 +211,7 @@ class Window():
                 i = 0
             
             path =f'books/{file.name}'
-            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), fg=FONT_COLOR, activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT, command=partial(self.read_book, path), width=16)
+            button = Button(self.all_books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), fg=FONT_COLOR, activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT, command=partial(self.read_book, path), width=16)
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
@@ -276,7 +277,7 @@ class Window():
 
         self.clear_text_frame()
         self.check_entries()
-        self.books_menu.grid_forget()
+        self.all_books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
         self.update_notes()
 
@@ -301,14 +302,23 @@ class Window():
         global BUTTON_COLOR
         global ACTIVEBACKGROUND
         global ACTIVEFONT
+
         COLOR = color
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
         ACTIVEBACKGROUND = active_background
         ACTIVEFONT = active_font
-        frames = [self.__root, self.option_frame, self.notes, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt, *(self.text_container.winfo_children())]
+        frames = [self.__root, self.option_frame, self.notes, self.text_frame, self.menubar, self.all_books_menu, self.all_books_menu.txt, *(self.text_container.winfo_children())]
         self.option_frame.config(bg=COLOR)
         self.text_frame.config(bg=COLOR)
+        self.menubar.config(activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+
+
+        self.settings_menu.config(activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.books_menu.config(activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.helpmenu.config(activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        self.themes_button.config(activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+        
         for frame in frames:
             for widget in frame.winfo_children():
                 try:
