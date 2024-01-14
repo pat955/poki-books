@@ -45,3 +45,10 @@ def apply(options, text_container):
     text_container.grid()
     options.grid(column=1, row=0, sticky="nsew")
     apply_button.pack_forget()
+
+def make_basic_full_frame(root):
+    f = tk.Frame(root)
+    f.columnconfigure(0, weight=1)
+    f.rowconfigure(0, weight=1)
+    f.grid(column=0, row=0, sticky="nsew")
+    return f
