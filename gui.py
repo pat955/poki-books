@@ -62,9 +62,10 @@ class Window():
         books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
         helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE1))
 
-    #Settings
+    # Settings
         settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
         settings_menu.add_separator()
+        settings_menu.add_command(label='Set default theme', command=self.donothing)
         settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
         #lambda
         settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
@@ -90,7 +91,7 @@ class Window():
         self.__root.config(menu=self.menubar)
 
     # Buttons
-        self.all_books_button = Button(self.option_frame, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE1))
+        self.all_books_button = Button(self.option_frame, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE1), activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
         self.all_books_button.pack(side='top', fill='x')
 
         self.add_n_read_button = Button(self.option_frame, text='Add n\' Read Book', bg=BUTTON_COLOR, command=self.add_and_read, highlightthickness=0, font=(FONT, FONT_SIZE1))
@@ -124,7 +125,7 @@ class Window():
         self.center.pack(side='top', fill='x', pady=10)
     
     # Notes 
-        self.notes = Frame(self.option_frame, highlightthickness=1, bg=BUTTON_COLOR, width=1)
+        self.notes = Frame(self.option_frame, highlightthickness=0, bd=0, width=1, highlightbackground=BUTTON_COLOR)
         self.notes_text = Text(self.notes, state='normal', wrap='word', font=(FONT, FONT_SIZE1), fg=FONT_COLOR, bg=COLOR, width=1)
         
     # Themes
@@ -132,9 +133,9 @@ class Window():
         i = 0
         with open('themes.txt', 'r') as file:
             for theme in file:
-                name, color, font_color, button_color = theme.strip('\n').split(', ')
+                name, color, font_color, button_color, active_background, active_font = theme.strip('\n').split(', ')
                 i += 1
-                self.themes_button.add_radiobutton(label=name, command=partial(self.change_theme, color, font_color, button_color), value=i, indicator=0)
+                self.themes_button.add_radiobutton(label=name, command=partial(self.change_theme, color, font_color, button_color, active_background, active_font), value=i, indicator=0)
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
     # Make basic cache file 
@@ -209,7 +210,7 @@ class Window():
                 i = 0
             
             path =f'books/{file.name}'
-            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), command=partial(self.read_book, path), width=16)
+            button = Button(self.books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), fg=FONT_COLOR, activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT, command=partial(self.read_book, path), width=16)
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
@@ -294,15 +295,20 @@ class Window():
         self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
 
-    def change_theme(self, color, font_color, button_color):
+    def change_theme(self, color, font_color, button_color, active_background, active_font):
         global COLOR
         global FONT_COLOR
         global BUTTON_COLOR
+        global ACTIVEBACKGROUND
+        global ACTIVEFONT
         COLOR = color
         FONT_COLOR = font_color
         BUTTON_COLOR = button_color
-        frames = [self.__root, self.option_frame, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt, self.text_container]
-        
+        ACTIVEBACKGROUND = active_background
+        ACTIVEFONT = active_font
+        frames = [self.__root, self.option_frame, self.notes, self.text_frame, self.menubar, self.books_menu, self.books_menu.txt, *(self.text_container.winfo_children())]
+        self.option_frame.config(bg=COLOR)
+        self.text_frame.config(bg=COLOR)
         for frame in frames:
             for widget in frame.winfo_children():
                 try:
@@ -314,8 +320,14 @@ class Window():
                     widget.config(fg=FONT_COLOR)
                 except Exception as e:
                     pass
-                if type(widget) in [Button, Entry]:
+                if type(widget) == Checkbutton:
+                    widget.config(activebackground=COLOR, activeforeground=ACTIVEFONT)
+
+                elif type(widget) == Button:
+                    widget.config(bg=BUTTON_COLOR, activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT)
+                elif type(widget) == Entry:
                     widget.config(bg=BUTTON_COLOR)
+
                 widget.update()
 
     
