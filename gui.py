@@ -8,12 +8,13 @@ from functools import partial
 from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
 from PIL import Image, ImageTk
 from pathlib import Path
-from ebooklib import epub
 from moveable_widgets import *
 from defaults import *
 # Fix apply for resize
 # Pictures
 # Logo
+# Loading...
+# Fix pdf
 # Clean up code
 # Add documentation
 # Search
