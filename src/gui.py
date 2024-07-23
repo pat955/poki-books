@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 from pathlib import Path
 from moveable_widgets import *
 from defaults import *
+
 # Fix apply for resize
 # Pictures
 # Logo
@@ -38,10 +39,13 @@ class Window():
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.current_book = None
-        self.open_note_book = False
+        self.open_notebook = False
 
-        if not os.path.exists('books/'):
-            os.makedirs('books')
+        self.book_path = 'books/'
+        self.cache_path = 'cache.json'
+
+        if not os.path.exists(self.book_path):
+            os.makedirs(self.book_path)
 
     # Frames and textscrollcombos
         self.text_container = make_basic_full_frame(self.__root)
@@ -141,31 +145,31 @@ class Window():
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
     # Make basic cache file 
-        if not os.path.exists('cache.json'):
-            with open('cache.json', 'w') as file:
+        if not os.path.exists(self.cache_path):
+            with open(self.cache_path, 'w') as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
 
         self.__root.mainloop()
 
 
     def update_notes(self):
-        if self.open_note_book:
+        if self.open_notebook:
             self.notes_text.delete('1.0', 'end')
             self.notes_text.insert('insert', self.get_notes())
 
 
     def notes_by_book(self):
-        if self.open_note_book:
+        if self.open_notebook:
             self.notes_text.config(state='disabled')
             self.notes_text.delete('1.0', 'end')
             self.notes.pack_forget()
-            self.open_note_book = False
+            self.open_notebook = False
         else:
             self.notes_text.config(state='normal')
             self.notes.pack(side='bottom', fill='both', expand=True, pady=15)
             self.notes_text.insert('insert', self.get_notes())
             self.notes_text.pack(fill='both', expand=True, anchor='n')
-            self.open_note_book = True
+            self.open_notebook = True
         
 
     def info(self):
@@ -180,14 +184,14 @@ class Window():
     def add_and_read(self):
         path = self.add_book()
         if path:
-            self.read_book(f'books/{path.split('/')[-1]}')
+            self.read_book(self.book_path + path.split('/')[-1])
 
 
     def add_book(self):
         path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
         if path:
             try:
-                shutil.move(path, "books/")
+                shutil.move(path, self.book_path)
             except:
                 pass
             return path
@@ -206,26 +210,26 @@ class Window():
         self.all_books_menu.grid(column=0, row=0, sticky="nsew")
         i = 0
         j = 0
-        for file in os.scandir('books/'):
+        for file in os.scandir(self.book_path):
             if  i % 6 == 0:
                 j += 1
                 i = 0
             
-            path =f'books/{file.name}'
+            path = self.book_path + file.name 
             button = Button(self.all_books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, FONT_SIZE2), fg=FONT_COLOR, activebackground=ACTIVEBACKGROUND, activeforeground=ACTIVEFONT, command=partial(self.read_book, path), width=16)
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
 
     def clear_cache(self):
-        os.remove('cache.json')
-        if not os.path.exists('cache.json'):
-            with open('cache.json', 'w') as file:
+        os.remove(self.cache_path)
+        if not os.path.exists(self.cache_path):
+            with open(self.cache_path, 'w') as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
 
 
     def get_notes(self):
-        with open('cache.json', 'r') as file:
+        with open(self.cache_path, 'r') as file:
             file_data = json.load(file)
             notes = ''
             if self.current_book is None:
@@ -240,7 +244,7 @@ class Window():
 
     def save_book_attributes(self):
         file_data = None
-        with open('cache.json', 'r+') as file:
+        with open(self.cache_path, 'r+') as file:
             file_data = json.load(file)
 
         notes = self.notes_text.get("1.0", 'end')
@@ -257,7 +261,7 @@ class Window():
             if notes != '':
                 file_data['books']['notes'] = notes
 
-        with open('cache.json', 'w') as file:
+        with open(self.cache_path, 'w') as file:
             json.dump(file_data, file, indent=4)
 
 
@@ -409,7 +413,7 @@ class TextScrollCombo(tk.Frame):
     
 
     def set_scrollbar(self, book_path):
-        with open('cache.json', 'r') as file:
+        with open(self.cache_path, 'r') as file:
             books_info = json.load(file)['books']
             if book_path in books_info:
                 scrollbar_position = books_info[book_path]['scrollbar']
