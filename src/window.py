@@ -139,9 +139,10 @@ class Window():
         i = 0
         
         themes = AllThemes().get_all_themes()
-        for theme in themes:                            
-            i += 1
+        for theme in themes:  
+            print(theme)                          
             theme.add(self, i)
+            i += 1
             
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 

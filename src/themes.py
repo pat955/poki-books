@@ -3,16 +3,16 @@ import json
 from functools import partial
 
 class Theme:
-    def __init__(self, name, color, font_color, button_color, active_background, active_font, font, font_size, heading_size):
+    def __init__(self, name, color=COLOR, font_color=FONT_COLOR, button_color=BUTTON_COLOR, active_background=ACTIVE_BACKGROUND, active_font=ACTIVE_FONT, font=FONT, font_size=FONT_SIZE, heading_size=HEADING_SIZE):
         self.name               = name              # str
-        self.color              = COLOR             # str
-        self.font_color         = FONT_COLOR        # str
-        self.button_color       = BUTTON_COLOR      # str
-        self.active_background  = ACTIVE_BACKGROUND # str
-        self.active_font        = ACTIVE_FONT       # str
-        self.font               = FONT              # str
-        self.font_size          = FONT_SIZE         # int
-        self.heading_size       = HEADING_SIZE      # int
+        self.color              = color             # str
+        self.font_color         = font_color        # str
+        self.button_color       = button_color      # str
+        self.active_background  = active_background # str
+        self.active_font        = active_font       # str
+        self.font               = font              # str
+        self.font_size          = font_size         # int
+        self.heading_size       = heading_size      # int
     
 
     def add(self, window, index):
@@ -38,9 +38,7 @@ class AllThemes:
         with open('themes.txt', 'r') as file:
             for theme in file:
                 theme_dict = eval(theme)
-                print(theme_dict)
                 self.themes.append(from_dict_to_theme(theme_dict))
-                break
             file.close()
     
     def get_all_themes(self):
@@ -48,14 +46,4 @@ class AllThemes:
         return self.themes
 
 def from_dict_to_theme(d):
-    return Theme(
-        name=d['name'], 
-        color=d['color'], 
-        font_color=d['font_color'], 
-        button_color=d['button_color'], 
-        active_background=d['active_background'], 
-        active_font=d['active_font'], 
-        font=d['font'], 
-        font_size=d['font_size'], 
-        heading_size=d['heading_size']
-        )
+    return Theme(**d)
