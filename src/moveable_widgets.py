@@ -1,13 +1,13 @@
 import tkinter as tk
 import math
 from functools import partial
-from defaults import COLOR, BUTTON_COLOR, FONT, FONT_SIZE1, FONT_SIZE2,FONT_COLOR
+from defaults import *
 
 def make_resizable(options, text_container):
     options.bind("<Button-1>", on_resize_start)
     options.bind("<B1-Motion>", on_resize_motion)
     global apply_button
-    apply_button = tk.Button(options, text='Apply Changes', bg=BUTTON_COLOR, command=partial(apply, options, text_container), highlightthickness=0, font=(FONT, FONT_SIZE1))
+    apply_button = tk.Button(options, text='Apply Changes', bg=BUTTON_COLOR, command=partial(apply, options, text_container), highlightthickness=0, font=(FONT, FONT_SIZE))
     
 
 def on_resize_start(event):

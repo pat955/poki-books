@@ -13,7 +13,6 @@ Python version: 3.12
 * Adjustable frames (buggy)
 
 # Plans
-* More themes, especially some that strain your eyes less
 * More format support (epub, mobi)
 * Add Contact
 * Pictures, maybe api gets book covers, goodreads API?
@@ -26,3 +25,4 @@ Python version: 3.12
 * Button back to top
 * Page numbers?
 * Fix bugs
+* *More themes, especially some that strain your eyes less* (Done!)
