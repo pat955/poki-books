@@ -1,4 +1,4 @@
-Dark, gray11, white, steel blue, skyblue3, white
+Dark, gray11, white, steel blue, skyblue3, white, Times New Roman, 20, 30
 Light, white, black, lavender, white, black
 Cute, #E4F1EE, black, #DEDAF4, pink, black
 Latte, #fdf7e4, #75543d, #dfcbae, #e6dac7, #432411

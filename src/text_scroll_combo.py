@@ -17,7 +17,7 @@ class TextScrollCombo(tk.Frame):
         
     # create a Text widget
         self.txt = tk.Text(self)
-        self.txt.config(font=(FONT, FONT_SIZE2), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
+        self.txt.config(font=(FONT, HEADING_SIZE), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
 
     # create a Scrollbar and associate it with txt
         self.scrollb = ttk.Scrollbar(self, command=self.txt.yview)

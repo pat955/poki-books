@@ -1,9 +1,9 @@
 # Default theme
 COLOR = 'white'
-FONT_COLOR = 'black'
 BUTTON_COLOR = 'lavender'
+ACTIVE_BACKGROUND = '#f1f1f1'
 FONT = 'Times New Roman'
-ACTIVEBACKGROUND = '#f1f1f1'
-ACTIVEFONT = 'black'
-FONT_SIZE1 = 12
-FONT_SIZE2 = 15
+FONT_COLOR = 'black'
+ACTIVE_FONT = 'black'
+FONT_SIZE = 12
+HEADING_SIZE = 15
