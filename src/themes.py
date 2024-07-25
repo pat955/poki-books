@@ -38,12 +38,9 @@ class AllThemes:
         with open('themes.txt', 'r') as file:
             for theme in file:
                 theme_dict = eval(theme)
-                self.themes.append(from_dict_to_theme(theme_dict))
+                self.themes.append(Theme(**theme_dict))
             file.close()
     
     def get_all_themes(self):
         self.make_themes()
         return self.themes
-
-def from_dict_to_theme(d):
-    return Theme(**d)

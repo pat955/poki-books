@@ -140,7 +140,6 @@ class Window():
         
         themes = AllThemes().get_all_themes()
         for theme in themes:  
-            print(theme)                          
             theme.add(self, i)
             i += 1
             
