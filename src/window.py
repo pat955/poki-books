@@ -10,6 +10,7 @@ from pathlib import Path
 from moveable_widgets import *
 from defaults import *
 from text_scroll_combo import TextScrollCombo
+from themes import *
 
 # Fix apply for resize
 # Pictures
@@ -136,14 +137,12 @@ class Window():
     # Themes
         self.themes_button = Menu(self.__root, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE))
         i = 0
-        with open('themes.txt', 'r') as file:
-            for theme in file:
-                
-                name, color, font_color, button_color, active_background, active_font, font, font_size, heading_size  = theme.strip('\n').split(', ')
-                
-                i += 1
-                self.themes_button.add_radiobutton(label=name, command=partial(self.change_theme, color, font_color, button_color, active_background, active_font, font, int(font_size), int(heading_size)), value=i, indicator=0)
-                break
+        
+        themes = AllThemes().get_all_themes()
+        for theme in themes:                            
+            i += 1
+            theme.add(self, i)
+            
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
     # Make basic cache file 
