@@ -1,4 +1,3 @@
-Pistacchio, azure, gray5, DarkOliveGreen3, DarkOliveGreen2, gray5
 Dark, gray11, white, steel blue, skyblue3, white
 Light, white, black, lavender, white, black
 Cute, #E4F1EE, black, #DEDAF4, pink, black
@@ -6,3 +5,10 @@ Latte, #fdf7e4, #75543d, #dfcbae, #e6dac7, #432411
 Froggy, ivory2, #667b68, #dde6d5, #a3b899, #3a453b
 Discord, #2c2f33, white, #7289da, #99aab5, white
 Vintage, #e2d9b3, black, #92b080, #c9dcaf, black
+Ocean Breeze, #e0f7fa, #00796b, #004d40, #26a69a, #ffffff
+Forest Whisper, #f1f8e9, #33691e, #aed581, #558b2f, #ffffff
+Autumn Leaves, #fff3e0, #e65100, #ffb74d, #fb8c00, #ffffff
+Candy Shop, #fff8e1, #d50000, #ff5252, #ff1744, #ffffff
+Pistacchio, azure, gray5, DarkOliveGreen3, DarkOliveGreen2, gray5
+Rose Garden, #fff1f0, #b71c1c, #ef5350, #d32f2f, #ffffff
+Deep Space, #1c1c1c, #e0e0e0, #616161, #424242, #ffffff

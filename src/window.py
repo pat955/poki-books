@@ -2,14 +2,14 @@ import tkinter as tk
 import os
 import json
 import shutil 
-import ebooklib
 from PyPDF2 import PdfReader
 from functools import partial
-from tkinter import Canvas, Frame, Button, Tk, Text, ttk, Checkbutton, Entry, Label, Radiobutton, Menu, filedialog
-from PIL import Image, ImageTk
+from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog
+from PIL import Image
 from pathlib import Path
 from moveable_widgets import *
 from defaults import *
+from text_scroll_combo import TextScrollCombo
 
 # Fix apply for resize
 # Pictures
@@ -32,7 +32,7 @@ from defaults import *
 class Window():
     def __init__(self, width, height):
         self.__root = Tk()
-        self.__root.title("BookBot")
+        self.__root.title("eReader")
         self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
         self.__root.attributes('-zoomed', True)
@@ -386,36 +386,3 @@ class Window():
 
     def donothing():
         return
-
-
-class TextScrollCombo(tk.Frame):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        
-    # implement stretchability
-        self.grid_rowconfigure(0, weight=1)
-        self.grid_columnconfigure(0, weight=1)
-        
-    # create a Text widget
-        self.txt = tk.Text(self)
-        self.txt.config(font=(FONT, FONT_SIZE2), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
-
-    # create a Scrollbar and associate it with txt
-        self.scrollb = ttk.Scrollbar(self, command=self.txt.yview)
-        self.scrollb.grid(row=0, column=1, sticky='nsew')
-        self.txt['yscrollcommand'] = self.scrollb.set
-
-
-    def insert(self, text):
-        self.txt.insert('insert', text)
-        self.txt.grid(row=0, column=0, sticky='nsew')
-        self.txt.config(state='disabled')
-    
-
-    def set_scrollbar(self, book_path):
-        with open(self.cache_path, 'r') as file:
-            books_info = json.load(file)['books']
-            if book_path in books_info:
-                scrollbar_position = books_info[book_path]['scrollbar']
-                self.scrollb.set(*books_info[book_path]['scrollbar'])
-                self.txt.yview_moveto(scrollbar_position[0])
