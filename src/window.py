@@ -11,6 +11,7 @@ from moveable_widgets import *
 from defaults import *
 from text_scroll_combo import TextScrollCombo
 from themes import *
+from menu import make_main_menu
 
 # Fix apply for resize
 # Pictures
@@ -24,7 +25,6 @@ from themes import *
 # Highlight
 # Keybinds
 # Back to top button
-# Change book menu, three dots?
 # BUggY BEANS show sidebar
 # Add error handling
 # Pdf support
@@ -63,22 +63,22 @@ class Window():
         
     # Menus
         #Main Menus
-        self.menubar = Menu(self.__root, bg=COLOR, bd=1, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.settings_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.books_menu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.helpmenu = Menu(self.menubar, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
+        self.menubar = make_main_menu(menubar=self.__root, bg=COLOR)
+        self.settings_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.books_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.helpmenu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
-    # Settings
+        # Settings
         self.settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
         self.settings_menu.add_separator()
-        self.settings_menu.add_command(label='Set default theme', command=self.donothing)
+        self.settings_menu.add_command(label='Set default theme', command=self.not_implemented) 
         self.settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
-        #lambda
+            #lambda
         self.settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
         self.settings_menu.add_separator()
         self.settings_menu.add_command(label="Exit", command=self._quit)
         
-    # Book menu
+        # Book menu
         self.books_menu.add_command(label="Go to all books", command=self.go_to_books)
         self.books_menu.add_separator()
         self.books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
@@ -86,7 +86,7 @@ class Window():
         self.books_menu.add_command(label="Add book", command=self.add_book)
         self.books_menu.add_command(label="Remove book", command=self.remove_book)
 
-    # Help Menu
+        # Help Menu
         self.helpmenu.add_command(label="Contact", command=self.donothing)
         self.helpmenu.add_command(label="About", command=self.info)
 
@@ -137,12 +137,10 @@ class Window():
     # Themes
         self.themes_button = Menu(self.__root, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE))
         i = 0
-        
         themes = AllThemes().get_all_themes()
         for theme in themes:  
             theme.add(self, i)
-            i += 1
-            
+            i += 1  
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
     # Make basic cache file 
@@ -394,5 +392,6 @@ class Window():
         self.__root.destroy()
 
 
-    def donothing():
+    def not_implemented():
+        # not implemented error
         return
