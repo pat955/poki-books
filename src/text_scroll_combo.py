@@ -30,6 +30,8 @@ class TextScrollCombo(tk.Frame):
         self.txt.grid(row=0, column=0, sticky='nsew')
         self.txt.config(state='disabled')
     
+    def clear(self):
+        self.txt.delete('1.0', 'end')
 
     def set_scrollbar(self, book_path):
         with open(self.cache_path, 'r') as file:

@@ -4,7 +4,7 @@ import json
 import shutil 
 from PyPDF2 import PdfReader
 from functools import partial
-from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog
+from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog, END, INSERT
 from PIL import Image
 from pathlib import Path
 from moveable_widgets import *
@@ -12,6 +12,7 @@ from defaults import *
 from text_scroll_combo import TextScrollCombo
 from themes import *
 from menu import make_main_menu
+from help_menu import info, contact
 
 # Fix apply for resize
 # Pictures
@@ -56,25 +57,23 @@ class Window():
     
         self.all_books_menu = TextScrollCombo(self.text_container, bg=COLOR)
         
-        self.option_frame = Frame(self.text_container, bg=COLOR, highlightthickness=1)
-        self.option_frame.grid(column=1, row=0, sticky="ens")
-
-        make_resizable(self.option_frame, self.text_container)
+        self.sidebar = Frame(self.text_container, bg=COLOR, highlightthickness=1)
+        self.sidebar.grid(column=1, row=0, sticky="ens")
         
     # Menus
         #Main Menus
         self.menubar = make_main_menu(menubar=self.__root, bg=COLOR)
         self.settings_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
         self.books_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.helpmenu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.help_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
         # Settings
         self.settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
         self.settings_menu.add_separator()
+
         self.settings_menu.add_command(label='Set default theme', command=self.not_implemented) 
-        self.settings_menu.add_command(label="Hide Sidebar", command=self.option_frame.grid_forget)
-            #lambda
-        self.settings_menu.add_command(label="Show sidebar", command=self.option_frame.grid(column=1, row=0, sticky="ens"))
+        self.settings_menu.add_command(label="Hide Sidebar", command=self.sidebar.grid_forget)
+        self.settings_menu.add_command(label="Show Sidebar", command=self.sidebar.grid()) #column=1, row=0, sticky="ens"
         self.settings_menu.add_separator()
         self.settings_menu.add_command(label="Exit", command=self._quit)
         
@@ -87,51 +86,52 @@ class Window():
         self.books_menu.add_command(label="Remove book", command=self.remove_book)
 
         # Help Menu
-        self.helpmenu.add_command(label="Contact", command=self.donothing)
-        self.helpmenu.add_command(label="About", command=self.info)
+        self.help_menu.add_command(label="Contact", command=self.not_implemented)
+        self.help_menu.add_command(label="About", command=partial(info, self))
 
+        # Menubar
         self.menubar.add_cascade(label="Settings", menu=self.settings_menu)
         self.menubar.add_cascade(label="Books", menu=self.books_menu)
-        self.menubar.add_cascade(label="Help", menu=self.helpmenu)
+        self.menubar.add_cascade(label="Help", menu=self.help_menu)
 
         self.__root.config(menu=self.menubar)
 
     # Buttons
-        self.all_books_button = Button(self.option_frame, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
+        self.all_books_button = Button(self.sidebar, text='All Books', bg=BUTTON_COLOR, command=self.go_to_books, highlightthickness=0, font=(FONT, FONT_SIZE), activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
         self.all_books_button.pack(side='top', fill='x')
 
-        self.add_n_read_button = Button(self.option_frame, text='Add n\' Read Book', bg=BUTTON_COLOR, command=self.add_and_read, highlightthickness=0, font=(FONT, FONT_SIZE))
+        self.add_n_read_button = Button(self.sidebar, text='Add n\' Read Book', bg=BUTTON_COLOR, command=self.add_and_read, highlightthickness=0, font=(FONT, FONT_SIZE))
         self.add_n_read_button.pack(side='top', fill='x', pady=10)
 
-        self.refresh_button = Button(self.option_frame, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE))
+        self.refresh_button = Button(self.sidebar, text='Refresh', bg=BUTTON_COLOR, command=self.check_entries, highlightthickness=0, font=(FONT, FONT_SIZE))
         self.refresh_button.pack(side='top', fill='x')
 
-        self.ph = Button(self.option_frame, text='Placeholder button', bg=BUTTON_COLOR, command=self.donothing, highlightthickness=0, font=(FONT, FONT_SIZE))
+        self.ph = Button(self.sidebar, text='Placeholder button', bg=BUTTON_COLOR, command=self.not_implemented, highlightthickness=0, font=(FONT, FONT_SIZE))
         self.ph.pack(side='top', fill='x', pady=10)
 
-        self.notes_button = Button(self.option_frame, text='Notebook', bg=BUTTON_COLOR, command=self.notes_by_book, highlightthickness=0, font=(FONT, FONT_SIZE))
+        self.notes_button = Button(self.sidebar, text='Notebook', bg=BUTTON_COLOR, command=self.notes_by_book, highlightthickness=0, font=(FONT, FONT_SIZE))
         self.notes_button.pack(side='top', fill='x')
 
     # Entries and Labels
-        self.text_size_label = Label(self.option_frame, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE))
+        self.text_size_label = Label(self.sidebar, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE))
         self.text_size_label.pack(side='top', fill='x', pady=5)
 
-        self.text_size_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
+        self.text_size_entry = Entry(self.sidebar, bg=BUTTON_COLOR, highlightthickness=0)
         self.text_size_entry.pack(side="top", fill="x")
 
-        self.padding_label = Label(self.option_frame, text='Padding', bg=COLOR, font=(FONT, FONT_SIZE))
+        self.padding_label = Label(self.sidebar, text='Padding', bg=COLOR, font=(FONT, FONT_SIZE))
         self.padding_label.pack(side='top', fill='x', pady=5)
 
-        self.padding_entry = Entry(self.option_frame, bg=BUTTON_COLOR, highlightthickness=0)
+        self.padding_entry = Entry(self.sidebar, bg=BUTTON_COLOR, highlightthickness=0)
         self.padding_entry.pack(side="top", fill="x")
 
     # Checkboxes
         self.center_var = tk.BooleanVar()
-        self.center = Checkbutton(self.option_frame, bg=COLOR, highlightthickness=0, command=self.center_text_clicked, text='Center text', font=(FONT, FONT_SIZE), fg=FONT_COLOR, variable=self.center_var)
+        self.center = Checkbutton(self.sidebar, bg=COLOR, highlightthickness=0, command=self.center_text, text='Center text', font=(FONT, FONT_SIZE), fg=FONT_COLOR, variable=self.center_var)
         self.center.pack(side='top', fill='x', pady=10)
     
     # Notes 
-        self.notes = Frame(self.option_frame, highlightthickness=0, bd=0, width=1, highlightbackground=BUTTON_COLOR)
+        self.notes = Frame(self.sidebar, highlightthickness=0, bd=0, width=1, highlightbackground=BUTTON_COLOR)
         self.notes_text = Text(self.notes, state='normal', wrap='word', font=(FONT, FONT_SIZE), fg=FONT_COLOR, bg=COLOR, width=1)
         
     # Themes
@@ -170,11 +170,6 @@ class Window():
             self.notes_text.pack(fill='both', expand=True, anchor='n')
             self.open_notebook = True
         
-
-    def info(self):
-        self.clear_text_frame()
-        self.text_frame.insert('This is my first actual coding project so i apologize for any bugs!\nUpload txt files and read them, change theme and enter fullscreen.\nMy GitHub: @pat955')
-
 
     def remove_book(self):
         pass
@@ -319,15 +314,15 @@ class Window():
         FONT_SIZE         = font_size
         HEADING_SIZE      = heading_size
 
-        frames = [self.__root, self.option_frame, self.notes, self.text_frame, self.menubar, self.all_books_menu, self.all_books_menu.txt, *(self.text_container.winfo_children())]
-        self.option_frame.config(bg=COLOR)
+        frames = [self.__root, self.sidebar, self.notes, self.text_frame, self.menubar, self.all_books_menu, self.all_books_menu.txt, *(self.text_container.winfo_children())]
+        self.sidebar.config(bg=COLOR)
         self.text_frame.config(bg=COLOR)
         self.menubar.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
 
 
         self.settings_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
         self.books_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.helpmenu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
+        self.help_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
         self.themes_button.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
         
         for frame in frames:
@@ -357,14 +352,14 @@ class Window():
     def check_entries(self):
         entries = {
             self.text_size_entry: self.change_text_size,
-            self.padding_entry: self.change_padding,
+            self.padding_entry: self.change_padx,
             }
         for entry, func in entries.items():
             if entry.get():
                 func()
        
 
-    def change_padding(self): 
+    def change_padx(self): 
         self.text_frame.txt.config(padx=self.padding_entry.get())
 
 
@@ -372,7 +367,7 @@ class Window():
         self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
 
 
-    def center_text_clicked(self):
+    def center_text(self):
         if self.center_var.get():
             self.text_frame.txt.tag_configure("center", justify='center')
             self.text_frame.txt.tag_add("center", "1.0", "end")
@@ -380,11 +375,14 @@ class Window():
             self.text_frame.txt.tag_delete('center')
         self.text_frame.grid()
 
-
-    def clear_text(self):
-        # Not in use
-        self.text_frame.txt.delete('1.0', 'end')
-        
+    def toggle_sidebar(self):
+        if self.message.winfo_viewable():
+            self.message.grid_remove()
+        else:
+            self.message.grid()
+        self.settings_menu.add_command(label="Hide Sidebar", command=self.sidebar.grid_forget)
+        self.settings_menu.add_command(label="Show Sidebar", command=self.sidebar.grid()) #column=1, row=0, sticky="ens"
+        self.settings_menu.add_separator()
 
     def _quit(self):
         self.save_book_attributes()
@@ -392,6 +390,6 @@ class Window():
         self.__root.destroy()
 
 
-    def not_implemented():
+    def not_implemented(self):
         # not implemented error
         return
