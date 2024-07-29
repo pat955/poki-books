@@ -352,7 +352,6 @@ class Window():
             font_size=FONT_SIZE,
             heading_size=HEADING_SIZE
             ):
-        global COLOR
         COLOR             = color
         FONT_COLOR        = font_color
         BUTTON_COLOR      = button_color
