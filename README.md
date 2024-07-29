@@ -2,6 +2,7 @@
 My first project using git and github!
 Python version: 3.12
 
+
 # Functions
 * Read books and texts!
 * Upload own files (txt, pdf)
@@ -11,6 +12,7 @@ Python version: 3.12
 * Fullscreen
 * Customize text size, padding
 * Adjustable frames (buggy)
+
 
 # Plans
 * More format support (epub, mobi)
