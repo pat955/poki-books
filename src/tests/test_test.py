@@ -2,7 +2,7 @@
 follow *_test.py pattern for test modules
 this test will auto succeed, previously auto fail for ci testting
 """
-import unittest  
+import unittest
 
 class Test(unittest.TestCase):
     """
@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
         auto succeeds
         """
         self.assertEqual(1, 1)
-    
+
     def test_failure(self):
         """
         auto fails

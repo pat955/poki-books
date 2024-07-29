@@ -2,9 +2,9 @@
 -- main.py --
 Initializes window that starts the bookbot program
 """
-from window import Window
+from window import BookBot
 
 def main():
-    Window()
+    BookBot()
 
 main()

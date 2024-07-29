@@ -7,9 +7,13 @@ from tkinter import Frame, Text
 from defaults import *
 
 class NoteBook():
-    def __init__(self, parent_frame):
+    """"
+    """
+    def __init__(self, parent_frame, cache_path):
         self.open = False
-        # text scrollcombo replacement? redo
+        self.cache_path = cache_path
+        self.book_path = None
+
         self.frame = Frame(
             parent_frame,
             highlightthickness=0,
@@ -26,8 +30,12 @@ class NoteBook():
             bg=COLOR,
             width=1
             )
-        
-    def toggle(self, cache_path, book_path): # Returns: None
+
+    def change_book(self, path):
+        self.book_path = path
+
+
+    def toggle(self): # Returns: None
         """
         Toggle on and of notes. Inserts notes from cache
         """
@@ -36,24 +44,27 @@ class NoteBook():
             self.text.delete('1.0', 'end')
             self.frame.pack_forget()
             self.open = False
-        else:
-            self.text.config(state='normal')
-            self.frame.pack(side='bottom', fill='both', expand=True, pady=15)
-            self.text.insert('insert', self.get(cache_path, book_path))
-            self.text.pack(fill='both', expand=True, anchor='n')
-            self.open = True
+            return
+        self.text.config(state='normal')
+        self.frame.pack(side='bottom', fill='both', expand=True, pady=15)
+        self.text.insert('insert', self.get())
+        self.text.pack(fill='both', expand=True, anchor='n')
+        self.open = True
 
     def update(self):
         if self.open:
             self.text.delete('1.0', 'end')
-            self.text.insert('insert', self.get(cache_path, book_path))
-    
-    def get(self, cache_path, book_path ):
-        with open(cache_path, 'r') as file:
+            self.text.insert('insert', self.get())
+
+    def get(self):
+        with open(self.cache_path, 'r') as file:
             file_data = json.load(file)
-            if book_path is None:
+            if self.book_path is None:
                 return file_data['books']['notes']
-            return file_data['books'][book_path]['notes']
+            return file_data['books'][self.book_path]['notes']
+
+    def get_current(self):
+        return self.text.get("1.0", 'end')
 
 
 def make_full_frame(root): # Returns: tkinter.Frame
