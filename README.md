@@ -13,6 +13,7 @@ Python version: 3.12
 * Customize text size, padding
 * Adjustable frames (buggy)
 
+
 # Plans
 * More format support (epub, mobi)
 * Add Contact
