@@ -1,18 +1,26 @@
-from defaults import * 
-from functools import partial
+"""
+-- themes.py --
+
+"""
 import ast
+from functools import partial
+from defaults import * 
 
 class Theme:
+    """
+    Theme, name not optional. 
+    """
     def __init__(
             self,
             name,
-            color=COLOR,
-            font_color=FONT_COLOR,
-            button_color=BUTTON_COLOR,
-            active_background=ACTIVE_BACKGROUND,
-            active_font=ACTIVE_FONT, font=FONT,
-            font_size=FONT_SIZE,
-            heading_size=HEADING_SIZE
+            color=COLOR,                            # background color
+            font_color=FONT_COLOR,                  # font color for all text
+            button_color=BUTTON_COLOR,              # 
+            active_background=ACTIVE_BACKGROUND,    # 
+            active_font=ACTIVE_FONT,                #
+            font=FONT,                              # font used for everything
+            font_size=FONT_SIZE,                    # main font size for book text
+            heading_size=HEADING_SIZE               # font size for heading and titles
             ):
         self.name               = name              # str
         self.color              = color             # str
@@ -24,8 +32,10 @@ class Theme:
         self.font_size          = font_size         # int
         self.heading_size       = heading_size      # int
 
-    # add radiobutton to a window 
-    def add(self, window, index):
+    def add(self, window, index): # Returns: None
+        """
+        Adds radiobutton to window variable of the theme
+        """
         window.themes_button.add_radiobutton(
             label=self.name,
             command=partial(
@@ -40,20 +50,25 @@ class Theme:
                 self.heading_size
                 ), value=index, indicator=0)
 
-# Collection of all themes
 class AllThemes:
+    """ Collection of all themes """
     def __init__(self):
         self.themes = []
 
-    # make themes from text file
-    def make_themes(self):
+    def __make_themes(self): # Returns: None
+        """
+        Makes themes form themes.txt
+        """
         with open('themes.txt', 'r') as file:
             for theme in file:
                 theme_dict = ast.literal_eval(theme)
                 self.themes.append(Theme(**theme_dict))
             file.close()
 
-    # retrieve all themes
-    def get_all_themes(self):
-        self.make_themes()
+    def get_all_themes(self): # Returns: [Theme]
+        """
+        Returns all themes from themes.txt
+        """
+        if len(self.themes) == 0:
+            self.__make_themes()
         return self.themes

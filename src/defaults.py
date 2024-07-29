@@ -1,4 +1,7 @@
-# Default theme
+""" 
+-- defaults.py --
+Global variables of default theme
+"""
 global COLOR
 global BUTTON_COLOR
 global ACTIVE_BACKGROUND
