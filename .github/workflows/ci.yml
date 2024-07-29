@@ -33,27 +33,27 @@ jobs:
       - name: Check for security issues
         run: bandit -r .
 
-#   style:
-#     name: Style
-#     runs-on: ubuntu-latest
+  style:
+    name: Style
+    runs-on: ubuntu-latest
 
-#     steps:
-#       - name: Check out code
-#         uses: actions/checkout@v4
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
 
-#       - name: Set up Python
-#         uses: actions/setup-python@v4
-#         with:
-#           python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
 
-#       - name: Install pip
-#         run: python -m pip install --upgrade pip
+      - name: Install pip
+        run: python -m pip install --upgrade pip
 
-#       - name: Install dependencies
-#         run: pip install -r requirements.txt
+      - name: Install dependencies
+        run: pip install -r requirements.txt
 
-#       - name: Run format tests
-#         run: test -z $(go fmt ./...)
+      - name: Install pylint
+        run: pip install pylint
       
-#       - name: Linting
-#         run: staticcheck ./...
+      - name: Linting, errors
+        run: pylint ./src/ -E

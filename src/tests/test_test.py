@@ -1,9 +1,7 @@
-import unittest
+import unittest # for testing
 
+# test on ci, auto succeeds, previous auto fails
 class Test(unittest.TestCase):
-    def test_fail(self):
-        self.assertEqual(1, 2)
-    
     def test_success(self):
         self.assertEqual(1,1)
 
