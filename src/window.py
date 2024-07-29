@@ -27,7 +27,7 @@ from functools import partial
 from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog
 from pathlib import Path
 from PyPDF2 import PdfReader
-from frames import make_full_frame
+from frames import make_full_frame, NoteBook
 from defaults import *
 from text_scroll import TextScrollCombo
 from themes import AllThemes
@@ -46,7 +46,6 @@ class Window:
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.current_book = None
-        self.open_notebook = False
 
         self.book_path = 'books/'
         self.cache_path = 'cache.json'
@@ -143,15 +142,7 @@ class Window:
             )
         self.ph.pack(side='top', fill='x', pady=10)
 
-        self.notes_button = Button(
-            self.sidebar,
-            text='Notebook',
-            bg=BUTTON_COLOR,
-            command=self.notes_by_book,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE)
-            )
-        self.notes_button.pack(side='top', fill='x')
+        
 
     # Entries and Labels
         self.text_size_label = Label(self.sidebar, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE))
@@ -179,24 +170,18 @@ class Window:
             )
         self.center.pack(side='top', fill='x', pady=10)
 
-    # Notes 
-        self.notes = Frame(
+    # Notes
+        self.notebook = NoteBook(self.sidebar)
+        self.notes_button = Button(
             self.sidebar,
+            text='Notebook',
+            bg=BUTTON_COLOR,
+            command=partial(self.notebook.toggle, self.cache_path, self.current_book),
             highlightthickness=0,
-            bd=0,
-            width=1,
-            highlightbackground=BUTTON_COLOR
+            font=(FONT, FONT_SIZE)
             )
-        self.notes_text = Text(
-            self.notes,
-            state='normal',
-            wrap='word',
-            font=(FONT, FONT_SIZE),
-            fg=FONT_COLOR,
-            bg=COLOR,
-            width=1
-            )
-
+        self.notes_button.pack(side='top', fill='x')
+        
     # Themes
         self.themes_button = Menu(self.__root, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE))
         i = 0
@@ -206,33 +191,20 @@ class Window:
             i += 1
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
-    # Make basic cache file
+    # Cache
+        self.make_cache()
+
+        self.__root.mainloop()
+
+    def make_cache(self): # Returns: None
+        """
+        Make cache.json file 
+        """
         if not os.path.exists(self.cache_path):
             with open(self.cache_path, 'w') as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
                 file.close()
 
-        self.__root.mainloop()
-
-    # Opens and insert notes from get_notes function
-    def update_notes(self):
-        if self.open_notebook:
-            self.notes_text.delete('1.0', 'end')
-            self.notes_text.insert('insert', self.get_notes())
-
-    # get notes by book redo
-    def notes_by_book(self):
-        if self.open_notebook:
-            self.notes_text.config(state='disabled')
-            self.notes_text.delete('1.0', 'end')
-            self.notes.pack_forget()
-            self.open_notebook = False
-        else:
-            self.notes_text.config(state='normal')
-            self.notes.pack(side='bottom', fill='both', expand=True, pady=15)
-            self.notes_text.insert('insert', self.get_notes())
-            self.notes_text.pack(fill='both', expand=True, anchor='n')
-            self.open_notebook = True
     
     def remove_book(self): # Returns: None
         """
@@ -260,13 +232,11 @@ class Window:
                 print(e)
             return path
 
-    # clear text from main frame
     def clear_text_frame(self):
         self.text_frame = TextScrollCombo(self.text_container)
         self.text_frame.txt.config(bg=COLOR, fg=FONT_COLOR, font=(FONT, HEADING_SIZE))
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
-    # go to 'library'
     def go_to_books(self):
         self.text_frame.grid_forget()
         self.all_books_menu.txt = Frame(self.all_books_menu, bg=COLOR)
@@ -294,34 +264,20 @@ class Window:
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
-    # clear cache. for debugging
     def clear_cache(self):
         os.remove(self.cache_path)
         if not os.path.exists(self.cache_path):
             with open(self.cache_path, 'w') as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
 
-    # get all notes from json file redo to db
-    def get_notes(self):
-        with open(self.cache_path, 'r') as file:
-            file_data = json.load(file)
-            notes = ''
-            if self.current_book is None:
-                return file_data['books']['notes']
-
-            try:
-                return file_data['books'][self.current_book]['notes']
-            except Exception as e:
-                print(e)
-            return notes
-
     # cache book info
     def save_book_attributes(self):
+        # redo
         file_data = None
         with open(self.cache_path, 'r+') as file:
             file_data = json.load(file)
 
-        notes = self.notes_text.get("1.0", 'end')
+        notes = self.notebook.text.get("1.0", 'end')
         if self.current_book is not None:
 
             if self.current_book not in file_data['books']:
@@ -358,7 +314,7 @@ class Window:
         self.check_entries()
         self.all_books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
-        self.update_notes()
+        self.notebook.update()
 
         if path.endswith('.pdf'):
             self.read_pdf(path)
@@ -398,7 +354,7 @@ class Window:
         frames = [
             self.__root,
             self.sidebar,
-            self.notes,
+            self.notebook.frame,
             self.text_frame,
             self.menubar,
             self.all_books_menu,
