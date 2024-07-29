@@ -1,6 +1,7 @@
 from defaults import *
 import json
 from functools import partial
+import ast
 
 class Theme:
     def __init__(self, name, color=COLOR, font_color=FONT_COLOR, button_color=BUTTON_COLOR, active_background=ACTIVE_BACKGROUND, active_font=ACTIVE_FONT, font=FONT, font_size=FONT_SIZE, heading_size=HEADING_SIZE):
@@ -37,7 +38,7 @@ class AllThemes:
     def make_themes(self):
         with open('themes.txt', 'r') as file:
             for theme in file:
-                theme_dict = eval(theme)
+                theme_dict = ast.literal_eval(theme)
                 self.themes.append(Theme(**theme_dict))
             file.close()
     

@@ -1,10 +1,11 @@
 import tkinter as tk
+import _tkinter
 import os
 import json
 import shutil 
 from PyPDF2 import PdfReader
 from functools import partial
-from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog, END, INSERT
+from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog, END, INSERT, TclError
 from PIL import Image
 from pathlib import Path
 from moveable_widgets import *
@@ -186,8 +187,8 @@ class Window():
         if path:
             try:
                 shutil.move(path, self.book_path)
-            except:
-                pass
+            except Exception as e:
+                print(e)
             return path
 
 
@@ -231,8 +232,8 @@ class Window():
                 
             try:
                 return file_data['books'][self.current_book]['notes']
-            except:
-                pass
+            except Exception as e:
+                print(e)
             return notes
             
 
@@ -330,12 +331,14 @@ class Window():
                 try:
                     widget.config(bg=COLOR)
                 except Exception as e:
-                    pass
+                    if 'unknown option' not in str(e):
+                        print(e)
 
                 try: 
                     widget.config(fg=FONT_COLOR)
                 except Exception as e:
-                    pass
+                    if 'unknown option' not in str(e):
+                        print(e)
 
                 if type(widget) == Checkbutton:
                     widget.config(activebackground=COLOR, activeforeground=ACTIVE_FONT)
