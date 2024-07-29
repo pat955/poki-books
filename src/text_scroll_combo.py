@@ -1,23 +1,31 @@
 import tkinter as tk
-from tkinter import ttk, Frame, Text
-import os
+from tkinter import ttk
 import json
 from moveable_widgets import *
 from defaults import *
 
+# Textscrollcombo makes a book with scrollbar possible
 class TextScrollCombo(tk.Frame):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.book_path = 'books/'
         self.cache_path = 'cache.json'
-        
+
     # implement stretchability
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
-        
+
     # create a Text widget
         self.txt = tk.Text(self)
-        self.txt.config(font=(FONT, HEADING_SIZE), highlightthickness=0, borderwidth=0, padx=10, pady=10, wrap='word', relief='sunken')
+        self.txt.config(
+            font=(FONT, HEADING_SIZE),
+            highlightthickness=0,
+            borderwidth=0,
+            padx=10,
+            pady=10,
+            wrap='word',
+            relief='sunken'
+            )
 
     # create a Scrollbar and associate it with txt
         self.scrollb = ttk.Scrollbar(self, command=self.txt.yview)
