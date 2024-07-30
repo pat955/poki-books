@@ -1,4 +1,4 @@
-# BookBot
+# PokiBooks
 My first project using git and github!
 Python version: 3.12
 
