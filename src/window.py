@@ -21,7 +21,7 @@ import os
 import json
 import shutil
 from functools import partial
-from tkinter import Frame, Button, Tk, Checkbutton, Entry, Label, Menu, filedialog
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog
 from pathlib import Path
 from frames import NoteBook, make_full_frame
 from text_scroll import TextScrollCombo
@@ -36,7 +36,9 @@ class BookBot:
     """
     def __init__(self):
         self.__root = Tk()
-        self.__root.title("BookBot")
+        self.__root.title("PokiBooks")
+        icon = tk.PhotoImage(file='static/icon.png')
+        self.__root.iconphoto(True, icon)
         self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
         self.__root.attributes('-zoomed', True)
