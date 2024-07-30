@@ -165,21 +165,21 @@ class BookBot:
         Make cache.json file 
         """
         if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w') as file:
+            with open(self.cache_path, 'w', encoding="utf-8") as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
                 file.close()
 
     def clear_cache(self):
         os.remove(self.cache_path)
         if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w') as file:
+            with open(self.cache_path, 'w', encoding="utf-8") as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
 
     # cache book info
     def cache_book(self):
         # redo
         data = None
-        with open(self.cache_path, 'r+') as file:
+        with open(self.cache_path, 'r+', encoding="utf-8") as file:
             data = json.load(file)
 
         notes = self.notebook.text.get("1.0", 'end')
@@ -196,7 +196,7 @@ class BookBot:
             if notes != '':
                 data['books']['notes'] = notes
 
-        with open(self.cache_path, 'w') as file:
+        with open(self.cache_path, 'w', encoding="utf-8") as file:
             json.dump(data, file, indent=4)
             file.close()
     
