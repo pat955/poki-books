@@ -2,7 +2,7 @@ name: cd
 
 on:
   push:
-    branches: [main]
+    branches: [cd_test]
 
 
 jobs:
@@ -32,10 +32,10 @@ jobs:
       - name: Create exe
         run: pyinstaller -F ./src/main.py -i ./static/icon.ico -n PokiBooks
 
-        
+
   release:
     needs: build
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/cd_test'
     runs-on: ubuntu-latest
     strategy:
       matrix:
