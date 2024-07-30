@@ -101,7 +101,7 @@ class BookBot:
         self.all_books_button  = basic_button(self.sidebar, 'All Books', self.go_to_books)
         self.add_n_read_button = basic_button(self.sidebar, 'Add n\' Read Book', self.add_and_open)
         self.refresh_button    = basic_button(self.sidebar, 'Refresh', self.check_entries)
-        self.ph                = basic_button(self.sidebar, 'Placeholder Button')
+        self.ph                = basic_button(self.sidebar, 'Placeholder Button', self._quit)
 
         self.all_books_button.pack(side='top', fill='x')
         self.add_n_read_button.pack(side='top', fill='x', pady=10)
