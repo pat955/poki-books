@@ -56,9 +56,6 @@ jobs:
         - name: Install dependencies
           run: poetry install
 
-        - name: Install semantic-release
-          run: pipx semantic-release
-
         - name: Prepare package for release
           env: 
 
