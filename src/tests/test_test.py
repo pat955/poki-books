@@ -1,10 +1,22 @@
-import unittest # for testing
+""" test_test.py
+follow *_test.py pattern for test modules
+this test will auto succeed, previously auto fail for ci testting
+"""
+import unittest
 
-# test on ci, auto succeeds, previous auto fails
 class Test(unittest.TestCase):
+    """
+    test for testing unitests :) 
+
+    """
     def test_success(self):
-        self.assertEqual(1,1)
+        """
+        auto succeeds
+        """
+        self.assertEqual(1, 1)
 
-
-if __name__ == '__main__':
-    unittest.main()
+    # def test_failure(self):
+    #     """
+    #     auto fails
+    #     """
+    #     self.assertEqual(1, 2)

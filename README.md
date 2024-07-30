@@ -26,4 +26,5 @@ Python version: 3.12
 * Button back to top
 * Page numbers?
 * Fix bugs
+* *Themes with fonts and font sizes* (Done!)
 * *More themes, especially some that strain your eyes less* (Done!)

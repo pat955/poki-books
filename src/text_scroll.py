@@ -1,11 +1,16 @@
+"""
+-- text_scroll_combo.py --
+
+"""
 import tkinter as tk
 from tkinter import ttk
 import json
-from moveable_widgets import *
-from defaults import *
+from defaults import FONT, HEADING_SIZE
 
-# Textscrollcombo makes a book with scrollbar possible
 class TextScrollCombo(tk.Frame):
+    """
+    Combines frame for text and a scrollbar
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.book_path = 'books/'
@@ -34,14 +39,23 @@ class TextScrollCombo(tk.Frame):
 
 
     def insert(self, text):
+        """
+        insert text into textscrollcombo
+        """
         self.txt.insert('insert', text)
         self.txt.grid(row=0, column=0, sticky='nsew')
         self.txt.config(state='disabled')
-    
+
     def clear(self):
+        """
+        Clear text, doesn't work well, redo
+        """
         self.txt.delete('1.0', 'end')
 
     def set_scrollbar(self, book_path):
+        """
+        Sets the scrollbar to the position last used stored in cache
+        """
         with open(self.cache_path, 'r') as file:
             books_info = json.load(file)['books']
             if book_path in books_info:

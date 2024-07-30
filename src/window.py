@@ -1,24 +1,10 @@
-import tkinter as tk
-import os
-import json
-import shutil
-from PyPDF2 import PdfReader
-from functools import partial
-from tkinter import Frame, Button, Tk, Text, Checkbutton, Entry, Label, Menu, filedialog
-from PIL import Image
-from pathlib import Path
-from moveable_widgets import *
-from defaults import *
-from text_scroll_combo import TextScrollCombo
-from themes import *
-from menu import make_main_menu
-from help_menu import info
-
-# Fix apply for resize
+""" 
+-- window.py --
+bookbot window, all setup
+TODO:
 # Pictures
 # Logo
 # Loading...
-# Fix pdf
 # Clean up code
 # Add documentation
 # Search
@@ -26,23 +12,37 @@ from help_menu import info
 # Highlight
 # Keybinds
 # Back to top button
-# BUggY BEANS show sidebar
 # Add error handling
 # Pdf support
-# theme with fonts and sizes
+# theme guide
+"""
+import tkinter as tk
+import os
+import json
+import shutil
+from functools import partial
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Label, Menu, filedialog
+from pathlib import Path
+from frames import NoteBook, make_full_frame
+from text_scroll import TextScrollCombo
+from themes import AllThemes
+from menu import make_main_menu, info
+from defaults import *
+from basics import basic_button, basic_label, basic_entry
 
-# Bookbot Window
-class Window():
+class BookBot:
+    """
+    
+    """
     def __init__(self):
         self.__root = Tk()
-        self.__root.title("eReader")
+        self.__root.title("BookBot")
         self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
         self.__root.attributes('-zoomed', True)
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
         self.current_book = None
-        self.open_notebook = False
 
         self.book_path = 'books/'
         self.cache_path = 'cache.json'
@@ -51,22 +51,23 @@ class Window():
             os.makedirs(self.book_path)
 
     # Frames and textscrollcombos
-        self.text_container = make_basic_full_frame(self.__root)
+        self.text_container = make_full_frame(self.__root)
 
         self.text_frame = TextScrollCombo(self.text_container, bg=COLOR)
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
         self.all_books_menu = TextScrollCombo(self.text_container, bg=COLOR)
 
+        # Change to textscrollcombo?
         self.sidebar = Frame(self.text_container, bg=COLOR, highlightthickness=1)
         self.sidebar.grid(column=1, row=0, sticky="ens")
 
     # Menus
         #Main Menus
-        self.menubar = make_main_menu(menubar=self.__root, bg=COLOR)
+        self.menubar       = make_main_menu(menubar=self.__root, bg=COLOR)
         self.settings_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.books_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.help_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.books_menu    = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.help_menu     = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
         # Settings
         self.settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
@@ -97,69 +98,28 @@ class Window():
         self.__root.config(menu=self.menubar)
 
     # Buttons
-        self.all_books_button = Button(
-            self.sidebar,
-            text='All Books',
-            bg=BUTTON_COLOR,
-            command=self.go_to_books,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE),
-            activebackground=ACTIVE_BACKGROUND,
-            activeforeground=ACTIVE_FONT
-            )
+        self.all_books_button  = basic_button(self.sidebar, 'All Books', self.go_to_books)
+        self.add_n_read_button = basic_button(self.sidebar, 'Add n\' Read Book', self.add_and_open)
+        self.refresh_button    = basic_button(self.sidebar, 'Refresh', self.check_entries)
+        self.ph                = basic_button(self.sidebar, 'Placeholder Button', self._quit)
+
         self.all_books_button.pack(side='top', fill='x')
-
-        self.add_n_read_button = Button(
-            self.sidebar,
-            text='Add n\' Read Book',
-            bg=BUTTON_COLOR,
-            command=self.add_and_read,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE)
-            )
         self.add_n_read_button.pack(side='top', fill='x', pady=10)
-
-        self.refresh_button = Button(
-            self.sidebar,
-            text='Refresh',
-            bg=BUTTON_COLOR,
-            command=self.check_entries,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE)
-            )
         self.refresh_button.pack(side='top', fill='x')
-
-        self.ph = Button(
-            self.sidebar,
-            text='Placeholder button',
-            bg=BUTTON_COLOR,
-            command=self.not_implemented,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE)
-            )
         self.ph.pack(side='top', fill='x', pady=10)
 
-        self.notes_button = Button(
-            self.sidebar,
-            text='Notebook',
-            bg=BUTTON_COLOR,
-            command=self.notes_by_book,
-            highlightthickness=0,
-            font=(FONT, FONT_SIZE)
-            )
-        self.notes_button.pack(side='top', fill='x')
-
     # Entries and Labels
-        self.text_size_label = Label(self.sidebar, text='Text Size', bg=COLOR, font=(FONT, FONT_SIZE))
-        self.text_size_label.pack(side='top', fill='x', pady=5)
+        self.text_size_label = basic_label(self.sidebar, 'Text Size')
+        self.text_size_entry = basic_entry(self.sidebar)
 
-        self.text_size_entry = Entry(self.sidebar, bg=BUTTON_COLOR, highlightthickness=0)
+        self.text_size_label.pack(side='top', fill='x', pady=5)
         self.text_size_entry.pack(side="top", fill="x")
 
-        self.padding_label = Label(self.sidebar, text='Padding', bg=COLOR, font=(FONT, FONT_SIZE))
-        self.padding_label.pack(side='top', fill='x', pady=5)
 
-        self.padding_entry = Entry(self.sidebar, bg=BUTTON_COLOR, highlightthickness=0)
+        self.padding_label = basic_label(self.sidebar, 'Padding')
+        self.padding_entry = basic_entry(self.sidebar)
+
+        self.padding_label.pack(side='top', fill='x', pady=5)
         self.padding_entry.pack(side="top", fill="x")
 
     # Checkboxes
@@ -175,59 +135,89 @@ class Window():
             )
         self.center.pack(side='top', fill='x', pady=10)
 
-    # Notes 
-        self.notes = Frame(self.sidebar, highlightthickness=0, bd=0, width=1, highlightbackground=BUTTON_COLOR)
-        self.notes_text = Text(self.notes, state='normal', wrap='word', font=(FONT, FONT_SIZE), fg=FONT_COLOR, bg=COLOR, width=1)
-
+    # Notes
+        self.notebook = NoteBook(self.sidebar, self.cache_path)
+        self.notes_button = Button(
+            self.sidebar,
+            text='Notebook',
+            bg=BUTTON_COLOR,
+            command=self.notebook.toggle,
+            highlightthickness=0,
+            font=(FONT, FONT_SIZE)
+            )
+        self.notes_button.pack(side='top', fill='x')
+        
     # Themes
         self.themes_button = Menu(self.__root, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE))
         i = 0
         themes = AllThemes().get_all_themes()
-        for theme in themes:  
+        for theme in themes:
             theme.add(self, i)
-            i += 1  
+            i += 1
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
-    # Make basic cache file 
-        if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w') as file:
-                json.dump({'books': {'notes': ''}}, file, indent=4)
-                file.close()
+        self.make_cache()
 
         self.__root.mainloop()
 
-    # Opens and insert notes from get_notes function
-    def update_notes(self):
-        if self.open_notebook:
-            self.notes_text.delete('1.0', 'end')
-            self.notes_text.insert('insert', self.get_notes())
+    def make_cache(self): # Returns: None
+        """
+        Make cache.json file 
+        """
+        if not os.path.exists(self.cache_path):
+            with open(self.cache_path, 'w', encoding="utf-8") as file:
+                json.dump({'books': {'notes': ''}}, file, indent=4)
+                file.close()
 
-    # get notes by book redo
-    def notes_by_book(self):
-        if self.open_notebook:
-            self.notes_text.config(state='disabled')
-            self.notes_text.delete('1.0', 'end')
-            self.notes.pack_forget()
-            self.open_notebook = False
+    def clear_cache(self):
+        os.remove(self.cache_path)
+        if not os.path.exists(self.cache_path):
+            with open(self.cache_path, 'w', encoding="utf-8") as file:
+                json.dump({'books': {'notes': ''}}, file, indent=4)
+
+    # cache book info
+    def cache_book(self):
+        # redo
+        data = None
+        with open(self.cache_path, 'r+', encoding="utf-8") as file:
+            data = json.load(file)
+
+        notes = self.notebook.text.get("1.0", 'end')
+        if self.current_book is not None:
+
+            if self.current_book not in data['books']:
+                data['books'][self.current_book] = {}
+
+            data['books'][self.current_book]['scrollbar'] = self.text_frame.scrollb.get()
+
+            if notes != '':
+                data['books'][self.current_book]['notes'] = notes
         else:
-            self.notes_text.config(state='normal')
-            self.notes.pack(side='bottom', fill='both', expand=True, pady=15)
-            self.notes_text.insert('insert', self.get_notes())
-            self.notes_text.pack(fill='both', expand=True, anchor='n')
-            self.open_notebook = True
-        
-    # not implemented
-    def remove_book(self):
-        pass
+            if notes != '':
+                data['books']['notes'] = notes
 
-    # add and read button function
-    def add_and_read(self):
+        with open(self.cache_path, 'w', encoding="utf-8") as file:
+            json.dump(data, file, indent=4)
+            file.close()
+    
+    def remove_book(self): # Returns: None
+        """
+        Not implemented
+        """
+        return NotImplemented
+
+    def add_and_open(self): # Returns: None
+        """
+        Add book and open to instantly read
+        """
         path = self.add_book()
         if path:
             self.read_book(self.book_path + path.split('/')[-1])
 
-    # add book from filedialog
-    def add_book(self):
+    def add_book(self): # Returns: str 
+        """
+        Add book from filedialog. Returns book path
+        """
         path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
         if path:
             try:
@@ -236,13 +226,11 @@ class Window():
                 print(e)
             return path
 
-    # clear text from main frame
     def clear_text_frame(self):
         self.text_frame = TextScrollCombo(self.text_container)
         self.text_frame.txt.config(bg=COLOR, fg=FONT_COLOR, font=(FONT, HEADING_SIZE))
         self.text_frame.grid(column=0, row=0, sticky="nsew")
 
-    # go to 'library'
     def go_to_books(self):
         self.text_frame.grid_forget()
         self.all_books_menu.txt = Frame(self.all_books_menu, bg=COLOR)
@@ -256,79 +244,31 @@ class Window():
                 i = 0
 
             path = self.book_path + file.name
-            button = Button(self.all_books_menu.txt, text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}', bg=BUTTON_COLOR, font=(FONT, HEADING_SIZE), fg=FONT_COLOR, activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT, command=partial(self.read_book, path), width=16)
+            button = Button(
+                self.all_books_menu.txt,
+                text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}',
+                bg=BUTTON_COLOR,
+                font=(FONT, HEADING_SIZE),
+                fg=FONT_COLOR,
+                activebackground=ACTIVE_BACKGROUND,
+                activeforeground=ACTIVE_FONT,
+                command=partial(self.read_book, path),
+                width=16
+                )
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
-    # clear cache. for debugging
-    def clear_cache(self):
-        os.remove(self.cache_path)
-        if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w') as file:
-                json.dump({'books': {'notes': ''}}, file, indent=4)
-
-    # get all notes from json file redo to db
-    def get_notes(self):
-        with open(self.cache_path, 'r') as file:
-            file_data = json.load(file)
-            notes = ''
-            if self.current_book is None:
-                return file_data['books']['notes']
-
-            try:
-                return file_data['books'][self.current_book]['notes']
-            except Exception as e:
-                print(e)
-            return notes
-
-    # cache book info
-    def save_book_attributes(self):
-        file_data = None
-        with open(self.cache_path, 'r+') as file:
-            file_data = json.load(file)
-
-        notes = self.notes_text.get("1.0", 'end')
-        if self.current_book is not None:
-
-            if self.current_book not in file_data['books']:
-                file_data['books'][self.current_book] = {}
-
-            file_data['books'][self.current_book]['scrollbar'] = self.text_frame.scrollb.get()
-
-            if notes != '':
-                file_data['books'][self.current_book]['notes'] = notes
-        else:
-            if notes != '':
-                file_data['books']['notes'] = notes
-
-        with open(self.cache_path, 'w') as file:
-            json.dump(file_data, file, indent=4)
-
-    # read pdf books
-    def read_pdf(self, path):
-        with open(path, 'rb') as file:
-            pdf = PdfReader(file)
-            i = 0
-            for page in pdf.pages:
-                i += 1
-                self.text_frame.insert(f'{page.extract_text()}  ---{i}---\n')
-        self.text_frame.txt.config(state='disabled')
-        self.text_frame.set_scrollbar(path)
-
     # open book
     def read_book(self, path):
-        self.save_book_attributes()
+        self.cache_book()
         self.current_book = path
+        self.notebook.change_book(self.current_book)
 
         self.clear_text_frame()
         self.check_entries()
         self.all_books_menu.grid_forget()
         self.text_frame.grid(column=0, row=0, sticky="nsew")
-        self.update_notes()
-
-        if path.endswith('.pdf'):
-            self.read_pdf(path)
-            return
+        self.notebook.update()
 
         with open(path, 'r') as file:
             self.text_frame.insert(file.read())
@@ -361,7 +301,16 @@ class Window():
         FONT_SIZE         = font_size
         HEADING_SIZE      = heading_size
 
-        frames = [self.__root, self.sidebar, self.notes, self.text_frame, self.menubar, self.all_books_menu, self.all_books_menu.txt, *(self.text_container.winfo_children())]
+        frames = [
+            self.__root,
+            self.sidebar,
+            self.notebook.frame,
+            self.text_frame,
+            self.menubar,
+            self.all_books_menu,
+            self.all_books_menu.txt,
+            *(self.text_container.winfo_children())
+            ]
         self.sidebar.config(bg=COLOR)
         self.text_frame.config(bg=COLOR)
         self.menubar.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
@@ -380,25 +329,27 @@ class Window():
                     if 'unknown option' not in str(e):
                         print(e)
 
-                try: 
+                try:
                     widget.config(fg=FONT_COLOR)
                 except Exception as e:
                     if 'unknown option' not in str(e):
                         print(e)
 
-                if type(widget) == Checkbutton:
+                if isinstance(widget, Checkbutton):
                     widget.config(activebackground=COLOR, activeforeground=ACTIVE_FONT)
 
-                elif type(widget) == Button:
+                elif isinstance(widget, Button):
                     widget.config(bg=BUTTON_COLOR, activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
 
-                elif type(widget) == Entry:
+                elif isinstance(widget, Entry):
                     widget.config(bg=BUTTON_COLOR)
 
                 widget.update()
 
-    # check entry button and change accordingly
-    def check_entries(self):
+    def check_entries(self): # Returns: None
+        """
+        Check entries in option sidebar, like text size or padding
+        """
         entries = {
             self.text_size_entry: self.change_text_size,
             self.padding_entry: self.change_padx,
@@ -407,16 +358,22 @@ class Window():
             if entry.get():
                 func()
 
-    # Change padding on x-axis
-    def change_padx(self):
+    def change_padx(self): # Returns: None
+        """
+        Change padding in x direction in text_frame TextScrollCombo
+        """
         self.text_frame.txt.config(padx=self.padding_entry.get())
 
-    # change text size from entry box
-    def change_text_size(self):
+    def change_text_size(self): # Returns: None
+        """
+        Changes text size to number from entry TODO: add edgecases/errorhandling
+        """
         self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
 
-    # center the book text
-    def center_text(self):
+    def center_text(self): # Returns: None
+        """
+        Centers text in main text frame in book_frame textscrollcombo
+        """
         if self.center_var.get():
             self.text_frame.txt.tag_configure("center", justify='center')
             self.text_frame.txt.tag_add("center", "1.0", "end")
@@ -424,19 +381,23 @@ class Window():
             self.text_frame.txt.tag_delete('center')
         self.text_frame.grid()
 
-    # toggle sidebar
-    def toggle_sidebar(self):
+    def toggle_sidebar(self): # Returns: None
+        """
+        Toggles sidebar
+        """
         if self.sidebar.winfo_viewable():
             self.sidebar.grid_remove()
         else:
             self.sidebar.grid()
 
-    # Quit as intended
-    def _quit(self):
-        self.save_book_attributes()
+    def _quit(self): # Returns: None
+        """
+        Quit as intended
+        """
+        self.cache_book()
         self.__root.quit()
         self.__root.destroy()
 
-    # not implemented error
     def not_implemented(self):
-        return
+        """TODO: Add not implemented error"""
+        return NotImplemented

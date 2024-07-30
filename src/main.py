@@ -1,6 +1,10 @@
-from window import Window
+"""
+-- main.py --
+Initializes window that starts the bookbot program
+"""
+from window import BookBot
 
 def main():
-    Window()
+    BookBot()
 
 main()
