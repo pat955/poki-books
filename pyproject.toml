@@ -1,10 +1,12 @@
 [tool.poetry]
 name = "poki-books"
-version = "0.1.0"
+version = "0.0.0"
 description = ""
 authors = ["pat955 <patricija.pivoraite@gmail.com>"]
 readme = "README.md"
-
+packages = [
+    { include = "src" }
+]
 [tool.poetry.dependencies]
 python = "^3.10"
 nltk = "3.8.1"
