@@ -6,7 +6,7 @@ import json
 from tkinter import Frame, Text
 from defaults import *
 
-class NoteBook():
+class NoteBook:
     """"
     """
     def __init__(self, parent_frame, cache_path):
