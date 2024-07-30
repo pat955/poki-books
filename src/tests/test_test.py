@@ -15,8 +15,8 @@ class Test(unittest.TestCase):
         """
         self.assertEqual(1, 1)
 
-    def test_failure(self):
-        """
-        auto fails
-        """
-        self.assertEqual(1, 2)
+    # def test_failure(self):
+    #     """
+    #     auto fails
+    #     """
+    #     self.assertEqual(1, 2)
