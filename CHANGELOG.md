@@ -1,8 +1,10 @@
 # CHANGELOG
 
-## v0.4.0 (2024-07-31)
+## v0.1.0 (2024-07-31)
 
 ### Unknown
+
+* version change, finally fixed? ([`172e1c2`](https://github.com/pat955/poki_books/commit/172e1c2e1d0f93cb3e0568c4d5b2dec8c607b8e3))
 
 * Merge pull request #27 from pat955/addcd
 
@@ -10,17 +12,9 @@ version ([`3321c69`](https://github.com/pat955/poki_books/commit/3321c69d29eb31b
 
 * version ([`f3e2e5e`](https://github.com/pat955/poki_books/commit/f3e2e5e91b953c2b166748d92f2f15c158c6dd3b))
 
-## v0.3.0 (2024-07-31)
-
-### Unknown
-
 * version change ([`0dbcead`](https://github.com/pat955/poki_books/commit/0dbcead16f48e1f95c49500f31c6b4a47a97ef43))
 
 * semantic-release fix ([`980e5fc`](https://github.com/pat955/poki_books/commit/980e5fccaade613f30e4067e2dd6e9ac5d9ee9dd))
-
-## v0.2.0 (2024-07-31)
-
-### Unknown
 
 * Merge pull request #26 from pat955/addcd
 
