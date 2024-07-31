@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v0.4.0 (2024-07-31)
+
+### Unknown
+
+* Merge pull request #27 from pat955/addcd
+
+version ([`3321c69`](https://github.com/pat955/poki_books/commit/3321c69d29eb31bbe82810af68141c88ffe2b1a1))
+
+* version ([`f3e2e5e`](https://github.com/pat955/poki_books/commit/f3e2e5e91b953c2b166748d92f2f15c158c6dd3b))
+
 ## v0.3.0 (2024-07-31)
 
 ### Unknown
