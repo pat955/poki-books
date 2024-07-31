@@ -1,6 +1,94 @@
 # CHANGELOG
 
-## v0.1.0 (2024-07-30)
+## v0.2.0 (2024-07-31)
+
+### Unknown
+
+* Merge pull request #26 from pat955/addcd
+
+semantic-release changes ([`932c573`](https://github.com/pat955/bookbot/commit/932c573289e17c5d7398941120b3c2fc91ceba3c))
+
+* semantic-release changes ([`e0f80e4`](https://github.com/pat955/bookbot/commit/e0f80e4aee737754bf9216ad6a3bdd784c0cbf77))
+
+* Merge pull request #25 from pat955/addcd
+
+changed pyproject.toml ([`647a850`](https://github.com/pat955/bookbot/commit/647a850c6717692292f145186fc46610fc235587))
+
+## v0.1.0 (2024-07-31)
+
+### Unknown
+
+* changed pyproject.toml ([`1b07dbe`](https://github.com/pat955/bookbot/commit/1b07dbeda54e562c5453bf9eaf3226dc640fb05e))
+
+* Merge pull request #24 from pat955/addcd
+
+Addcd ([`4935b74`](https://github.com/pat955/bookbot/commit/4935b74c61828611b931f96b0c40adfeb522deba))
+
+* changed permissions ([`aa47c7d`](https://github.com/pat955/bookbot/commit/aa47c7d4cdab4e52672f5bf122320cf17d3a0b2a))
+
+* github token replaced ([`357e281`](https://github.com/pat955/bookbot/commit/357e2811ba769807af2e33ebeef59a3e66dd1af3))
+
+* Merge pull request #23 from pat955/addcd
+
+removed publish to testpypi ([`e4e21c7`](https://github.com/pat955/bookbot/commit/e4e21c709bfdee2d0a5e2a2fc2b21b7ce645181e))
+
+* removed publish to testpypi ([`4781d88`](https://github.com/pat955/bookbot/commit/4781d880e009489861871ce187a45e364b5e3306))
+
+* Merge pull request #22 from pat955/addcd
+
+create gh release ([`bdeb402`](https://github.com/pat955/bookbot/commit/bdeb4025feef218c9f397e33d843fd7766ad2c47))
+
+* create gh release ([`c62bbe4`](https://github.com/pat955/bookbot/commit/c62bbe4dd727d4c1012cdf65f0327040155e2c5a))
+
+* Merge pull request #21 from pat955/addcd
+
+removed build ([`36e6ebb`](https://github.com/pat955/bookbot/commit/36e6ebb47f8999bc27f9dd311265f4e8ff19be84))
+
+* removed build ([`2fce04c`](https://github.com/pat955/bookbot/commit/2fce04c56cade5b4dcfb7d05c8cff17aa0540e37))
+
+* Merge pull request #20 from pat955/addcd
+
+gh auth ([`009b9a1`](https://github.com/pat955/bookbot/commit/009b9a109e16877fbf0a599f7db2843b3bfba0d5))
+
+* gh auth ([`7b5161c`](https://github.com/pat955/bookbot/commit/7b5161c650b5b94b26689fe7e4fab266f1d117c8))
+
+* Merge pull request #19 from pat955/addcd
+
+removed tag ([`74393ff`](https://github.com/pat955/bookbot/commit/74393ffae6c218a9c527f8e4bd3ef6ea2995444c))
+
+* test ([`596ea80`](https://github.com/pat955/bookbot/commit/596ea802a8b172e7a0496062294baa46fb0abd5b))
+
+* Merge pull request #18 from pat955/addcd
+
+posibly fixed cd ([`90fc800`](https://github.com/pat955/bookbot/commit/90fc8007a5871bd8b88ddb374af2bc77596aaa72))
+
+* posibly fixed cd ([`c4bba6e`](https://github.com/pat955/bookbot/commit/c4bba6e6c5dbcc3a3dff8dda3861593dd2719f49))
+
+* Merge pull request #17 from pat955/addcd
+
+home path ([`d18fda4`](https://github.com/pat955/bookbot/commit/d18fda4c08ebd8987c01b89f5857a77024a7d038))
+
+* home path ([`85ca316`](https://github.com/pat955/bookbot/commit/85ca31690c6f482eed7c7e2f50d363f9bd0fcb5b))
+
+* Merge pull request #16 from pat955/addcd
+
+added semantic-release installation ([`938b5c4`](https://github.com/pat955/bookbot/commit/938b5c4c7a3c9143bf57c2805d61517865f404e2))
+
+* added semantic-release installation ([`e86b58d`](https://github.com/pat955/bookbot/commit/e86b58dc23abe21f5eafefae18dffa2ded5d276b))
+
+* Merge pull request #15 from pat955/addcd
+
+fixed cd ([`f3af5db`](https://github.com/pat955/bookbot/commit/f3af5db12be6db657b1ab713b2f51a77e543883e))
+
+* fixed cd ([`b2b68fa`](https://github.com/pat955/bookbot/commit/b2b68fa979033dec2bc73d5777b88c8863507520))
+
+* Merge pull request #14 from pat955/addcd
+
+Addcd ([`5564e23`](https://github.com/pat955/bookbot/commit/5564e238420476a4d4e211a7074720cc1ef0373b))
+
+* test 1 ([`095d994`](https://github.com/pat955/bookbot/commit/095d994c79f33b3b4d5a85fbc24e17c81fd8b1d2))
+
+* test ([`010c0dd`](https://github.com/pat955/bookbot/commit/010c0dde8f7fc01ed0b45f6358c79663f35d706c))
 
 ## v0.0.0 (2024-07-30)
 
@@ -14,7 +102,15 @@
 
 * semantic-release ([`5830dd1`](https://github.com/pat955/bookbot/commit/5830dd161581fa2a1fc0fc9697b9de16db3ce7e2))
 
+* Merge pull request #10 from pat955/addcd
+
+build and release cd jobs ([`c5be0d3`](https://github.com/pat955/bookbot/commit/c5be0d315fe33355a3f847bd58aedb83b62a5c0c))
+
 * build and release ([`26d9951`](https://github.com/pat955/bookbot/commit/26d995119dac6c3559e52ada61ce4d1bb0b478d3))
+
+* Merge pull request #9 from pat955/app
+
+App ([`8621f1f`](https://github.com/pat955/bookbot/commit/8621f1f4be0c7fba4879d43d67cf35b1b07688bf))
 
 * gitignore ([`d3507c2`](https://github.com/pat955/bookbot/commit/d3507c2d064f57cd60a74934746507be43d352e5))
 
@@ -27,6 +123,8 @@
 * removed main ([`d1569e9`](https://github.com/pat955/bookbot/commit/d1569e9385b702f81e47eed27be14614105300e3))
 
 * scripts and exe ([`1eebde9`](https://github.com/pat955/bookbot/commit/1eebde96def5912157f8a9b2e2306a4b0904acc3))
+
+* Update README.md ([`4ccdfb5`](https://github.com/pat955/bookbot/commit/4ccdfb5fa261e8708c7112dba221681e0d9c8f96))
 
 * logo ([`4cd3460`](https://github.com/pat955/bookbot/commit/4cd346078ba9c048527231a45e0b59c7ca3261c4))
 
