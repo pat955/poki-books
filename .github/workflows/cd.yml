@@ -40,7 +40,8 @@ jobs:
             git config user.name github-actions
             git config user.email github-actions@github.com
             poetry build
-            semantic-release version
+            poetry version minor
+            semantic-release version --minor
             semantic-release publish
 
         # - name: Publish to TestPyPI
