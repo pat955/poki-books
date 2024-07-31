@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "poki-books"
-version = "0.2.0"
+version = "0.3.0"
 description = "Simple book and text reader"
 authors = ["pat955 <patricija.pivoraite@gmail.com>"]
 readme = "README.md"
