@@ -1,39 +1,38 @@
+[build-system]
+requires = [ "poetry-core",]
+build-backend = "poetry.core.masonry.api"
+
 [tool.poetry]
 name = "PokiBooks"
-version = "v0.0.0"
+version = "0.1.5"
 description = "Simple book and text reader"
-authors = ["pat955 <patricija.pivoraite@gmail.com>"]
+authors = [ "pat955 <patricija.pivoraite@gmail.com>",]
 readme = "README.md"
-packages = [
-    { include = "src" }
-]
+[[tool.poetry.packages]]
+include = "src"
+
+[tool.semantic_release]
+version_variable = [ "src/__init__.py:__version__", "pyproject.toml:version",]
+branch = "main"
+changelog_file = "CHANGELOG.md"
+upload_to_pypi = false
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+dist_path = "dist/"
+remove_dist = true
 
 [tool.poetry.dependencies]
 python = "^3.10"
 nltk = "3.8.1"
 
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.semantic_release]
-version_variable = [
-    "src/__init__.py:__version__",
-    "pyproject.toml:version"
-]
-branch = "main"
-changelog_file = "CHANGELOG.md"             # changelog file
-upload_to_pypi = false
-upload_to_release = true
-build_command = "pip install poetry && poetry build"
-dist_path = "dist/"                         # where to put dists
-remove_dist = false                         # don't remove dists
-
 [tool.semantic_release.changelog]
 template_dir = "templates"
 changelog_file = "CHANGELOG.md"
 exclude_commit_patterns = []
+
+[tool.semantic_release.commit_author]
+env = "GIT_COMMIT_AUTHOR"
+default = "semantic-release <semantic-release>"
 
 [tool.semantic_release.changelog.environment]
 block_start_string = "{%"
@@ -48,7 +47,3 @@ newline_sequence = "\n"
 keep_trailing_newline = false
 extensions = []
 autoescape = true
-
-[tool.semantic_release.commit_author]
-env = "GIT_COMMIT_AUTHOR"
-default = "semantic-release <semantic-release>"
