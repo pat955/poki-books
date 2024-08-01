@@ -1,8 +1,9 @@
+import sys
 from setuptools import setup
 
 setup(
    name='PokiBooks',
-   version = "0.1.0",
+   version='0.2.4',
    description='Simple eReader',
    author='pat955',
    author_email='patricija.pivoraite@gmail.com',
@@ -12,3 +13,8 @@ setup(
             'scripts/run.sh',
            ]
 )
+try:
+   from semantic_release import setup_hook
+   setup_hook(sys.argv)
+except ImportError:
+   print('import error')
