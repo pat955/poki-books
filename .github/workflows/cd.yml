@@ -34,7 +34,6 @@ jobs:
         
         - name: Compile
           run: pyinstaller ./src/main.py -w -F -n "PokiBooks"
-    
         
         - name: Create Release
           id: create_release
