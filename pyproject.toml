@@ -24,6 +24,8 @@ remove_dist = true
 [tool.poetry.dependencies]
 python = "^3.10"
 nltk = "3.8.1"
+setuptools=="63.2.0"
+toml=="0.10.2"
 
 [tool.semantic_release.changelog]
 template_dir = "templates"
