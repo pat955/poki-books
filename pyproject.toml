@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "poki-books"
-version = "0.0.0"
+name = "PokiBooks"
+version = "v0.0.0"
 description = "Simple book and text reader"
 authors = ["pat955 <patricija.pivoraite@gmail.com>"]
 readme = "README.md"
@@ -18,7 +18,10 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.semantic_release]
-version_variable = "pyproject.toml:version"
+version_variable = [
+    "src/__init__.py:__version__",
+    "pyproject.toml:version"
+]
 branch = "main"
 changelog_file = "CHANGELOG.md"             # changelog file
 upload_to_pypi = false
