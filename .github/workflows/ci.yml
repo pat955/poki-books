@@ -57,3 +57,4 @@ jobs:
       
       - name: Linting, errors
         run: pylint ./src/ -E
+        
