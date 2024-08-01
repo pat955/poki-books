@@ -1,16 +1,17 @@
 name: cd
 
 on:
-  push:
-    tags:
-      - 'v*'
-
+  pull_request:
+    branches:
+      - main
+      - masters
+      
 permissions:
   contents: write
 
 jobs:
   release:
-    if: github.event_name == 'push'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -43,6 +44,7 @@ jobs:
           run: |
             git config user.name github-actions
             git config user.email github-actions@github.com
+            poetry build
             poetry run semantic-release publish
         
         - name: Create Release
