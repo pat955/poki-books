@@ -3,8 +3,8 @@ requires = [ "poetry-core",]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
-name = "PokiBooks"
-version = "0.1.10"
+name = "poki_books"
+version = "0.1.8"
 description = "Simple book and text reader"
 authors = [ "pat955 <patricija.pivoraite@gmail.com>",]
 readme = "README.md"
@@ -12,7 +12,7 @@ readme = "README.md"
 include = "src"
 
 [tool.semantic_release]
-version_variable = [ "src/__init__.py:__version__", "pyproject.toml:version",]
+version_variable = [ "pyproject.toml:tool.poetry.version",]
 branch = "main"
 changelog_file = "CHANGELOG.md"
 upload_to_pypi = false
@@ -24,7 +24,6 @@ remove_dist = true
 [tool.poetry.dependencies]
 python = "^3.10"
 nltk = "3.8.1"
-setuptools = "63.2.0"
 toml = "0.10.2"
 
 [tool.semantic_release.changelog]
@@ -35,6 +34,9 @@ exclude_commit_patterns = []
 [tool.semantic_release.commit_author]
 env = "GIT_COMMIT_AUTHOR"
 default = "semantic-release <semantic-release>"
+
+[semantic_release.remote.token]
+env = "GH_TOKEN"
 
 [tool.semantic_release.changelog.environment]
 block_start_string = "{%"

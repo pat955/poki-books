@@ -29,6 +29,11 @@ jobs:
         - name: Install Poetry
           run: pipx install poetry
 
+        - name: Update pyproject.toml version
+          run: |
+            pip install toml
+            python update_version.py
+
         - name: Install dependencies
           run: poetry install
 
@@ -38,11 +43,6 @@ jobs:
         - name: Install semantic-release
           run: python3 -m pip install python-semantic-release
         
-        - name: Update pyproject.toml version
-          run: |
-            pip install toml
-            python update_version.py
-
         - name: Release semantic-release
           env: 
             GH_TOKEN: ${{ secrets.GH_TOKEN }}
