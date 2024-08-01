@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
    name='PokiBooks',
-   version='0.1.8',
+   version='0.2.4',
    description='Simple eReader',
    author='pat955',
    author_email='patricija.pivoraite@gmail.com',
