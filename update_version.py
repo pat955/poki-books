@@ -14,7 +14,7 @@ def update_pyproject_version(tag):
     with open(pyproject_file, 'r') as file:
         pyproject_data = toml.load(file)
 
-    pyproject_data['tool']['poetry']['version'] = tag.lstrip('v')
+    pyproject_data['tool']['poetry']['version'] = tag
 
     with open(pyproject_file, 'w') as file:
         toml.dump(pyproject_data, file)
