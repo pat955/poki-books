@@ -1,10 +1,8 @@
 name: cd
 
 on:
-  pull_request:
-    branches:
-      - main
-      - masters
+  push:
+    branches: [main]
       
 permissions:
   contents: write
