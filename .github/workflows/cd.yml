@@ -26,17 +26,6 @@ jobs:
           with:
             python-version: ${{ matrix.python-version }}
 
-        # - name: Install Poetry
-        #   run: pipx install poetry
-
-        # - name: Update pyproject.toml version
-        #   run: |
-        #     pip install toml
-        #     python update_version.py
-
-        # - name: Install dependencies
-        #   run: poetry install
-
         - name: Install pip
           run: python -m pip install --upgrade pip
         
