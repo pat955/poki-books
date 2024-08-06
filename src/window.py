@@ -244,11 +244,11 @@ class BookBot:
             if  i % 6 == 0:
                 j += 1
                 i = 0
-
+            txt = file.name.split('.')[0].replace('_', ' ').capitalize()
             path = self.book_path + file.name
             button = Button(
                 self.all_books_menu.txt,
-                text=f'{file.name.split('.')[0].replace('_', ' ').capitalize()}',
+                text=f'{txt}',
                 bg=BUTTON_COLOR,
                 font=(FONT, HEADING_SIZE),
                 fg=FONT_COLOR,

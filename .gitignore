@@ -2,8 +2,10 @@
 books/
 images/
 *pyc
-*json
+cache
 build/
+CHANGELOG
+
 
 # github boilerplate:
 # Byte-compiled / optimized / DLL files

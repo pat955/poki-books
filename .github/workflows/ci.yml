@@ -3,6 +3,8 @@ name: ci
 on:
   pull_request:
     branches: [main]
+  push:
+    branches: [main]
 
 jobs:
   tests:
@@ -16,7 +18,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.10.12'
     
       - name: Install pip
         run: python -m pip install --upgrade pip
@@ -44,7 +46,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.12'
+          python-version: '3.10.12'
 
       - name: Install pip
         run: python -m pip install --upgrade pip
@@ -56,5 +58,4 @@ jobs:
         run: pip install pylint
       
       - name: Linting, errors
-        run: pylint ./src/ -E
-        
+        run: pylint ./src/*.py -E
