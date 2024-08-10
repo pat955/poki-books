@@ -1,11 +1,14 @@
 # Project specific
 books/
-images/
 *pyc
 cache
 build/
 CHANGELOG
-
+checksums.txt
+dist/
+*.zip
+*.tar.gz
+release/
 
 # github boilerplate:
 # Byte-compiled / optimized / DLL files

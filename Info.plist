@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <!-- Basic Info -->
+    <key>CFBundleName</key>
+    <string>PokiBooks</string>
+    <key>CFBundleDisplayName</key>
+    <string>PokiBooks</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.pat955.pokibooks</string>
+    <key>CFBundleVersion</key>
+    <string>0.0.1</string>
+    <key>CFBundleExecutable</key>
+    <string>PokiBooks</string>
+    <key>CFBundleIconFile</key>
+    <string>icon.icns</string>
+
+    <!-- Application Behavior -->
+    <key>LSRequiresCarbon</key>
+    <false/>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.12</string> <!-- Set to the minimum macOS version required -->
+
+    <!-- macOS Specific -->
+    <key>NSPrincipalClass</key>
+    <string>NSApplication</string>
+    <key>NSAppleScriptEnabled</key>
+    <false/>
+
+    <!-- Document Types -->
+    <key>CFBundleDocumentTypes</key>
+    <array>
+        <dict>
+            <key>CFBundleTypeName</key>
+            <string>My File Format</string>
+            <key>CFBundleTypeIconFile</key>
+            <string>MyFileIcon.icns</string>
+            <key>LSItemContentTypes</key>
+            <array>
+                <string>com.example.myformat</string>
+            </array>
+            <key>LSHandlerRank</key>
+            <string>Owner</string>
+        </dict>
+    </array>
+
+    <!-- Application Permissions -->
+    <key>NSAppleEventsUsageDescription</key>
+    <string>This app requires access to Apple Events to function properly.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>This app requires access to your camera for certain features.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>This app requires access to your microphone for audio recording.</string>
+
+    <!-- Sandbox (if applicable) -->
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+</dict>
+</plist>

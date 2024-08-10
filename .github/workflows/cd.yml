@@ -5,88 +5,256 @@ on:
     tags: "v*"
 
 jobs:
-  release:
+  windows-build:
+    runs-on: windows-latest
+    permissions:
+      contents: write # Required to upload build artifacts
+      actions: read   # Required for `actions/checkout` and `actions/setup-python`
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        branch: ["main"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure Main Branch
+        run: git checkout ${{ matrix.branch }}
+        
+      - name: Extract Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Dependencies
+        run: pip install -r ./requirements.txt
+
+      - name: Build Windows 
+        run: pyinstaller PokiBooksWin.spec 
+        
+      - name: Zip Build
+        run: |
+          cd ./dist/ 
+          Compress-Archive -Path ./PokiBooksWin/ -DestinationPath ../pokibooks-windows.zip
+      
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-windows
+          path: ./pokibooks-windows.zip
+
+# ----- Linux -----
+
+  linux-build:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      checks: write
-
-      actions: read
-      issues: read
-      packages: write
-      statuses: read
-      pull-requests: write
-      repository-projects: write
+      contents: write # Required to upload build artifacts
+      packages: write # Required if you're publishing packages; remove if not needed
+      actions: read   # Required for `actions/checkout` and `actions/setup-python`
 
     strategy:
       matrix:
         python-version: ["3.10.12"]
         branch: ["main"]
+
     steps:
-        - uses: actions/checkout@v4
-          with:
-            fetch-depth: 0
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-        - name: Ensure Main Branch
-          run: git checkout ${{ matrix.branch }}
-
-        - name: Setup Python ${{ matrix.python-version }}
-          uses: actions/setup-python@v4
-          with:
-            python-version: ${{ matrix.python-version }}
-
-        - name: Install Poetry
-          run: pipx install poetry
-
-        - name: Install Dependencies
-          run: |
-            poetry install
-            python -m pip install --upgrade pip
-            pip install python-semantic-release
-
-        - name: Create Changelog
-          run: poetry run semantic-release changelog
-
-        - name: Setup
-          env: 
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: |
-            git config user.name github-actions
-            git config user.email github-actions@github.com
-
-        - name: Extract Version
-          run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      - name: Ensure Main Branch
+        run: git checkout ${{ matrix.branch }}
         
-        - name: Update version
-          env:
-            VERSION: ${{ env.VERSION }}
-          run: poetry version ${{ env.VERSION }}
+      - name: Extract Version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
 
-        - name: Create Release
-          id: create_release
-          uses: actions/create-release@v1
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-            VERSION: ${{ env.VERSION }}
-          with:
-            tag_name: v${{ env.VERSION }}
-            release_name: v${{ env.VERSION }}
-            draft: false
-            prerelease: false
-            body_path: CHANGELOG.md
-            # ['tag_name', 'release_name', 'body', 'body_path', 'draft', 'prerelease', 'commitish', 'owner', 'repo']
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
 
-        - name: Build
-          run: poetry build --format=sdist
+      - name: Install Dependencies
+        run: pip install -r ./requirements.txt
 
-        - name: Upload Release Asset
-          id: upload-release-asset 
-          uses: actions/upload-release-asset@v1
-          env:
-            GITHUB_TOKEN: ${{ github.token }}
-            VERSION: ${{ env.VERSION }}
-          with:
-            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-            asset_path: ./dist/poki_books-${{ env.VERSION }}.tar.gz
-            asset_name: poki_books-${{ env.VERSION }}.tar.gz
-            asset_content_type: application/gzip
+      - name: Build Linux 
+        run: pyinstaller PokiBooksLinux.spec        
+        
+      - name: Zip Build
+        run: tar -czvf pokibooks-linux.tar.gz ./dist/PokiBooksLinux/
+      
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-linux
+          path: ./pokibooks-linux.tar.gz
+      
+# ----- MacOs -----
+
+  mac-build:
+    runs-on: macos-latest
+    permissions:
+      contents: write # Required to upload build artifacts
+      actions: read   # Required for `actions/checkout`
+
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        branch: ["main"]
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure Main Branch
+        run: git checkout ${{ matrix.branch }}
+      
+      # change to matrix version
+      - name: Install Python via Homebrew
+        run: |
+          brew install python@${{ matrix.python-version }}
+          echo "export PATH=\"/opt/homebrew/opt/python@${{ matrix.python-version }}/bin:\$PATH\"" >> ~/.zshrc
+          export PATH="/opt/homebrew/opt/python@${{ matrix.python-version }}/bin:$PATH"
+      
+      - name: Install Dependencies
+        run: |
+          pip install -r ./requirements.txt
+          brew install python-tk
+      
+      - name: Verify Tkinter Installation
+        run: |
+          python -c "import tkinter; print('Tkinter is installed and working.')"
+        
+      - name: Verify Tcl/Tk Installation
+        run: |
+          if [ -d "$(brew --prefix)/lib/tcl8.6" ] && [ -d "$(brew --prefix)/lib/tk8.6" ]; then
+            echo "Tcl/Tk libraries are available."
+          else
+            echo "Tcl/Tk libraries are missing."
+            exit 1
+          fi
+  
+      - name: Build macOS Application
+        run: pyinstaller PokiBooksMacOs.spec
+
+      - name: Zip macOS Build
+        run: zip -r pokibooks-macos.zip ./dist/PokiBooksMacOs/
+      
+      - name: Upload MacOs Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-mac
+          path: ./pokibooks-macos.zip
+      
+# ----- upload -----
+          
+  upload:
+    needs: 
+      - windows-build
+      - linux-build
+      - mac-build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to create releases and upload assets
+      actions: read   # Required for `actions/checkout`, `actions/create-release`, and `actions/upload-release-asset`
+      checks: write   # Remove if not using check runs
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: GitHub Setup
+        env: 
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+      
+      - name: Extract Versions
+        run: |
+          echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+          TAGS=($(git tag --sort=-creatordate))
+          CHANGELOG_TAG=${TAGS[2]}
+          echo "CHANGELOG_TAG=${CHANGELOG_TAG}" >> $GITHUB_ENV
+
+      - name: Make Changelog
+        env:
+          CHANGELOG_TAG: ${{ env.CHANGELOG_TAG }}
+        run: |      
+          sudo apt-get update
+          sudo apt-get install ruby-full
+          sudo gem install github_changelog_generator
+          github_changelog_generator --user pat955 --project pokibooks -f %d-%m-%Y --since-tag ${{ env.CHANGELOG_TAG }}
+      
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ./release
+          merge-multiple: true  
+          
+      - name: Create Checksums
+        run: ./scripts/checksums.sh
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VERSION: ${{ env.VERSION }}
+        with:
+          tag_name: v${{ env.VERSION }}
+          release_name: v${{ env.VERSION }}
+          draft: false
+          prerelease: false
+          body_path: CHANGELOG.md
+  
+      - name: Upload Windows Version
+        id: upload-release-asset-windows
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/pokibooks-windows.zip
+          asset_name: pokibooks-windows.zip
+          asset_content_type: application/zip
+  
+      - name: Upload Linux Version
+        id: upload-release-asset-linux
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/pokibooks-linux.tar.gz
+          asset_name: pokibooks-linux.tar.gz
+          asset_content_type: application/gzip
+
+      - name: Upload macOS Version
+        id: upload-release-asset-macos
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/pokibooks-macos.zip
+          asset_name: pokibooks-macos.zip
+          asset_content_type: application/zip
+
+      - name: Upload Checksums
+        id: upload-release-asset-checksums
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./checksums.txt
+          asset_name: checksums.txt
+          asset_content_type: text/plain

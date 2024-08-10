@@ -59,11 +59,17 @@ class AllThemes:
         """
         Makes themes form themes.txt
         """
-        with open('themes.txt', 'r') as file:
-            for theme in file:
-                theme_dict = ast.literal_eval(theme)
-                self.themes.append(Theme(**theme_dict))
-            file.close()
+        starter_themes = [
+            {'name':'Default', 'color':'white', 'font_color':'black', 'button_color':'lavender', 'active_background':'white', 'active_font':'black'},
+            {'name':'Dark', 'color':'gray11', 'font_color':'white', 'button_color':'steel blue', 'active_background':'skyblue3', 'active_font':'white', 'font':'Times New Roman', 'font_size':20, 'heading_size':30},
+            {'name':'Cute', 'color':'#E4F1EE' , 'font_color': 'black', 'button_color':'#DEDAF4', 'active_background':'pink', 'active_font':'black'},
+            {'name':'Latte', 'color':'#fdf7e4' , 'font_color': '#75543d', 'button_color':'#dfcbae', 'active_background':'#e6dac7', 'active_font':'#432411'},
+            {'name':'Froggy', 'color':'ivory2' , 'font_color': '#667b68', 'button_color':'#dde6d5', 'active_background':'#a3b899', 'active_font':'#3a453b'},
+            {'name':'Discord', 'color':'#2c2f33' , 'font_color': 'white', 'button_color':'#7289da', 'active_background':'#99aab5', 'active_font':'white'},
+            {'name':'Vintage', 'color':'#e2d9b3' , 'font_color': 'black', 'button_color':'#92b080', 'active_background':'#c9dcaf', 'active_font':'black'}
+            ]
+        for theme in starter_themes:
+            self.themes.append(Theme(**theme))
 
     def get_all_themes(self): # Returns: [Theme]
         """
@@ -72,3 +78,18 @@ class AllThemes:
         if len(self.themes) == 0:
             self.__make_themes()
         return self.themes
+        [
+            {'name':'Default', 'color':'white', 'font_color':'black', 'button_color':'lavender', 'active_background':'white', 'active_font':'black'},
+            {'name':'Dark', 'color':'gray11', 'font_color':'white', 'button_color':'steel blue', 'active_background':'skyblue3', 'active_font':'white', 'font':'Times New Roman', 'font_size':20, 'heading_size':30},
+            {'name':'Light', 'color':'white', 'font_color':'black', 'button_color':'lavender', 'active_background':'white', 'active_font':'black'},
+            {'name':'Cute', 'color':'#E4F1EE' , 'font_color': 'black', 'button_color':'#DEDAF4', 'active_background':'pink', 'active_font':'black'},
+            {'name':'Latte', 'color':'#fdf7e4' , 'font_color': '#75543d', 'button_color':'#dfcbae', 'active_background':'#e6dac7', 'active_font':'#432411'},
+            {'name':'Froggy', 'color':'ivory2' , 'font_color': '#667b68', 'button_color':'#dde6d5', 'active_background':'#a3b899', 'active_font':'#3a453b'},
+            {'name':'Discord', 'color':'#2c2f33' , 'font_color': 'white', 'button_color':'#7289da', 'active_background':'#99aab5', 'active_font':'white'},
+            {'name':'Vintage', 'color':'#e2d9b3' , 'font_color': 'black', 'button_color':'#92b080', 'active_background':'#c9dcaf', 'active_font':'black'},
+            {'name':'Ocean Breeze', 'color':'#e0f7fa', 'font_color': '#00796b', 'button_color':'#004d40', 'active_background':'#26a69a', 'active_font':'#ffffff'},
+            {'name':'Forest Whisper', 'color':'#f1f8e9', 'font_color': '#33691e', 'button_color':'#aed581', 'active_background':'#558b2f', 'active_font':'#ffffff'},
+            {'name':'Autumn Leaves', 'color':'#fff3e0', 'font_color': '#e65100', 'button_color':'#ffb74d', 'active_background':'#fb8c00', 'active_font':'#ffffff'},
+            {'name':'Candy Shop', 'color':'#fff8e1', 'font_color': '#d50000', 'button_color':'#ff5252', 'active_background':'#ff1744', 'active_font':'#ffffff'},
+            {'name':'Rose Garden', 'color':'#fff1f0', 'font_color': '#b71c1c', 'button_color':'#ef5350', 'active_background':'#d32f2f', 'active_font':'#ffffff'}
+            ]

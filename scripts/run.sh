@@ -1,1 +1,1 @@
-python ../src/main.py
+python ./src/poki_books.py
