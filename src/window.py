@@ -21,7 +21,7 @@ import os
 import json
 import shutil
 from functools import partial
-from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog, Label, END, Text
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog, Label
 from pathlib import Path
 from frames import NoteBook, make_full_frame
 from text_scroll import TextScrollCombo
@@ -29,7 +29,6 @@ from themes import AllThemes
 from menu import make_main_menu, info
 from defaults import *
 from basics import basic_button, basic_label, basic_entry
-import pkgutil
 import platform
 
 
@@ -85,7 +84,7 @@ class BookBot:
         self.help_menu     = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
         # Settings
-        self.settings_menu.add_command(label="Fullscreen", command=self.fullscreen)
+        self.settings_menu.add_command(label="Fullscreen", command=self.toggle_fullscreen)
         self.settings_menu.add_separator()
 
         self.settings_menu.add_command(label='Set default theme', command=self.not_implemented)
@@ -172,7 +171,7 @@ class BookBot:
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
         self.make_cache()
-
+        
         self.__root.mainloop()
 
     def make_cache(self): # Returns: None
@@ -219,7 +218,7 @@ class BookBot:
         """
         Not implemented
         """
-        return NotImplemented
+        self.not_implemented()
 
     def add_and_open(self): # Returns: None
         """
@@ -242,14 +241,8 @@ class BookBot:
             return path
 
     def clear_text_frame(self):
-        self.text_frame.txt.delete('1.0', END)
-        self.text_frame.txt.insert('1.0', "replaced")
-        self.text_frame.update()
+        self.text_frame.clear()
         
-
-    def dir_empty(self, dir_path): # Returns: bool
-        return not any((True for _ in os.scandir(dir_path))) 
-   
     def go_to_books(self):
         self.text_frame.grid_forget()
         self.all_books_menu.txt = Frame(self.all_books_menu, bg=COLOR)
@@ -257,15 +250,16 @@ class BookBot:
         self.all_books_menu.grid(column=0, row=0, sticky="nsew")
         i, j = 0, 0
         
-        if self.dir_empty(self.book_path):
+        if dir_empty(self.book_path):
             label = Label(
                 self.all_books_menu.txt,
                 text=f'No Books Added Yet',
                 font=(FONT, HEADING_SIZE),
+                bg=COLOR,
                 fg=FONT_COLOR,
                 activebackground=ACTIVE_BACKGROUND,
                 activeforeground=ACTIVE_FONT,
-                width=32
+                width=0
                 )
             label.grid(sticky='nesw', pady=10, padx=20)
             return
@@ -308,8 +302,8 @@ class BookBot:
         self.text_frame.set_scrollbar(path)
 
     # Enter fullscreen
-    def fullscreen(self):
-        self.__root.attributes("-fullscreen", True)
+    def toggle_fullscreen(self):
+        self.__root.attributes("-fullscreen", not self.__root.attributes('-fullscreen'))
         self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
     # change theme 
@@ -432,4 +426,8 @@ class BookBot:
 
     def not_implemented(self):
         """TODO: Add not implemented error"""
-        return NotImplemented
+        self.text_frame.insert("Error: Not Implemented")
+        
+def dir_empty(dir_path): # Returns: bool
+    return not any((True for _ in os.scandir(dir_path))) 
+   

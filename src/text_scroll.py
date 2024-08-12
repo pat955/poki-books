@@ -3,7 +3,7 @@
 
 """
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, END
 import json
 from defaults import FONT, HEADING_SIZE
 
@@ -42,15 +42,23 @@ class TextScrollCombo(tk.Frame):
         """
         insert text into textscrollcombo
         """
-        self.txt.insert('insert', text)
-        self.txt.grid(row=0, column=0, sticky='nsew')
-        self.txt.config(state='disabled')
+        self.txt.insert('1.0', text)
+        self.update()
+
+    def append(self, text, added_space=True, added_newline=False):
+        if added_space:
+            self.txt.insert(END,' '+text)
+        elif added_newline:
+            self.txt.insert(END,'\n'+text)
+        else:
+            self.txt.insert(END, text)
+
 
     def clear(self):
         """
-        Clear text, doesn't work well, redo
+        Clears all text
         """
-        self.txt.delete('1.0', 'end')
+        self.txt.delete('1.0', END)
         self.update()
 
     def set_scrollbar(self, book_path):
