@@ -2,7 +2,7 @@
 -- basics.py --
 
 """
-
+import os
 from tkinter import Button, Label, Entry
 from defaults import BUTTON_COLOR, FONT, FONT_SIZE, ACTIVE_BACKGROUND, ACTIVE_FONT, COLOR
 
@@ -27,3 +27,7 @@ def basic_label(root, name):
 
 def basic_entry(root):
     return Entry(root, bg=BUTTON_COLOR, highlightthickness=0)
+
+def dir_empty(dir_path): # Returns: bool
+    return not any((True for _ in os.scandir(dir_path))) 
+   
