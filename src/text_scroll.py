@@ -51,6 +51,7 @@ class TextScrollCombo(tk.Frame):
         Clear text, doesn't work well, redo
         """
         self.txt.delete('1.0', 'end')
+        self.update()
 
     def set_scrollbar(self, book_path):
         """
@@ -62,3 +63,19 @@ class TextScrollCombo(tk.Frame):
                 scrollbar_position = books_info[book_path]['scrollbar']
                 self.scrollb.set(*books_info[book_path]['scrollbar'])
                 self.txt.yview_moveto(scrollbar_position[0])
+    
+    def update(self):
+        self.txt.grid(row=0, column=0, sticky='nsew')
+        self.txt.config(state='disabled')
+
+    def reset_text(self):
+        self.txt = tk.Text(self)
+        self.txt.config(
+            font=(FONT, HEADING_SIZE),
+            highlightthickness=0,
+            borderwidth=0,
+            padx=10,
+            pady=10,
+            wrap='word',
+            relief='sunken'
+            )

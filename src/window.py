@@ -5,6 +5,7 @@ TODO:
 # Pictures
 # Better loading
 # Clean up code
+# Chapters?
 # Search
 # Bookmark
 # Highlight
@@ -14,16 +15,13 @@ TODO:
 # Pdf support
 # theme guide
 # No books added screen
-# fix spec files
-# changelog
-# Mac release
 """
 import tkinter as tk
 import os
 import json
 import shutil
 from functools import partial
-from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog, Label, END, Text
 from pathlib import Path
 from frames import NoteBook, make_full_frame
 from text_scroll import TextScrollCombo
@@ -42,10 +40,7 @@ class BookBot:
     def __init__(self):
         self.__root = Tk()
         self.__root.title("PokiBooks")
-        images = pkgutil.get_data( 'images', 'icon.png' )
-        icon_data = pkgutil.get_data('icon', 'icon.ico')
-        if icon_data == None:
-            icon_data = 'static/icon.png'
+        icon_data = 'static/icon.png'
             
         try:
             icon = tk.PhotoImage(file=icon_data)
@@ -59,11 +54,11 @@ class BookBot:
         if platform.system() == 'Windows':
             self.__root.state('zoomed')  # This works on Windows
         else:
-            self.__root.attributes("-zoomed", True)  # This works on some Unix systems (like Linux)
+            self.__root.attributes("-zoomed", True)  # This works on some Unix systems
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
-        self.current_book = None
 
+        self.current_book = None
         self.book_path = 'books/'
         self.cache_path = 'cache.json'
 
@@ -247,17 +242,34 @@ class BookBot:
             return path
 
     def clear_text_frame(self):
-        self.text_frame = TextScrollCombo(self.text_container)
-        self.text_frame.txt.config(bg=COLOR, fg=FONT_COLOR, font=(FONT, HEADING_SIZE))
-        self.text_frame.grid(column=0, row=0, sticky="nsew")
+        self.text_frame.txt.delete('1.0', END)
+        self.text_frame.txt.insert('1.0', "replaced")
+        self.text_frame.update()
+        
 
+    def dir_empty(self, dir_path): # Returns: bool
+        return not any((True for _ in os.scandir(dir_path))) 
+   
     def go_to_books(self):
         self.text_frame.grid_forget()
         self.all_books_menu.txt = Frame(self.all_books_menu, bg=COLOR)
         self.all_books_menu.txt.grid(row=0, column=0, sticky='nsew')
         self.all_books_menu.grid(column=0, row=0, sticky="nsew")
-        i = 0
-        j = 0
+        i, j = 0, 0
+        
+        if self.dir_empty(self.book_path):
+            label = Label(
+                self.all_books_menu.txt,
+                text=f'No Books Added Yet',
+                font=(FONT, HEADING_SIZE),
+                fg=FONT_COLOR,
+                activebackground=ACTIVE_BACKGROUND,
+                activeforeground=ACTIVE_FONT,
+                width=32
+                )
+            label.grid(sticky='nesw', pady=10, padx=20)
+            return
+        
         for file in os.scandir(self.book_path):
             if  i % 6 == 0:
                 j += 1
