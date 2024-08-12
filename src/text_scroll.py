@@ -52,7 +52,7 @@ class TextScrollCombo(tk.Frame):
             self.txt.insert(END,'\n'+text)
         else:
             self.txt.insert(END, text)
-
+        self.update()
 
     def clear(self):
         """

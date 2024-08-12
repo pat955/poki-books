@@ -1,10 +1,10 @@
 {
     "books": {
-        "notes": "\n\n",
+        "notes": "\n",
         "books/The_yellow_wallpaper.txt": {
             "scrollbar": [
                 0.0,
-                0.03064625850340136
+                1.0
             ],
             "notes": "\n"
         },
@@ -12,6 +12,20 @@
             "scrollbar": [
                 0.0,
                 0.03173469387755102
+            ],
+            "notes": "\n"
+        },
+        "books/sample4.csv": {
+            "scrollbar": [
+                0.0,
+                0.03173469387755102
+            ],
+            "notes": "\n"
+        },
+        "books/Tender is the Flesh -- Agustina Bazterrica -- 2020.mobi": {
+            "scrollbar": [
+                0.0,
+                1.0
             ],
             "notes": "\n"
         }

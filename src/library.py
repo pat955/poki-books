@@ -5,6 +5,7 @@ from pathlib import Path
 from tkinter import filedialog, Button, Label
 from defaults import * 
 from basics import dir_empty
+from book_types import load_book
 
 class Library:
     def __init__(self, window, folder_path='books/'):
@@ -84,17 +85,9 @@ class Library:
 
     def read(self, path): # Returns: None
         # self.cache_book()
-        self.current_book = path
-        self.notebook.change_book(self.current_book)
+        self.__window.current_book = path
+        self.notebook.change_book(self.__window.current_book)
 
         self.__window.check_entries()
         self.notebook.update()
-        self.__root.reset_text()
-
-        with open(path, 'r') as file:
-            self.__root.insert(file.read())
-            file.close()
-
-        self.__root.update()
-        self.__root.set_scrollbar(path)
-        file.close()
+        load_book(self.__root, path)
