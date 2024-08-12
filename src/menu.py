@@ -1,6 +1,9 @@
 """ 
 -- Menus.py --
 A separated libary for menu making instead of cluttering window module
+TODO:
+Add contact info
+Add info, about, faq, markdown
 """
 
 from tkinter import Menu
@@ -21,10 +24,9 @@ def info(window):
     """
     How to use and faq for bookbot
     """
-    window.clear_text_frame()
+    window.clear_text()
     # markdown_string = '# BookBot'
-    window.text_frame.insert(
-        'This is my first actual coding project so i apologize for any bugs!\nUpload txt files and read them, change theme and enter fullscreen.\nMy GitHub: @pat955')
+    window.text_frame.insert("Nothing here yet")
 
 def contact():
     """

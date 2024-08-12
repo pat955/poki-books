@@ -1,13 +1,15 @@
 """
 -- frames.py --
-
+TODO:
+Update function
 """
 import json
-from tkinter import Frame, Text
+from tkinter import Frame, Text, END
 from defaults import *
 
 class NoteBook:
-    """"
+    """
+
     """
     def __init__(self, parent_frame, cache_path):
         self.open = False
@@ -41,7 +43,7 @@ class NoteBook:
         """
         if self.open:
             self.text.config(state='disabled')
-            self.text.delete('1.0', 'end')
+            self.text.delete('1.0', END)
             self.frame.pack_forget()
             self.open = False
             return
@@ -53,8 +55,8 @@ class NoteBook:
 
     def update(self):
         if self.open:
-            self.text.delete('1.0', 'end')
-            self.text.insert('insert', self.get())
+            self.text.delete('1.0', END)
+            self.text.insert('1.0', self.get())
 
     def get(self):
         with open(self.cache_path, 'r') as file:
@@ -65,14 +67,3 @@ class NoteBook:
 
     def get_current(self):
         return self.text.get("1.0", 'end')
-
-
-def make_full_frame(root): # Returns: tkinter.Frame
-    """
-    Returns a frame with "fullscreen" config 
-    """
-    f = Frame(root)
-    f.columnconfigure(0, weight=1)
-    f.rowconfigure(0, weight=1)
-    f.grid(column=0, row=0, sticky="nsew")
-    return f

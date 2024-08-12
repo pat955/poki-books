@@ -2,7 +2,7 @@ import shutil
 import os
 from functools import partial
 from pathlib import Path
-from tkinter import filedialog, Frame, Button, Label
+from tkinter import filedialog, Button, Label
 from defaults import * 
 from basics import dir_empty
 
@@ -17,7 +17,7 @@ class Library:
         """
         Not implemented
         """
-        self.not_implemented()
+        self.__window.not_implemented()
 
 
     def add(self): # Returns: str 
@@ -32,7 +32,10 @@ class Library:
                 print(e)
             return path
 
-    def see_all(self):
+    def see_all(self): # Returns: None
+        """
+        Shows all books in books folder, presents them as buttons. 
+        """
         self.__root.clear()
         
         i, j = 0, 0
@@ -73,19 +76,19 @@ class Library:
 
     def add_and_open(self): # Returns: None
         """
-        Add book and open to instantly read
+        Add book through filedialog, and opens it to instantly read
         """
         path = self.add()
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
-    def read(self, path):
+    def read(self, path): # Returns: None
         # self.cache_book()
         self.current_book = path
-        # self.notebook.change_book(self.current_book)
+        self.notebook.change_book(self.current_book)
 
-        # self.check_entries()
-        # self.notebook.update()
+        self.__window.check_entries()
+        self.notebook.update()
         self.__root.reset_text()
 
         with open(path, 'r') as file:

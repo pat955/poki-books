@@ -1,6 +1,6 @@
 """ 
 -- window.py --
-bookbot window, all setup
+bookbot window setup
 TODO:
 # Pictures
 # Better loading
@@ -14,20 +14,19 @@ TODO:
 # Add error handling
 # Pdf support
 # theme guide
-# No books added screen
 """
 import tkinter as tk
 import os
 import json
 from library import Library
 from functools import partial
-from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, filedialog, Label
-from frames import NoteBook, make_full_frame
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu
+from notebook import NoteBook
 from text_scroll import TextScrollCombo
 from themes import AllThemes
 from menu import make_main_menu, info
 from defaults import *
-from basics import basic_button, basic_label, basic_entry
+from basics import basic_button, basic_label, basic_entry, make_full_frame
 import platform
 
 
@@ -108,7 +107,7 @@ class BookBot:
         # Book menu
         self.books_menu.add_command(label="Go to all books", command=self.library.see_all)
         self.books_menu.add_separator()
-        self.books_menu.add_command(label="Clear Text", command=self.clear_text_frame)
+        self.books_menu.add_command(label="Clear Text", command=self.clear_text)
         self.books_menu.add_command(label="Clear Cache", command=self.clear_cache)
         self.books_menu.add_command(label="Add book", command=self.library.add)
         self.books_menu.add_command(label="Remove book", command=self.library.remove)
@@ -154,7 +153,7 @@ class BookBot:
         self.center = Checkbutton(
             self.sidebar, bg=COLOR,
             highlightthickness=0,
-            command=self.center_text,
+            command=self.toggle_centered,
             text='Center text',
             font=(FONT, FONT_SIZE),
             fg=FONT_COLOR,
@@ -221,19 +220,11 @@ class BookBot:
             json.dump(data, file, indent=4)
             file.close()
 
-    
-
-    def clear_text_frame(self):
+    def clear_text(self): # Returns: None
         self.text_frame.clear()
-        
-
-    # Enter fullscreen
-    def toggle_fullscreen(self):
-        self.__root.attributes("-fullscreen", not self.__root.attributes('-fullscreen'))
-        self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
     # change theme 
-    def change_theme(
+    def change_theme( # Returns: None
             self,
             color=COLOR,
             font_color=FONT_COLOR,
@@ -266,7 +257,6 @@ class BookBot:
         self.sidebar.config(bg=COLOR)
         self.text_frame.config(bg=COLOR)
         self.menubar.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-
 
         self.settings_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
         self.books_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
@@ -322,7 +312,7 @@ class BookBot:
         """
         self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
 
-    def center_text(self): # Returns: None
+    def toggle_centered(self): # Returns: None
         """
         Centers text in main text frame in book_frame textscrollcombo
         """
@@ -341,6 +331,11 @@ class BookBot:
             self.sidebar.grid_remove()
         else:
             self.sidebar.grid()
+    
+    # Enter fullscreen
+    def toggle_fullscreen(self): # Returns: None
+        self.__root.attributes("-fullscreen", not self.__root.attributes('-fullscreen'))
+        self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
     def _quit(self): # Returns: None
         """
@@ -350,7 +345,7 @@ class BookBot:
         self.__root.quit()
         self.__root.destroy()
 
-    def not_implemented(self):
+    def not_implemented(self): # Returns: None
         """TODO: Add not implemented error"""
         self.text_frame.insert("Error: Not Implemented")
         
