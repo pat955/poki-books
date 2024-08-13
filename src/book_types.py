@@ -1,7 +1,8 @@
 import html.parser
 import mobi
-import epub
+from tika import parser
 import html
+from pypdf import PdfReader
 
 def load_book(text_frame, path): # Returns: None
     ext = get_extension(path)
@@ -15,6 +16,12 @@ def load_book(text_frame, path): # Returns: None
     
     elif ext == 'html':
         load_html(text_frame, path)
+    
+    elif ext == 'pdf':
+        load_pdf(text_frame, path)
+    
+    elif ext == 'epub':
+        load_epub(text_frame, path)
 
     elif not supported(ext):
         return NotImplementedError
@@ -26,6 +33,7 @@ def load_book(text_frame, path): # Returns: None
     text_frame.set_scrollbar(path)
 
 def get_extension(path):
+    "TODO: Improve with regex or add edgecases, this doesnt work: Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0"
     try:
         extension = path.split('.')[1]
         return extension
@@ -48,17 +56,30 @@ def load_mobi(text_frame, path):
     tempdir, filepath = mobi.extract(path)
     load_book(text_frame, filepath)
 
-def load_epub(path):
-    file = epub.open(path)
-    print(str(file.read))
-    file.close()
+def load_epub(text_frame, path):
+    parsed = parser.from_file(path)
+    text_frame.insert(parsed["content"])
 
 def load_html(text_frame, path):
     p = html.parser.HTMLParser
-        
+     
     with open(path, 'r') as f:
         text_frame.insert(f.read())
         f.close()
+
+def load_pdf(text_frame, path):
+    reader = PdfReader(path)
+    meta = reader.metadata
+    if meta:
+        if meta and meta.title:
+            text_frame.insert(meta.title)
+        if meta.author:
+            text_frame.append('by '+ meta.author, add_newline=True)   
+
+    for i in range(0, len(reader.pages)):
+        page = reader.pages[i]
+        text = page.extract_text()
+        text_frame.append(text, add_space=False)
 
 def supported(extension): # Returns: bool
     supported_type = ['txt', 'mobi']

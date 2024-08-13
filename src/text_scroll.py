@@ -45,10 +45,10 @@ class TextScrollCombo(tk.Frame):
         self.txt.insert('1.0', text)
         self.update()
 
-    def append(self, text, added_space=True, added_newline=False):
-        if added_space:
+    def append(self, text, add_space=False, add_newline=False):
+        if add_space:
             self.txt.insert(END,' '+text)
-        elif added_newline:
+        elif add_newline:
             self.txt.insert(END,'\n'+text)
         else:
             self.txt.insert(END, text)

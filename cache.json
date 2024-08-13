@@ -28,6 +28,41 @@
                 1.0
             ],
             "notes": "\n"
+        },
+        "books/Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/epub.epub": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/test.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Test PDF-8mb.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Sample.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
         }
     }
 }
