@@ -8,6 +8,7 @@ I made this reader because I love reading but I didn't have a reader app I reall
 Originally this started as a count words in a text file project, however i kept building on it until it became something i actually use!
 
 # Quick Start
+
 ### Clone project
 ```
 git clone https://github.com/pat955/poki_books
@@ -21,17 +22,18 @@ cd poki_books
 python ./src/main.py
 ```
 
-# Functions
-* Read books and texts!
-* Upload own files (txt)
-* Saves your scrollbar position for each book
+# Usage 
+* Supported formats: .txt, .epub, .mobi, .pdf, .html(still need to improve html)
+* Upload books
+* Read books and texts
+* Saves your scrollbar position for each book so you avoid scrolling forever each time
 * Take notes for each book 
 * Themes
 * Fullscreen
+* Toggle sidebar
 * Customize text size, padding and justification
   
 # Plans
-* More format support (epub, mobi, pdf)
 * Add Contact info and how to use section
 * Pictures, maybe api gets book covers, goodreads API?
 * Clean up code
@@ -41,11 +43,16 @@ python ./src/main.py
 * Keybinds
 * Button back to top
 * Page numbers?
-* Fix bugs
-* *Logo* (Done!)
-* *Better name* (Done!)
-* *Themes with fonts and font sizes* (Done!)
-* *More themes, especially some that strain your eyes less* (Done!)
+
+# Done
+* ePub support
+* mobi support
+* pdf support
+* Logo
+* Linux, windows & macOs release
+* Better name
+* Themes with fonts and font sizes
+* More themes, especially some that strain your eyes less
 
 Python version: 3.10.12
 
