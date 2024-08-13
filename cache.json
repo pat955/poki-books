@@ -1,0 +1,75 @@
+{
+    "books": {
+        "notes": "\n",
+        "books/The_yellow_wallpaper.txt": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Gone girl.txt": {
+            "scrollbar": [
+                0.0,
+                0.03173469387755102
+            ],
+            "notes": "\n"
+        },
+        "books/sample4.csv": {
+            "scrollbar": [
+                0.0,
+                0.03173469387755102
+            ],
+            "notes": "\n"
+        },
+        "books/Tender is the Flesh -- Agustina Bazterrica -- 2020.mobi": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0.epub": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/epub.epub": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/test.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Test PDF-8mb.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Sample.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/txt.txt": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        }
+    }
+}

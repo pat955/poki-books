@@ -1,9 +1,9 @@
 """
--- text_scroll_combo.py --
+-- text_scroll.py --
 
 """
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, END
 import json
 from defaults import FONT, HEADING_SIZE
 
@@ -38,19 +38,32 @@ class TextScrollCombo(tk.Frame):
         self.txt['yscrollcommand'] = self.scrollb.set
 
 
-    def insert(self, text):
+    def insert(self, text, pos='1.0'):
+        self.txt.config(state='normal')
+
         """
         insert text into textscrollcombo
         """
-        self.txt.insert('insert', text)
-        self.txt.grid(row=0, column=0, sticky='nsew')
-        self.txt.config(state='disabled')
+        self.txt.insert(pos, text)
+        self.update()
+
+    def append(self, text, add_space=False, add_newline=False):
+
+        if add_space:
+            self.insert(' '+text, END)
+        elif add_newline:
+            self.insert('\n'+text, END)
+        else:
+            self.insert(text, END)
+        self.update()
 
     def clear(self):
         """
-        Clear text, doesn't work well, redo
+        Clears all text
         """
-        self.txt.delete('1.0', 'end')
+        self.txt.config(state='normal')
+        self.txt.delete('1.0', END)
+        self.update()
 
     def set_scrollbar(self, book_path):
         """
@@ -62,3 +75,19 @@ class TextScrollCombo(tk.Frame):
                 scrollbar_position = books_info[book_path]['scrollbar']
                 self.scrollb.set(*books_info[book_path]['scrollbar'])
                 self.txt.yview_moveto(scrollbar_position[0])
+    
+    def update(self):
+        self.txt.grid(row=0, column=0, sticky='nsew')
+        self.txt.config(state='disabled')
+
+    def reset_text(self):
+        self.txt = tk.Text(self)
+        self.txt.config(
+            font=(FONT, HEADING_SIZE),
+            highlightthickness=0,
+            borderwidth=0,
+            padx=10,
+            pady=10,
+            wrap='word',
+            relief='sunken'
+            )
