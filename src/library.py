@@ -1,3 +1,11 @@
+"""
+-- library.py --
+TODO:
+add remove function
+add docs
+
+"""
+
 import shutil
 import os
 from functools import partial

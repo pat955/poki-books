@@ -1,5 +1,5 @@
 """ 
--- Menus.py --
+-- menu.py --
 A separated libary for menu making instead of cluttering window module
 TODO:
 Add contact info

@@ -1,3 +1,9 @@
+"""
+-- book_types.py --
+load book based on type. 
+"""
+
+
 import html.parser
 import mobi
 from tika import parser
@@ -7,27 +13,19 @@ from pypdf import PdfReader
 def load_book(text_frame, path): # Returns: None
     ext = get_extension(path)
     text_frame.reset_text()
-
-    if ext == 'txt':
-        load_txt(text_frame, path)
-
-    elif ext == 'mobi':
-        load_mobi(text_frame, path)
-    
-    elif ext == 'html':
-        load_html(text_frame, path)
-    
-    elif ext == 'pdf':
-        load_pdf(text_frame, path)
-    
-    elif ext == 'epub':
-        load_epub(text_frame, path)
-
-    elif not supported(ext):
-        return NotImplementedError
-    
-    else:
+    types = {
+        'txt':load_txt, 
+        'mobi':load_mobi, 
+        'html':load_html, 
+        'pdf':load_pdf, 
+        'epub':load_epub
+        }
+    try:
+        types[ext](text_frame, path)
+    except Exception as e:
+        print(e)
         print(path, 'unknown error')
+        return NotImplementedError
 
     text_frame.update()
     text_frame.set_scrollbar(path)
@@ -47,11 +45,16 @@ def get_extension(path):
     return ''
 
 def load_txt(text_frame, path):
+    "test out print per line to make it quicker"
+    # with open(path, 'rb') as f:
+    #     for line in f:
+    #         text_frame.append(f.read())
+    # f.close()
     with open(path, 'r') as f:
         text_frame.insert(f.read())
         f.close()
 
-def load_mobi(text_frame, path):
+def load_mobi(text_frame, path): # Returns: None
     "TODO: delete tempdir"
     tempdir, filepath = mobi.extract(path)
     load_book(text_frame, filepath)
@@ -60,21 +63,21 @@ def load_epub(text_frame, path):
     parsed = parser.from_file(path)
     text_frame.insert(parsed["content"])
 
-def load_html(text_frame, path):
+def load_html(text_frame, path): # Returns: None
     p = html.parser.HTMLParser
      
     with open(path, 'r') as f:
         text_frame.insert(f.read())
         f.close()
 
-def load_pdf(text_frame, path):
+def load_pdf(text_frame, path): # Returns: None
     reader = PdfReader(path)
     meta = reader.metadata
     if meta:
         if meta.title:
             text_frame.insert(meta.title)
         if meta.author:
-            text_frame.append('by '+ meta.author+'\n', add_newline=True)   
+            text_frame.append('by '+ meta.author+'\n\n', add_newline=True)   
 
     for page in reader.pages:
         text = page.extract_text()

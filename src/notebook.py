@@ -1,7 +1,6 @@
 """
--- frames.py --
-TODO:
-Update function
+-- notebook.py --
+
 """
 import json
 from tkinter import Frame, Text, END

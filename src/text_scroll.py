@@ -1,5 +1,5 @@
 """
--- text_scroll_combo.py --
+-- text_scroll.py --
 
 """
 import tkinter as tk
@@ -61,6 +61,7 @@ class TextScrollCombo(tk.Frame):
         """
         Clears all text
         """
+        self.txt.config(state='normal')
         self.txt.delete('1.0', END)
         self.update()
 

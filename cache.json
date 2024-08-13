@@ -63,6 +63,13 @@
                 1.0
             ],
             "notes": "\n"
+        },
+        "books/txt.txt": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
         }
     }
 }
