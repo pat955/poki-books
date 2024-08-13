@@ -12,8 +12,7 @@ TODO:
 # Keybinds
 # Back to top button
 # Add error handling
-# Pdf support
-# theme guide
+# user added themes
 """
 import tkinter as tk
 import os
@@ -21,7 +20,7 @@ import json
 from library import Library
 from functools import partial
 from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu
-from notebook import NoteBook
+from notes import NoteBook
 from text_scroll import TextScrollCombo
 from themes import AllThemes
 from menu import make_main_menu, info

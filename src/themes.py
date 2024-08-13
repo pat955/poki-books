@@ -2,7 +2,6 @@
 -- themes.py --
 
 """
-import ast
 from functools import partial
 from defaults import * 
 
