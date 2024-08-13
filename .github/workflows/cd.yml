@@ -181,7 +181,7 @@ jobs:
         run: |
           echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
           TAGS=($(git tag --sort=-creatordate))
-          CHANGELOG_TAG=${TAGS[2]}
+          CHANGELOG_TAG=${TAGS[1]}
           echo "CHANGELOG_TAG=${CHANGELOG_TAG}" >> $GITHUB_ENV
 
       - name: Make Changelog
