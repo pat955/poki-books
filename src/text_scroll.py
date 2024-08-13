@@ -38,20 +38,23 @@ class TextScrollCombo(tk.Frame):
         self.txt['yscrollcommand'] = self.scrollb.set
 
 
-    def insert(self, text):
+    def insert(self, text, pos='1.0'):
+        self.txt.config(state='normal')
+
         """
         insert text into textscrollcombo
         """
-        self.txt.insert('1.0', text)
+        self.txt.insert(pos, text)
         self.update()
 
     def append(self, text, add_space=False, add_newline=False):
+
         if add_space:
-            self.txt.insert(END,' '+text)
+            self.insert(' '+text, END)
         elif add_newline:
-            self.txt.insert(END,'\n'+text)
+            self.insert('\n'+text, END)
         else:
-            self.txt.insert(END, text)
+            self.insert(text, END)
         self.update()
 
     def clear(self):

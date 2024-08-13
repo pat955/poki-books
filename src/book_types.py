@@ -71,13 +71,12 @@ def load_pdf(text_frame, path):
     reader = PdfReader(path)
     meta = reader.metadata
     if meta:
-        if meta and meta.title:
+        if meta.title:
             text_frame.insert(meta.title)
         if meta.author:
-            text_frame.append('by '+ meta.author, add_newline=True)   
+            text_frame.append('by '+ meta.author+'\n', add_newline=True)   
 
-    for i in range(0, len(reader.pages)):
-        page = reader.pages[i]
+    for page in reader.pages:
         text = page.extract_text()
         text_frame.append(text, add_space=False)
 
