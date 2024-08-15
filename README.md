@@ -8,7 +8,7 @@ Originally, this started as a simple "count words in a text file" task, however 
 The main reason i continued working on this project is because I love reading, but I didn't have an eReader I really liked.
 
 # Download
-Download latest release: [HERE](https://github.com/octo-org/octo-repo/releases/latest)
+Download latest release: [HERE](https://github.com/pat955/poki_books/releases/latest)
 
 Remember to choose the one based on your operating system!
 
