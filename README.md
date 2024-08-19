@@ -24,17 +24,7 @@ Alternatively, if you want to run the app through terminal, follow the steps in 
 * Take notes for each book
 * Customize appearance with themes, font size, justification and padding 
 * Toggle fullscreen and sizebar 
-  
-# Plans
-* Add contact info and how to use section
-* Pictures, maybe api gets book covers, goodreads API?
-* Clean up code, add documentation, better structure, fix bugs
-* Search, bookmarking, highlighting
-* Switch to sql db
-* Keybinds, back to top button
-* Page numbers for pdf or when available.
-* Recognize chapters?
-  
+
 # Contributing
 Python version: 3.10.12
 ### Clone project
@@ -64,9 +54,17 @@ go test ./...
 
 If you'd like to contribute, please fork the repository and open a pull request to the `main` branch.
 
-## Completed Plans
+# Plans
+- [ ] Add contact info and how to use section
+- [ ] Pictures, maybe api gets book covers, goodreads API?
+- [ ] Clean up code, add documentation, better structure, fix bugs
+- [ ] Search, bookmarking, highlighting
+- [ ] Switch to sql db
+- [ ] Keybinds, back to top button
+- [ ] Page numbers for pdf or when available.
+- [ ] Recognize chapters?
 
-* ePub, pdf & mobi support
-* Simple logo & better name
-* Linux, windows & macOs release
-* Themes with fonts and font sizes & more themes
+- [x] ePub, pdf & mobi support
+- [x] Simple logo & better name
+- [x] Linux, windows & macOs release
+- [x] Themes with fonts and font sizes & more themes
