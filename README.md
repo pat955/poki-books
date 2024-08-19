@@ -54,16 +54,16 @@ go test ./...
 
 If you'd like to contribute, please fork the repository and open a pull request to the `main` branch.
 
-# Plans
+# Roadmap
+- [ ] Switch to sql db
+- [ ] Keybinds, back to top button
 - [ ] Add contact info and how to use section
 - [ ] Pictures, maybe api gets book covers, goodreads API?
 - [ ] Clean up code, add documentation, better structure, fix bugs
 - [ ] Search, bookmarking, highlighting
-- [ ] Switch to sql db
-- [ ] Keybinds, back to top button
 - [ ] Page numbers for pdf or when available.
 - [ ] Recognize chapters?
-
+## 
 - [x] ePub, pdf & mobi support
 - [x] Simple logo & better name
 - [x] Linux, windows & macOs release
