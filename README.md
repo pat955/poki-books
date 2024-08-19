@@ -47,7 +47,7 @@ python ./src/poki_books.py
 ### Run the tests
 
 ```bash
-go test ./...
+python -m unittest discover -s ./tests/ -p 'test_*.py'
 ```
 
 ### Submit a pull request
