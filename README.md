@@ -1,5 +1,4 @@
-# PokiBooks
-![code coverage badge](https://github.com/pat955/poki_books/actions/workflows/ci.yml/badge.svg)
+# PokiBooks ![code coverage badge](https://github.com/pat955/poki_books/actions/workflows/ci.yml/badge.svg)
 
 This is PokiBooks, a simple and clean eReader. Read books from txt, pdf, mobi or epub files, keep notes for each book, as well as customize layout, appearance and font size.
 
