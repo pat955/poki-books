@@ -9,7 +9,7 @@ import mobi
 from tika import parser
 import html
 from pypdf import PdfReader
-from tkinter_html import html_to_dict
+from tkinter_html import parse_html
 
 def load_book(text_frame, path): # Returns: None
     ext = get_extension(path)
@@ -65,11 +65,9 @@ def load_epub(text_frame, path):
     text_frame.insert(parsed["content"])
 
 def load_html(text_frame, path): # Returns: None 
-    html_dict = {}
     with open(path, 'r') as f:
 
-        html_to_dict(f.read(), html_dict)
-        text_frame.insert(str(html_dict))
+        text_frame.insert(str(parse_html(f.read())))
        
             
         f.close()
