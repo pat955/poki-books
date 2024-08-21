@@ -9,6 +9,7 @@ import mobi
 from tika import parser
 import html
 from pypdf import PdfReader
+from tkinter_html import html_to_dict
 
 def load_book(text_frame, path): # Returns: None
     ext = get_extension(path)
@@ -20,12 +21,12 @@ def load_book(text_frame, path): # Returns: None
         'pdf':load_pdf, 
         'epub':load_epub
         }
-    try:
-        types[ext](text_frame, path)
-    except Exception as e:
-        print(e)
-        print(path, 'unknown error')
-        return NotImplementedError
+    # try:
+    types[ext](text_frame, path)
+    # except Exception as e:
+    #     print(e)
+    #     print(path, 'unknown error')
+    #     return NotImplementedError
 
     text_frame.update()
     text_frame.set_scrollbar(path)
@@ -63,11 +64,14 @@ def load_epub(text_frame, path):
     parsed = parser.from_file(path)
     text_frame.insert(parsed["content"])
 
-def load_html(text_frame, path): # Returns: None
-    p = html.parser.HTMLParser
-     
+def load_html(text_frame, path): # Returns: None 
+    html_dict = {}
     with open(path, 'r') as f:
-        text_frame.insert(f.read())
+
+        html_to_dict(f.read(), html_dict)
+        text_frame.insert(str(html_dict))
+       
+            
         f.close()
 
 def load_pdf(text_frame, path): # Returns: None
