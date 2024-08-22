@@ -317,8 +317,7 @@ class BookBot:
         Centers text in main text frame in book_frame textscrollcombo
         """
         if self.center_var.get():
-            self.text_frame.txt.tag_configure("center", justify='center')
-            self.text_frame.txt.tag_add("center", "1.0", "end")
+            self.text_frame.toggle_center()
         else:
             self.text_frame.txt.tag_delete('center')
         self.text_frame.grid()
