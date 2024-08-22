@@ -77,6 +77,13 @@
                 1.0
             ],
             "notes": "\n"
+        },
+        "books/sample3.html": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
         }
     }
 }

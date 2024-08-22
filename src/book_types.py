@@ -4,11 +4,10 @@ load book based on type.
 """
 
 
-import html.parser
 import mobi
 from tika import parser
-import html
 from pypdf import PdfReader
+from text_scroll import *
 from tkinter_html import parse_html
 
 def load_book(text_frame, path): # Returns: None
@@ -66,9 +65,7 @@ def load_epub(text_frame, path):
 
 def load_html(text_frame, path): # Returns: None 
     with open(path, 'r') as f:
-
-        text_frame.insert(str(parse_html(f.read())))
-       
+        parse_html(text_frame, f.read())
             
         f.close()
 

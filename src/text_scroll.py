@@ -6,6 +6,7 @@ import tkinter as tk
 from tkinter import ttk, END
 import json
 from defaults import FONT, HEADING_SIZE
+from basics import make_full_frame
 
 class TextScrollCombo(tk.Frame):
     """
@@ -15,6 +16,8 @@ class TextScrollCombo(tk.Frame):
         super().__init__(*args, **kwargs)
         self.book_path = 'books/'
         self.cache_path = 'cache.json'
+        self.multi_block = False
+        self.text_blocks = []
 
     # implement stretchability
         self.grid_rowconfigure(0, weight=1)
@@ -61,6 +64,9 @@ class TextScrollCombo(tk.Frame):
         """
         Clears all text
         """
+        if self.multi_block:
+            self.text_blocks = []
+            return
         self.txt.config(state='normal')
         self.txt.delete('1.0', END)
         self.update()
@@ -74,15 +80,28 @@ class TextScrollCombo(tk.Frame):
             if book_path in books_info:
                 scrollbar_position = books_info[book_path]['scrollbar']
                 self.scrollb.set(*books_info[book_path]['scrollbar'])
+                if self.multi_block:
+                    for block in self.text_blocks:
+                        block.yview_moveto(scrollbar_position[0])
+                    return    
                 self.txt.yview_moveto(scrollbar_position[0])
     
     def update(self):
+        if self.multi_block:
+            for block in self.text_blocks:
+                block.grid(row=0, column=0, sticky='nsew')
+                block.config(state='disabled')
+            return
         self.txt.grid(row=0, column=0, sticky='nsew')
         self.txt.config(state='disabled')
 
+
     def reset_text(self):
-        self.txt = tk.Text(self)
-        self.txt.config(
+        self.txt = self.new_text(self)
+    
+    def new_text(self, root):
+        txt = tk.Text(root)
+        txt.config(
             font=(FONT, HEADING_SIZE),
             highlightthickness=0,
             borderwidth=0,
@@ -91,3 +110,30 @@ class TextScrollCombo(tk.Frame):
             wrap='word',
             relief='sunken'
             )
+        return txt
+
+    def toggle_multiblock(self, keep=False):
+        if self.multi_block:
+            print(NotImplementedError)
+            return
+        if keep:
+            print(NotImplementedError)
+            return
+        self.multi_block = True
+        self.txt = make_full_frame(self)
+
+    def insert_block(self, text):
+        # compare if same TODO
+        if not self.multi_block:
+            print('MULTIBLOCK NOT ENABLED')
+            return
+        
+        new_block = self.new_text(self.txt)
+        i = len(self.text_blocks)
+        new_block.insert('1.0', text)
+
+        new_block.grid(row=i, column=0, sticky='nsew')
+        new_block.config(state='disabled')
+        self.text_blocks.append(new_block)
+
+
