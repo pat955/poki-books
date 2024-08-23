@@ -9,15 +9,24 @@ def parse_html(text_frame, text):
         insert(text_frame, title(soup), 'h1')
     except AttributeError:
         print('No title error')
-    body = soup.find_all('p')
-    for paragraph in body:
-        append(text_frame, paragraph.string.extract())
-
-
+    contents_r(text_frame, soup)
+    
+def contents_r(text_frame, soup):
+    for tag in soup.descendants:
+        try:
+            append(text_frame, tag.string.extract())
+        except TypeError:
+            contents_r(text_frame, tag)
+        except AttributeError as e:
+            try:
+                contents_r(text_frame, tag)
+            except Exception as e:
+                print(e)
+                continue
+    
 
 def title(soup):
-   return soup.title.string.extract()
-
+    return soup.title.string.extract()
 
 def insert(text_frame, text, tag=None):
     text_frame.txt.write(text, tag)
