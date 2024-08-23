@@ -40,9 +40,6 @@ class TextScrollCombo(tk.Frame):
                 scrollbar_position = books_info[book_path]['scrollbar']
                 self.scrollb.set(*books_info[book_path]['scrollbar']) 
                 self.txt.yview_moveto(scrollbar_position[0])
-    
-    def clear(self):
-        self.txt.clear()
 
     def reset(self):
         self.txt = TextBlock(self).New()
@@ -51,12 +48,26 @@ class TextScrollCombo(tk.Frame):
         self.scrollb.grid(row=0, column=1, sticky='nsew')
         self.txt['yscrollcommand'] = self.scrollb.set
 
+    def clear_text(self):
+        self.txt.clear()
+
+    def insert_text(self, text, tag=None, pos='1.0'):
+        self.txt.write(text, tag, pos)
+        
+    def append_text(self, text, tag=None, add_space=False, add_newline=False):
+        self.txt.append(text, tag, add_space, add_newline)
+
+    def center_text(self):
+        self.txt.toggle_center()
+
+    def update_text(self, pos_row=0, pos_column=0, sticky_dir='nsew'):
+        self.txt.update(pos_row, pos_column, sticky_dir)
 
 class TextBlock(tk.Text):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.tag_configure("bold", font=(FONT, FONT_SIZE, "bold"))
-        self.tag_configure("h1", font=(FONT, HEADING_SIZE))
+        self.tag_configure("h1", font=(FONT, H1))
         self.tag_configure("italic", font=(FONT, FONT_SIZE, "italic"))
         self.tag_configure("center", justify='center')
         self.centered = False
@@ -112,3 +123,4 @@ class TextBlock(tk.Text):
         else:
             self.tag_remove('center', "1.0", END)
         self.centered = not self.centered
+

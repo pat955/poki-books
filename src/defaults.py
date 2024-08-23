@@ -10,6 +10,7 @@ global FONT_COLOR
 global ACTIVE_FONT
 global FONT_SIZE
 global HEADING_SIZE
+global H1
 
 COLOR = 'white'
 BUTTON_COLOR = 'lavender'
@@ -18,4 +19,5 @@ FONT = 'Times New Roman'
 FONT_COLOR = 'black'
 ACTIVE_FONT = 'black'
 FONT_SIZE = 12
-HEADING_SIZE = 15
+HEADING_SIZE = 16
+H1 = 30

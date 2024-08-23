@@ -18,7 +18,8 @@ def load_book(text_frame, path): # Returns: None
         'mobi':load_mobi, 
         'html':load_html, 
         'pdf':load_pdf, 
-        'epub':load_epub
+        'epub':load_epub,
+        'csv':load_txt
         }
     # try:
     types[ext](text_frame, path)
@@ -51,7 +52,7 @@ def load_txt(text_frame, path):
     #         text_frame.append(f.read())
     # f.close()
     with open(path, 'r') as f:
-        text_frame.insert(f.read())
+        text_frame.insert_text(f.read())
         f.close()
 
 def load_mobi(text_frame, path): # Returns: None
@@ -61,7 +62,7 @@ def load_mobi(text_frame, path): # Returns: None
 
 def load_epub(text_frame, path):
     parsed = parser.from_file(path)
-    text_frame.insert(parsed["content"])
+    text_frame.insert_text(parsed["content"])
 
 def load_html(text_frame, path): # Returns: None 
     with open(path, 'r') as f:
@@ -74,14 +75,10 @@ def load_pdf(text_frame, path): # Returns: None
     meta = reader.metadata
     if meta:
         if meta.title:
-            text_frame.insert(meta.title)
+            text_frame.insert_text(meta.title)
         if meta.author:
-            text_frame.append('by '+ meta.author+'\n\n', add_newline=True)   
+            text_frame.append_text('by '+ meta.author+'\n\n', add_newline=True)   
 
     for page in reader.pages:
         text = page.extract_text()
-        text_frame.append(text, add_space=False)
-
-def supported(extension): # Returns: bool
-    supported_type = ['txt', 'mobi']
-    return extension in supported_type
+        text_frame.append_text(text, add_space=False)

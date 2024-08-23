@@ -12,7 +12,6 @@ TODO:
 # Keybinds
 # Back to top button
 # Add error handling
-# Pdf support
 # theme guide
 """
 import tkinter as tk
@@ -221,7 +220,7 @@ class BookBot:
             file.close()
 
     def clear_text(self): # Returns: None
-        self.text_frame.clear()
+        self.text_frame.clear_text()
 
     # change theme 
     def change_theme( # Returns: None
@@ -316,7 +315,7 @@ class BookBot:
         """
         Centers text in main text frame in book_frame textscrollcombo
         """
-        self.text_frame.txt.toggle_center()
+        self.text_frame.center_text()
         
     def toggle_sidebar(self): # Returns: None
         """

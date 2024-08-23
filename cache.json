@@ -3,10 +3,10 @@
         "notes": "\n",
         "books/The_yellow_wallpaper.txt": {
             "scrollbar": [
-                0.0,
-                1.0
+                0.06159744408945687,
+                0.06212502473917838
             ],
-            "notes": "\n"
+            "notes": "\n\n"
         },
         "books/Gone girl.txt": {
             "scrollbar": [
@@ -79,6 +79,20 @@
             "notes": "\n"
         },
         "books/sample3.html": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/pdf.pdf": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
+        },
+        "books/Tender_Is_The_Flesh.mobi": {
             "scrollbar": [
                 0.0,
                 1.0
