@@ -3,9 +3,10 @@ from bs4 import BeautifulSoup
 
 def parse_html(text_frame, text):
     soup = BeautifulSoup(text, 'html.parser')
-    tags = ['big', 'medium', 'small']
+    tags = ['h1', 'italic', 'bold']
     for line in soup.contents:
-        text_frame.txt.write(line, random.choice(tags))
+        for i in line:
+            text_frame.txt.write(i, random.choice(tags))
 
    
 

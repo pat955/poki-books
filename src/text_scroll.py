@@ -5,7 +5,7 @@
 import tkinter as tk
 from tkinter import ttk, END
 import json
-from defaults import FONT, HEADING_SIZE
+from defaults import *
 
 class TextScrollCombo(tk.Frame):
     """
@@ -55,9 +55,12 @@ class TextScrollCombo(tk.Frame):
 class TextBlock(tk.Text):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.tag_configure("big", font=("Helvetica", 20, "bold"))
-        self.tag_configure("medium", font=("Helvetica", 15))
-        self.tag_configure("small", font=("Helvetica", 10, "italic"))
+        self.tag_configure("bold", font=(FONT, FONT_SIZE, "bold"))
+        self.tag_configure("h1", font=(FONT, HEADING_SIZE))
+        self.tag_configure("italic", font=(FONT, FONT_SIZE, "italic"))
+        self.tag_configure("center", justify='center')
+        self.centered = False
+
 
     def New(self):
         self.config(
@@ -103,31 +106,9 @@ class TextBlock(tk.Text):
         self.delete('1.0', END)
         self.update()
 
-
-
-        # def toggle_center(self):
-    #     self.centered = not self.centered
-    #     if self.blocks_enabled:
-    #         self.toggle_center_blocks()
-    #         return
-        
-    #     if not self.centered:
-    #         self.txt.tag_configure("center", justify='center')
-    #         self.txt.tag_add("center", "1.0", "end")
-    #         return
-    #     self.txt.tag_delete("center")
-
-    # def toggle_center_blocks(self):
-    #     if not self.centered:
-    #         self.block_wrapper(TextBlock.tag_configure, "center", justify="center")
-    #         self.block_wrapper(TextBlock.tag_add, "center", "1.0", "end")
-    #     else:
-    #         self.block_wrapper(TextBlock.tag_delete, "center")
-
-    # def block_wrapper(self, func, *args, **kwargs):
-    #     # if not self.blocks_enabled:
-    #     #     print('ERRROORORORORO')
-    #     #     return
-    #     for block in self.text_blocks:
-    #         func(block, args, kwargs)
-    #         print(block.tag_names(index=None))
+    def toggle_center(self):
+        if not self.centered:
+            self.tag_add("center", "1.0", END)
+        else:
+            self.tag_remove('center', "1.0", END)
+        self.centered = not self.centered

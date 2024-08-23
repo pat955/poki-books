@@ -153,7 +153,7 @@ class BookBot:
         self.center = Checkbutton(
             self.sidebar, bg=COLOR,
             highlightthickness=0,
-            command=self.toggle_centered,
+            command=self.center,
             text='Center text',
             font=(FONT, FONT_SIZE),
             fg=FONT_COLOR,
@@ -312,16 +312,12 @@ class BookBot:
         """
         self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
 
-    def toggle_centered(self): # Returns: None
+    def center(self): # Returns: None
         """
         Centers text in main text frame in book_frame textscrollcombo
         """
-        if self.center_var.get():
-            self.text_frame.toggle_center()
-        else:
-            self.text_frame.txt.tag_delete('center')
-        self.text_frame.grid()
-
+        self.text_frame.txt.toggle_center()
+        
     def toggle_sidebar(self): # Returns: None
         """
         Toggles sidebar
@@ -329,7 +325,7 @@ class BookBot:
         if self.sidebar.winfo_viewable():
             self.sidebar.grid_remove()
         else:
-            self.sidebar.grid()
+            self.sidebar.grid(column=1, row=0, sticky="ens")
     
     # Enter fullscreen
     def toggle_fullscreen(self): # Returns: None
