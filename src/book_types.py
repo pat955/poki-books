@@ -12,7 +12,7 @@ from tkinter_html import parse_html
 
 def load_book(text_frame, path): # Returns: None
     ext = get_extension(path)
-    text_frame.reset_text()
+    text_frame.reset()
     types = {
         'txt':load_txt, 
         'mobi':load_mobi, 
