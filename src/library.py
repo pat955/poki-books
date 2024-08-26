@@ -45,7 +45,7 @@ class Library:
         """
         Shows all books in books folder, presents them as buttons. 
         """
-        self.__root.clear()
+        self.__root.clear_text()
         
         i, j = 0, 0
         
@@ -53,14 +53,15 @@ class Library:
             label = Label(
                 self.__root.txt,
                 text=f'No Books Added Yet',
-                font=(FONT, HEADING_SIZE),
+                font=(FONT, H1),
                 bg=COLOR,
                 fg=FONT_COLOR,
                 activebackground=ACTIVE_BACKGROUND,
                 activeforeground=ACTIVE_FONT,
-                width=0
+                width=0,
+                justify='center'
                 )
-            label.grid(sticky='nesw', pady=10, padx=20)
+            label.grid(sticky='nesw', pady=20, padx=20)
             return
         
         for file in os.scandir(self.folder_path):
