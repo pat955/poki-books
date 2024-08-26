@@ -14,13 +14,13 @@ Download latest release: [github.com/pat955/poki_books/releases/latest](https://
 Remember to choose the one based on your operating system!
 
 Test it out with any book from [Project Gutenberg](https://www.gutenberg.org/). Project Gutenberg is an archive of books available in the public domain free of charge. I recommend reading Frankenstein!
-Current supported formats are: **.txt, .pdf, .epub and .mobi**
+Current supported formats are: **.txt, .pdf, .epub, .mobi and .html**
 
 Alternatively, if you want to run the app through terminal, follow the steps in the [Contributing section](#Contributing)
 
 # Features 
 * Upload and read any .txt, pdf, mobi or epub file with ease!
-* Current supported formats include .txt, .epub, .mobi, .pdf and .html(still needs improvement regarding html)
+* Current supported formats include .txt, .epub, .mobi, .pdf and .html(still improving html)
 * Saves your scrollbar position for each book so you avoid scrolling forever each time
 * Take notes for each book
 * Customize appearance with themes, font size, justification and padding 
