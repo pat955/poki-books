@@ -12,7 +12,8 @@ def parse_html(text_frame, text):
     contents_r(text_frame, soup)
     
 def contents_r(text_frame, soup):
-    for tag in soup.descendants:
+    print(soup.find_all())
+    for tag in soup.find_all():
         try:
             append(text_frame, tag.string.extract())
         except TypeError:
