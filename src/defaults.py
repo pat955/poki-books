@@ -21,3 +21,4 @@ ACTIVE_FONT = 'black'
 FONT_SIZE = 12
 HEADING_SIZE = 16
 H1 = 30
+
