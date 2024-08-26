@@ -4,7 +4,9 @@ Initializes window that starts the bookbot program
 """
 from window import BookBot
 
-def main():
+
+def main() -> None:
     BookBot()
+
 
 main()

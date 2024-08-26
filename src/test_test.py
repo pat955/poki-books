@@ -4,12 +4,14 @@ this test will auto succeed, previously auto fail for ci testting
 """
 import unittest
 
+
 class Test(unittest.TestCase):
     """
-    test for testing unitests :) 
+    test for testing unitests :)
 
     """
-    def test_success(self):
+
+    def test_success(self) -> None:
         """
         auto succeeds
         """

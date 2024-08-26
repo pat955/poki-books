@@ -1,4 +1,4 @@
-""" 
+"""
 -- window.py --
 bookbot window setup
 TODO:
@@ -17,27 +17,28 @@ TODO:
 import tkinter as tk
 import os
 import json
-from library import Library
+import platform
 from functools import partial
-from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu
+from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, Label
+from library import Library
 from notes import NoteBook
 from text_scroll import TextScrollCombo
 from themes import AllThemes
 from menu import make_main_menu, info
-from defaults import *
+from defaults import *  # pylint: disable=W0401
 from basics import basic_button, basic_label, basic_entry, make_full_frame
-import platform
 
 
 class BookBot:
     """
-    
+    Makes the bookbot window, all buttons, frames, checkboxes and so forth.
     """
-    def __init__(self):
+
+    def __init__(self) -> None:
         self.__root = Tk()
         self.__root.title("PokiBooks")
         icon_data = 'static/icon.png'
-            
+
         try:
             icon = tk.PhotoImage(file=icon_data)
             self.__root.iconphoto(True, icon)
@@ -46,11 +47,12 @@ class BookBot:
             print(e)
         self.__root.configure(background=COLOR)
         self.__root.protocol("WM_DELETE_WINDOW", self._quit)
-        
+
         if platform.system() == 'Windows':
             self.__root.state('zoomed')  # This works on Windows
         else:
-            self.__root.attributes("-zoomed", True)  # This works on some Unix systems
+            # This works on some Unix systems
+            self.__root.attributes("-zoomed", True)
         self.__root.columnconfigure(0, weight=1)
         self.__root.rowconfigure(0, weight=1)
 
@@ -70,25 +72,35 @@ class BookBot:
         self.all_books_menu = TextScrollCombo(self.text_container, bg=COLOR)
 
         # Change to textscrollcombo?
-        self.sidebar = Frame(self.text_container, bg=COLOR, highlightthickness=1)
+        self.sidebar = Frame(
+            self.text_container,
+            bg=COLOR,
+            highlightthickness=1)
         self.sidebar.grid(column=1, row=0, sticky="ens")
 
     # Menus
-        #Main Menus
-        self.menubar       = make_main_menu(menubar=self.__root, bg=COLOR)
-        self.settings_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.books_menu    = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.help_menu     = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        # Main Menus
+        self.menubar = make_main_menu(menubar=self.__root, bg=COLOR)
+        self.settings_menu = make_main_menu(
+            menubar=self.menubar, bg=BUTTON_COLOR)
+        self.books_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.help_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
         # Settings
-        self.settings_menu.add_command(label="Fullscreen", command=self.toggle_fullscreen)
+        self.settings_menu.add_command(
+            label="Fullscreen",
+            command=self.toggle_fullscreen)
         self.settings_menu.add_separator()
 
-        self.settings_menu.add_command(label='Set default theme', command=self.not_implemented)
-        self.settings_menu.add_command(label="Toggle Sidebar", command=self.toggle_sidebar)
+        self.settings_menu.add_command(
+            label='Set default theme',
+            command=self.not_implemented)
+        self.settings_menu.add_command(
+            label="Toggle Sidebar",
+            command=self.toggle_sidebar)
         self.settings_menu.add_separator()
         self.settings_menu.add_command(label="Exit", command=self._quit)
-        
+
         # Notes
         self.notebook = NoteBook(self.sidebar, self.cache_path)
         self.notes_button = Button(
@@ -98,21 +110,31 @@ class BookBot:
             command=self.notebook.toggle,
             highlightthickness=0,
             font=(FONT, FONT_SIZE)
-            )
+        )
 
         # Library
         self.library = Library(self, self.book_path)
 
         # Book menu
-        self.books_menu.add_command(label="Go to all books", command=self.library.see_all)
+        self.books_menu.add_command(
+            label="Go to all books",
+            command=self.library.see_all)
         self.books_menu.add_separator()
-        self.books_menu.add_command(label="Clear Text", command=self.clear_text)
-        self.books_menu.add_command(label="Clear Cache", command=self.clear_cache)
+        self.books_menu.add_command(
+            label="Clear Text",
+            command=self.clear_text)
+        self.books_menu.add_command(
+            label="Clear Cache",
+            command=self.clear_cache)
         self.books_menu.add_command(label="Add book", command=self.library.add)
-        self.books_menu.add_command(label="Remove book", command=self.library.remove)
+        self.books_menu.add_command(
+            label="Remove book",
+            command=self.library.remove)
 
         # Help Menu
-        self.help_menu.add_command(label="Contact", command=self.not_implemented)
+        self.help_menu.add_command(
+            label="Contact",
+            command=self.not_implemented)
         self.help_menu.add_command(label="About", command=partial(info, self))
 
         # Menubar
@@ -123,10 +145,13 @@ class BookBot:
         self.__root.config(menu=self.menubar)
 
     # Buttons
-        self.all_books_button  = basic_button(self.sidebar, 'All Books', self.library.see_all)
-        self.add_n_read_button = basic_button(self.sidebar, 'Add n\' Read Book', self.library.add_and_open)
-        self.refresh_button    = basic_button(self.sidebar, 'Refresh', self.check_entries)
-        self.ph                = basic_button(self.sidebar, 'Placeholder Button', self._quit)
+        self.all_books_button = basic_button(
+            self.sidebar, 'All Books', self.library.see_all)
+        self.add_n_read_button = basic_button(
+            self.sidebar, 'Add n\' Read Book', self.library.add_and_open)
+        self.refresh_button = basic_button(
+            self.sidebar, 'Refresh', self.check_entries)
+        self.ph = basic_button(self.sidebar, 'Placeholder Button', self._quit)
 
         self.all_books_button.pack(side='top', fill='x')
         self.add_n_read_button.pack(side='top', fill='x', pady=10)
@@ -140,7 +165,6 @@ class BookBot:
         self.text_size_label.pack(side='top', fill='x', pady=5)
         self.text_size_entry.pack(side="top", fill="x")
 
-
         self.padding_label = basic_label(self.sidebar, 'Padding')
         self.padding_entry = basic_entry(self.sidebar)
 
@@ -148,26 +172,32 @@ class BookBot:
         self.padding_entry.pack(side="top", fill="x")
 
     # Checkboxes
-        self.center_var = tk.BooleanVar()
-        self.center = Checkbutton(
+        self.centered = tk.BooleanVar()
+        self.center_checkbutton = Checkbutton(
             self.sidebar, bg=COLOR,
             highlightthickness=0,
             command=self.center,
             text='Center text',
             font=(FONT, FONT_SIZE),
             fg=FONT_COLOR,
-            variable=self.center_var
-            )
-        self.center.pack(side='top', fill='x', pady=10)    
+            variable=self.centered
+        )
+        self.center_checkbutton.pack(side='top', fill='x', pady=10)
 
     # Notes
         self.notes_button.pack(side='top', fill='x')
 
     # Library
         self.library = Library(self, self.book_path)
-        
+
     # Themes
-        self.themes_button = Menu(self.__root, tearoff=0, bg=BUTTON_COLOR, font=(FONT, FONT_SIZE))
+        self.themes_button = Menu(
+            self.__root,
+            tearoff=0,
+            bg=BUTTON_COLOR,
+            font=(
+                FONT,
+                FONT_SIZE))
         i = 0
         themes = AllThemes().get_all_themes()
         for theme in themes:
@@ -176,27 +206,30 @@ class BookBot:
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
         self.make_cache()
-        
+
         self.__root.mainloop()
 
-    def make_cache(self): # Returns: None
+    def make_cache(self) -> None:
         """
-        Make cache.json file 
+        Make cache.json file
         """
         if not os.path.exists(self.cache_path):
             with open(self.cache_path, 'w', encoding="utf-8") as file:
                 json.dump({'books': {'notes': ''}}, file, indent=4)
                 file.close()
 
-    def clear_cache(self):
+    def clear_cache(self) -> None:
+        """
+        clears all cache and re initalizes cache
+        """
         os.remove(self.cache_path)
-        if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w', encoding="utf-8") as file:
-                json.dump({'books': {'notes': ''}}, file, indent=4)
+        self.make_cache()
 
-    # cache book info
-    def cache_book(self):
-        # redo
+    def cache_book(self) -> None:
+        """
+        cache book info
+        TODO: imporve this text :)
+        """
         data = None
         with open(self.cache_path, 'r+', encoding="utf-8") as file:
             data = json.load(file)
@@ -219,29 +252,36 @@ class BookBot:
             json.dump(data, file, indent=4)
             file.close()
 
-    def clear_text(self): # Returns: None
+    def clear_text(self) -> None:
+        """
+        Clear all text from text_frame. For debugging
+        """
         self.text_frame.clear_text()
 
-    # change theme 
-    def change_theme( # Returns: None
+    # change theme
+    def change_theme(
             self,
-            color=COLOR,
-            font_color=FONT_COLOR,
-            button_color=BUTTON_COLOR,
-            active_background=ACTIVE_BACKGROUND,
-            active_font=ACTIVE_FONT,
-            font=FONT,
-            font_size=FONT_SIZE,
-            heading_size=HEADING_SIZE
-            ):
-        COLOR             = color
-        FONT_COLOR        = font_color
-        BUTTON_COLOR      = button_color
+            color: str = COLOR,
+            font_color: str = FONT_COLOR,
+            button_color: str = BUTTON_COLOR,
+            active_background: str = ACTIVE_BACKGROUND,
+            active_font: str = ACTIVE_FONT,
+            font: str = FONT,
+            font_size: int = FONT_SIZE,
+            heading_size: int = HEADING_SIZE
+    ) -> None:
+        """
+        Sets theme
+        TODO: improve function, fonts
+        """
+        COLOR = color
+        FONT_COLOR = font_color
+        BUTTON_COLOR = button_color
         ACTIVE_BACKGROUND = active_background
-        ACTIVE_FONT       = active_font
-        FONT              = font
-        FONT_SIZE         = font_size
-        HEADING_SIZE      = heading_size
+        ACTIVE_FONT = active_font
+        FONT = font
+        FONT_SIZE = font_size
+        HEADING_SIZE = heading_size
 
         frames = [
             self.__root,
@@ -252,17 +292,22 @@ class BookBot:
             self.all_books_menu,
             self.all_books_menu.txt,
             *(self.text_container.winfo_children())
-            ]
-        self.sidebar.config(bg=COLOR)
-        self.text_frame.config(bg=COLOR)
-        self.menubar.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-
-        self.settings_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.books_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.help_menu.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
-        self.themes_button.config(activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
+        ]
 
         for frame in frames:
+            try:
+                if frame in [self.sidebar, self.text_frame]:
+                    frame.config(bg=COLOR)
+
+                else:
+                    frame.config(
+                        activebackground=ACTIVE_BACKGROUND,
+                        activeforeground=ACTIVE_FONT
+                    )
+            except Exception as e:
+                if 'unknown option' not in str(e):
+                    print(e)
+
             for widget in frame.winfo_children():
                 try:
                     widget.config(bg=COLOR)
@@ -277,47 +322,57 @@ class BookBot:
                         print(e)
 
                 if isinstance(widget, Checkbutton):
-                    widget.config(activebackground=COLOR, activeforeground=ACTIVE_FONT)
+                    widget.config(
+                        activebackground=COLOR,
+                        activeforeground=ACTIVE_FONT
+                    )
 
                 elif isinstance(widget, Button):
-                    widget.config(bg=BUTTON_COLOR, activebackground=ACTIVE_BACKGROUND, activeforeground=ACTIVE_FONT)
+                    widget.config(
+                        bg=BUTTON_COLOR,
+                        activebackground=ACTIVE_BACKGROUND,
+                        activeforeground=ACTIVE_FONT
+                    )
 
                 elif isinstance(widget, Entry):
                     widget.config(bg=BUTTON_COLOR)
 
+                elif isinstance(widget, Label):
+                    widget.config(bg=BUTTON_COLOR)
+
                 widget.update()
 
-    def check_entries(self): # Returns: None
+    def check_entries(self) -> None:
         """
         Check entries in option sidebar, like text size or padding
         """
         entries = {
             self.text_size_entry: self.change_text_size,
             self.padding_entry: self.change_padx,
-            }
+        }
         for entry, func in entries.items():
             if entry.get():
                 func()
 
-    def change_padx(self): # Returns: None
+    def change_padx(self) -> None:
         """
         Change padding in x direction in text_frame TextScrollCombo
         """
         self.text_frame.txt.config(padx=self.padding_entry.get())
 
-    def change_text_size(self): # Returns: None
+    def change_text_size(self) -> None:
         """
         Changes text size to number from entry TODO: add edgecases/errorhandling
         """
         self.text_frame.txt.configure(font=(FONT, self.text_size_entry.get()))
 
-    def center(self): # Returns: None
+    def center(self) -> None:
         """
         Centers text in main text frame in book_frame textscrollcombo
         """
         self.text_frame.center_text()
-        
-    def toggle_sidebar(self): # Returns: None
+
+    def toggle_sidebar(self) -> None:
         """
         Toggles sidebar
         """
@@ -325,21 +380,30 @@ class BookBot:
             self.sidebar.grid_remove()
         else:
             self.sidebar.grid(column=1, row=0, sticky="ens")
-    
-    # Enter fullscreen
-    def toggle_fullscreen(self): # Returns: None
-        self.__root.attributes("-fullscreen", not self.__root.attributes('-fullscreen'))
-        self.__root.bind("<Escape>", lambda x: self.__root.attributes("-fullscreen", False))
 
-    def _quit(self): # Returns: None
+    def toggle_fullscreen(self) -> None:
         """
-        Quit as intended
+        Toggles fullscreen
+        TODO: Check compat with windows
+        """
+        self.__root.attributes("-fullscreen",
+                               not self.__root.attributes('-fullscreen'))
+        self.__root.bind(
+            "<Escape>",
+            lambda x: self.__root.attributes(
+                "-fullscreen",
+                False))
+
+    def _quit(self) -> None:
+        """
+        Quit program
         """
         self.cache_book()
         self.__root.quit()
         self.__root.destroy()
 
-    def not_implemented(self): # Returns: None
-        """TODO: Add not implemented error"""
-        self.text_frame.insert("Error: Not Implemented")
-        
+    def not_implemented(self) -> None:
+        """
+        TODO: Add not implemented error
+        """
+        self.text_frame.insert_text("Error: Not Implemented")
