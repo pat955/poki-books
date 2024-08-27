@@ -53,3 +53,7 @@ def dir_empty(dir_path: str) -> bool:
     Checks if directory is empty
     """
     return not any((True for _ in os.scandir(dir_path)))
+
+
+def prettify_title(title: str) -> str:
+    return title.split('.')[0].replace('_', ' ').capitalize()

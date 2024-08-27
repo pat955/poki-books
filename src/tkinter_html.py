@@ -4,19 +4,18 @@ html rendering for textframe
 """
 import tkinter
 from bs4 import BeautifulSoup
+from basics import prettify_title
 
 
-def parse_html(text_frame: tkinter.Frame, text: str) -> None:
+def parse_html(path: str, text_frame: tkinter.Frame, text: str) -> None:
     """
     TODO: improve this
     makes a soup with bs4, inserts title with heading1 tag.
     Then calls recurssive function contents_r
     """
     soup = BeautifulSoup(text, 'html.parser')
-    try:
-        insert(text_frame, extract_title(soup), 'h1')
-    except AttributeError:
-        print('No title error')
+    insert(text_frame, extract_title(path, soup), 'h1')
+
     contents_r(text_frame, soup)
 
 
@@ -37,11 +36,15 @@ def contents_r(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
                 continue
 
 
-def extract_title(soup: BeautifulSoup) -> str:
+def extract_title(path: str, soup: BeautifulSoup) -> str:
     """
     Retuns title if possible from soup
     """
-    return soup.title.string.extract()
+    try:
+        title = soup.title.string.extract()
+    except AttributeError:
+        title = prettify_title(path)
+    return title
 
 
 def insert(text_frame: tkinter.Frame, text: str, tag: str = None) -> None:

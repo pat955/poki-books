@@ -12,7 +12,7 @@ from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button, Label
 from defaults import *  # pylint: disable=W0401
-from basics import dir_empty
+from basics import dir_empty, prettify_title
 from book_types import load_book
 
 
@@ -74,7 +74,7 @@ class Library:
             if i % 6 == 0:
                 j += 1
                 i = 0
-            txt = file.name.split('.')[0].replace('_', ' ').capitalize()
+            txt = prettify_title(file.name)
             path = self.folder_path + file.name
             button = Button(
                 self.__root.txt,

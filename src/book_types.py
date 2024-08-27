@@ -93,7 +93,7 @@ def load_html(text_frame: tkinter.Frame, path: str) -> None:
     Loads html, runs parse_html function
     """
     with open(path, 'r') as f:
-        parse_html(text_frame, f.read())
+        parse_html(path, text_frame, f.read())
 
         f.close()
 

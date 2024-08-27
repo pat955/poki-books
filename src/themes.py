@@ -16,27 +16,27 @@ class Theme:
     def __init__(
             self,
             name: str,
-            color: str = COLOR,             # background color
-            font_color: str = FONT_COLOR,        # font color for all text
-            button_color: str = BUTTON_COLOR,      #
+            color: str = COLOR,                         # background color
+            font_color: str = FONT_COLOR,               # font color for all text
+            button_color: str = BUTTON_COLOR,           #
             active_background: str = ACTIVE_BACKGROUND,
-            active_font: str = ACTIVE_FONT,       #
-            font: str = FONT,              # font used for everything
-            font_size: int = FONT_SIZE,         # main font size for book text
-            heading_size: int = HEADING_SIZE       # font size for heading and titles
+            active_font: str = ACTIVE_FONT,             #
+            font: str = FONT,                           # font used for everything
+            font_size: int = FONT_SIZE,                 # main font size for book text
+            heading_size: int = HEADING_SIZE            # font size for heading and titles
     ) -> None:
         """
         TODO: add docs
         """
-        self.name = name              # str
-        self.color = color             # str
-        self.font_color = font_color        # str
-        self.button_color = button_color      # str
+        self.name = name                            # str
+        self.color = color                          # str
+        self.font_color = font_color                # str
+        self.button_color = button_color            # str
         self.active_background = active_background  # str
-        self.active_font = active_font       # str
-        self.font = font              # str
-        self.font_size = font_size         # int
-        self.heading_size = heading_size      # int
+        self.active_font = active_font              # str
+        self.font = font                            # str
+        self.font_size = font_size                  # int
+        self.heading_size = heading_size            # int
 
     def add(self, window: tkinter.Frame, index: int) -> None:
         """
@@ -68,7 +68,7 @@ class AllThemes:
 
     def __make_themes(self) -> None:
         """
-        Makes themes form themes.txt
+
         """
         starter_themes = [
             {'name': 'Default',
@@ -127,3 +127,6 @@ class AllThemes:
         if len(self.themes) == 0:
             self.__make_themes()
         return self.themes
+
+    def make_theme(self):
+        pass
