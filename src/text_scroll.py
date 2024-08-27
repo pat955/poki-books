@@ -96,7 +96,7 @@ class TextBlock(tk.Text):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.tag_configure("bold", font=(FONT, FONT_SIZE, "bold"))
-        self.tag_configure("h1", font=(FONT, H1))
+        self.tag_configure("h1", font=(FONT, H1), justify='center')
         self.tag_configure("italic", font=(FONT, FONT_SIZE, "italic"))
         self.tag_configure("center", justify='center')
         self.centered = False

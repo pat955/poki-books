@@ -3,10 +3,23 @@
 Loads books based on extension/type
 """
 import tkinter
+import io
+from tkinter import END, PhotoImage
+from PIL import Image, ImageTk
+
+import ebooklib.epub
+import ebooklib.plugins
+import ebooklib.plugins.base
+import ebooklib.plugins.standard
+import ebooklib.plugins.tidyhtml
+import ebooklib.utils
 import mobi
-from tika import parser
+import ebooklib
+from ebooklib import epub
+
 from pypdf import PdfReader
-from tkinter_html import parse_html
+from tkinter_html import parse_html, contents_r
+from bs4 import BeautifulSoup
 
 
 def load_book(text_frame: tkinter.Frame, path: str) -> None:
@@ -81,11 +94,33 @@ def load_mobi(text_frame: tkinter.Frame, path: str) -> None:
 
 def load_epub(text_frame: tkinter.Frame, path: str) -> None:
     """
-    TODO: tika
+    TODO: 
     Loads epub, only loads 'content'
     """
-    parsed = parser.from_file(path)
-    text_frame.insert_text(parsed["content"])
+    book = epub.read_epub(path)
+    title = book.get_metadata('DC', 'title')
+   
+    text_frame.insert_text(title, 'h1')
+    td = ebooklib.plugins.tidyhtml.TidyPlugin()
+
+    for item in book.get_items():
+        if item.get_type() == ebooklib.ITEM_DOCUMENT:
+            soup = BeautifulSoup(item.get_content(), 'html.parser')
+            contents_r(text_frame, soup)
+        continue
+        if item.get_type() == ebooklib.ITEM_IMAGE:
+            global cover
+            hex_data = item.get_content()
+
+            # Use Pillow to open the image from binary data
+            image = Image.open(io.BytesIO(hex_data))
+
+            # Convert the Image to a Tkinter-compatible format
+            cover = ImageTk.PhotoImage(image)
+            # cover = PhotoImage(name=item.get_name(), data=item.get_content())
+
+            text_frame.txt.image_create(END, image=cover)
+            text_frame.update()
 
 
 def load_html(text_frame: tkinter.Frame, path: str) -> None:
