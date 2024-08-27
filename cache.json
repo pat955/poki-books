@@ -1,6 +1,6 @@
 {
     "books": {
-        "notes": "\n",
+        "notes": "\n\n",
         "books/The_yellow_wallpaper.txt": {
             "scrollbar": [
                 0.08932496075353218,
@@ -76,7 +76,7 @@
                 0.0,
                 1.0
             ],
-            "notes": "\n"
+            "notes": "\n\n\n"
         },
         "books/sample3.html": {
             "scrollbar": [
@@ -94,8 +94,8 @@
         },
         "books/Tender_Is_The_Flesh.mobi": {
             "scrollbar": [
-                0.04037977579501258,
-                0.04482669869595058
+                0.0,
+                0.012663512385193431
             ],
             "notes": "\n"
         },
@@ -109,7 +109,7 @@
         "books/pg1342-images.epub": {
             "scrollbar": [
                 0.0,
-                0.026801103067907617
+                0.016253192591401882
             ],
             "notes": "\n"
         },

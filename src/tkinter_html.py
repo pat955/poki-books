@@ -10,30 +10,29 @@ from basics import prettify_title
 def parse_html(path: str, text_frame: tkinter.Frame, text: str) -> None:
     """
     TODO: improve this
-    makes a soup with bs4, inserts title with heading1 tag.
-    Then calls recurssive function contents_r
+    Makes a soup with bs4, inserts title and content
     """
     soup = BeautifulSoup(text, 'html.parser')
-    insert(text_frame, extract_title(path, soup), 'h1')
-
+    text_frame.insert_text(extract_title(path, soup), 'h1')
     contents_r(text_frame, soup)
 
 def contents_r(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
     """
-    TODO: improve this
+    Recursively go through a html tree and renders content
     """
     for tag in soup.find_all():
         try:
-            append(text_frame, tag.string.extract())
+            text_frame.append_text(tag.string.extract(), add_newline=True)
+            text_frame.update_text()
         except TypeError:
             contents_r(text_frame, tag)
         except AttributeError:
             try:
                 contents_r(text_frame, tag)
             except Exception as e:
-                print(e)
+                print(type(e))
+                print('Unknown error: ' + e)
                 continue
-
 
 def extract_title(path: str, soup: BeautifulSoup) -> str:
     """
@@ -44,17 +43,3 @@ def extract_title(path: str, soup: BeautifulSoup) -> str:
     except AttributeError:
         title = prettify_title(path)
     return title
-
-
-def insert(text_frame: tkinter.Frame, text: str, tag: str = None) -> None:
-    """
-    insert text
-    """
-    text_frame.txt.write(text, tag)
-
-
-def append(text_frame: tkinter.Frame, text: str, tag: str = None) -> None:
-    """
-    appends text with tag
-    """
-    text_frame.txt.append(text, tag=tag, add_newline=True)

@@ -18,6 +18,6 @@ ACTIVE_BACKGROUND = '#f1f1f1'
 FONT = 'Times New Roman'
 FONT_COLOR = 'black'
 ACTIVE_FONT = 'black'
-FONT_SIZE = 12
+FONT_SIZE = 13
 HEADING_SIZE = 16
 H1 = 30

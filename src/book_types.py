@@ -5,18 +5,18 @@ Loads books based on extension/type
 import tkinter
 import re
 import io
+import mobi
+import ebooklib
+
 from tkinter import END
 from PIL import Image, ImageTk
-import mobi
-
-import ebooklib
 from ebooklib import epub
-
 from pypdf import PdfReader
-from tkinter_html import parse_html
 from bs4 import BeautifulSoup
+from tkinter_html import parse_html, contents_r
 
-def get_extension(path: str) -> str|None:
+
+def get_extension(path: str) -> str | None:
     """
     Returns file extension or None. Format: 'mobi', 'txt', ...
     """
@@ -50,9 +50,10 @@ def load_book(text_frame: tkinter.Frame, path: str) -> None:
         return
 
     except Exception as e:
-        text_frame.show_error('Exception', f'Unknown error, error message "{e}"')
+        text_frame.show_error('Exception',
+                              f'Unknown error, error message "{e}"')
         return
-        
+
     text_frame.update()
     text_frame.set_scrollbar(path)
 
@@ -73,7 +74,7 @@ def load_txt(text_frame: tkinter.Frame, path: str) -> None:
 
 def load_mobi(text_frame: tkinter.Frame, path: str) -> None:
     """
-    Loads .mobi, extracts the file then loads the extension. 
+    Loads .mobi, extracts the file then loads the extension.
     (Could be .epub, .pdf or .html)
     """
     _, filepath = mobi.extract(path)
@@ -82,28 +83,38 @@ def load_mobi(text_frame: tkinter.Frame, path: str) -> None:
 
 def load_epub(text_frame: tkinter.Frame, path: str) -> None:
     """
-
+    TODO: remove {{}} from title (prettify title function?)
+    TODO: add ITEM_COVER
+    Inserts title from metadata, then adds every 'item'
+    For some books, all the images show up first instead of in order.
+    This means that all images show up first, and images are out of place
     """
     book = epub.read_epub(path)
+
     title = book.get_metadata('DC', 'title')
-   
     text_frame.insert_text(title, 'h1')
+
+    # tkinter will delete the image if it isn't global
     global images
     images = {}
     for item in book.get_items():
+        # html converted to normal text
         if item.get_type() == ebooklib.ITEM_DOCUMENT:
             soup = BeautifulSoup(item.get_content(), 'html.parser')
-            contents_r_updating(text_frame, soup)
+            contents_r(text_frame, soup)
 
+        # images :)
         elif item.get_type() == ebooklib.ITEM_IMAGE:
-            
+
             hex_data = item.get_content()
             image = Image.open(io.BytesIO(hex_data))
             tk_img = ImageTk.PhotoImage(image)
 
             images[tk_img] = text_frame.txt.index(END)
-            text_frame.txt.image_create(text_frame.txt.index(END), image=tk_img)
+            text_frame.txt.image_create(
+                text_frame.txt.index(END), image=tk_img)
             text_frame.update()
+
 
 def load_html(text_frame: tkinter.Frame, path: str) -> None:
     """
@@ -111,7 +122,6 @@ def load_html(text_frame: tkinter.Frame, path: str) -> None:
     """
     with open(path, 'r') as f:
         parse_html(path, text_frame, f.read())
-
         f.close()
 
 
