@@ -24,9 +24,8 @@ from library import Library
 from notes import NoteBook
 from text_scroll import TextScrollCombo
 from themes import AllThemes
-from menu import make_main_menu, info
 from defaults import *  # pylint: disable=W0401
-from basics import basic_button, basic_label, basic_entry, make_full_frame
+from basics import basic_button, basic_label, basic_entry, make_full_frame, make_basic_menu, info, contact
 
 
 class BookBot:
@@ -80,11 +79,12 @@ class BookBot:
 
     # Menus
         # Main Menus
-        self.menubar = make_main_menu(menubar=self.__root, bg=COLOR)
-        self.settings_menu = make_main_menu(
+        self.menubar = make_basic_menu(menubar=self.__root, bg=COLOR)
+        self.settings_menu = make_basic_menu(
             menubar=self.menubar, bg=BUTTON_COLOR)
-        self.books_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
-        self.help_menu = make_main_menu(menubar=self.menubar, bg=BUTTON_COLOR)
+        self.books_menu = make_basic_menu(
+            menubar=self.menubar, bg=BUTTON_COLOR)
+        self.help_menu = make_basic_menu(menubar=self.menubar, bg=BUTTON_COLOR)
 
         # Settings
         self.settings_menu.add_command(
@@ -133,8 +133,8 @@ class BookBot:
 
         # Help Menu
         self.help_menu.add_command(
-            label="Contact",
-            command=self.not_implemented)
+            label="Contact", command=partial(
+                contact, self))
         self.help_menu.add_command(label="About", command=partial(info, self))
 
         # Menubar
@@ -234,7 +234,7 @@ class BookBot:
         with open(self.cache_path, 'r+', encoding="utf-8") as file:
             data = json.load(file)
 
-        notes = self.notebook.text.get("1.0", 'end')
+        notes = self.notebook.get_current_text()
         if self.current_book is not None:
 
             if self.current_book not in data['books']:
@@ -304,22 +304,19 @@ class BookBot:
                         activebackground=ACTIVE_BACKGROUND,
                         activeforeground=ACTIVE_FONT
                     )
-            except Exception as e:
-                if 'unknown option' not in str(e):
-                    print(e)
+            except tk.TclError:
+                pass
 
             for widget in frame.winfo_children():
                 try:
                     widget.config(bg=COLOR)
-                except Exception as e:
-                    if 'unknown option' not in str(e):
-                        print(e)
+                except tk.TclError:
+                    pass
 
                 try:
                     widget.config(fg=FONT_COLOR)
-                except Exception as e:
-                    if 'unknown option' not in str(e):
-                        print(e)
+                except tk.TclError:
+                    pass
 
                 if isinstance(widget, Checkbutton):
                     widget.config(

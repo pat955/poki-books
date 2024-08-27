@@ -3,8 +3,9 @@
 Collection of basic tkinter widgets and other basic functions
 """
 import os
-from tkinter import Button, Label, Entry, Frame
-from defaults import BUTTON_COLOR, FONT, FONT_SIZE, ACTIVE_BACKGROUND, ACTIVE_FONT, COLOR
+import tkinter
+from tkinter import Button, Label, Entry, Frame, Menu
+from defaults import *  # pylint: disable=W0401
 
 
 def basic_button(root: Frame, name: str, command) -> Button:
@@ -48,6 +49,20 @@ def make_full_frame(root: Frame) -> Frame:
     return f
 
 
+def make_basic_menu(menubar, bg: str) -> tkinter.Menu:
+    """
+    Returns a Menu object with default theme
+    """
+    return Menu(
+        menubar,
+        tearoff=0,
+        bg=bg,
+        font=(FONT, FONT_SIZE),
+        activebackground=ACTIVE_BACKGROUND,
+        activeforeground=ACTIVE_FONT
+    )
+
+
 def dir_empty(dir_path: str) -> bool:
     """
     Checks if directory is empty
@@ -57,3 +72,19 @@ def dir_empty(dir_path: str) -> bool:
 
 def prettify_title(title: str) -> str:
     return title.split('.')[0].replace('_', ' ').capitalize()
+
+
+def info(window: tkinter.Frame) -> None:
+    """
+    How to use and faq for bookbot
+    """
+    window.text_frame.show_error(
+        'NotImplementedError',
+        'No info yet, planning on adding user guide, readme type text and FAQ. Links to github as well. @pat955 at github')
+
+
+def contact(window: tkinter.Frame) -> None:
+    """
+    TODO: Add contact info, link to other projects and stuff like that
+    """
+    window.text_frame.show_error('NotImplementedError', 'No contact info yet')

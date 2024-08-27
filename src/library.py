@@ -1,9 +1,8 @@
 """
 -- library.py --
+Class Library, collection of books
 TODO:
 add remove function
-add docs
-
 """
 
 import shutil
@@ -20,8 +19,9 @@ class Library:
     """
     Collection of all books
     """
-
     def __init__(self, book_bot, folder_path: str = 'books/') -> None:
+        """
+        """
         self.book_bot = book_bot
         self.__root = self.book_bot.text_frame
         self.notebook = self.book_bot.notebook
@@ -31,14 +31,16 @@ class Library:
         """
         Not implemented. Removes book from library
         """
-        self.book_bot.not_implemented()
+        self.book_bot.text_frame.show_error('NotImplementedError', 'remove function current not implemented, simply remove book from folder')
 
     def add(self) -> str:
         """
-        Add book from filedialog. Returns book path
+        Add book from filedialog. 
+        Returns book path
         """
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
+        
         if path:
             try:
                 shutil.move(path, self.folder_path)
@@ -49,6 +51,8 @@ class Library:
 
     def see_all(self) -> None:
         """
+        TODO: Rename to library_view
+        TODO: fix visual bugs
         Shows all books in books folder, presents them as buttons.
         """
         self.__root.clear_text()
@@ -59,7 +63,7 @@ class Library:
             label = Label(
                 self.__root.txt,
                 text='No Books Added Yet',
-                font=(FONT, H1),
+                font=(FONT, HEADING_SIZE),
                 bg=COLOR,
                 fg=FONT_COLOR,
                 activebackground=ACTIVE_BACKGROUND,
@@ -71,7 +75,7 @@ class Library:
             return
 
         for file in os.scandir(self.folder_path):
-            if i % 6 == 0:
+            if i % 5 == 0:
                 j += 1
                 i = 0
             txt = prettify_title(file.name)
@@ -85,7 +89,7 @@ class Library:
                 activebackground=ACTIVE_BACKGROUND,
                 activeforeground=ACTIVE_FONT,
                 command=partial(self.read, path),
-                width=16
+                width=19
             )
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
@@ -100,11 +104,12 @@ class Library:
 
     def read(self, path) -> None:
         """
-        loads book TODO: better docs
+        Sets this book as current, changes book in notebook
+        Checks entries, inserts notes and loads book contents
         """
         # self.cache_book()
         self.book_bot.current_book = path
-        self.notebook.change_book(self.book_bot.current_book)
+        self.notebook.set_path(self.book_bot.current_book)
 
         self.book_bot.check_entries()
         self.notebook.update()
