@@ -90,6 +90,16 @@ class TextScrollCombo(tk.Frame):
         TODO: do i need pos_row and pos_column?
         """
         self.txt.update(pos_row, pos_column, sticky_dir)
+    
+    def show_error(self, error_type: str, error_message: str):
+        """
+        Clears frame and shows error message in big font
+        ex:
+          'KeyError: Unknown option csv'
+        """
+        self.clear_text()
+        self.append_text(f'{error_type}: {error_message}', 'h1')
+        self.update_text()
 
 
 class TextBlock(tk.Text):

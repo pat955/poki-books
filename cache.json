@@ -112,6 +112,13 @@
                 0.026801103067907617
             ],
             "notes": "\n"
+        },
+        "books/requirements.txt": {
+            "scrollbar": [
+                0.0,
+                1.0
+            ],
+            "notes": "\n"
         }
     }
 }

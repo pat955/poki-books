@@ -3,30 +3,34 @@
 Loads books based on extension/type
 """
 import tkinter
+import re
 import io
-from tkinter import END, INSERT, PhotoImage
+from tkinter import END
 from PIL import Image, ImageTk
-
-import ebooklib.epub
-import ebooklib.plugins
-import ebooklib.plugins.base
-import ebooklib.plugins.standard
-import ebooklib.plugins.tidyhtml
-import ebooklib.utils
 import mobi
+
 import ebooklib
 from ebooklib import epub
 
 from pypdf import PdfReader
-from tkinter_html import parse_html, contents_r, contents_r_updating
+from tkinter_html import parse_html
 from bs4 import BeautifulSoup
+
+def get_extension(path: str) -> str|None:
+    """
+    Returns file extension or None. Format: 'mobi', 'txt', ...
+    """
+    ext = re.search(r'\.(\w*?)$', path)
+    if not ext:
+        return None
+    return ext.group(1)
 
 
 def load_book(text_frame: tkinter.Frame, path: str) -> None:
     """
-    With extension, resets text frame and runs the function that the type corresponds to.
-    Then updates frame, text and scrollbar.
-    TODO error handeling
+    After getting file extension,
+    resets text frame and calls the function that the type corresponds to.
+    Updates frame, text and scrollbar.
     """
     ext = get_extension(path)
     text_frame.reset()
@@ -38,41 +42,25 @@ def load_book(text_frame: tkinter.Frame, path: str) -> None:
         'epub': load_epub,
         'csv': load_txt
     }
-    # try:
-    types[ext](text_frame, path)
-    # except Exception as e:
-    #     print(e)
-    #     print(path, 'unknown error')
-    #     return NotImplementedError
-
-    text_frame.update()
-    text_frame.set_scrollbar(path)
-
-
-def get_extension(path: str) -> str:
-    """
-    TODO: Improve with regex or add edgecases,
-    this doesnt work: Fundamental-Accessibility-Tests-Basic-Functionality-v2.0.0
-
-    """
-
     try:
-        extension = path.split('.')[1]
-        return extension
+        types[ext](text_frame, path)
 
-    except IndexError:
-        return ''
+    except KeyError:
+        text_frame.show_error('KeyError', f'Unsupported format "{ext}"')
+        return
 
     except Exception as e:
-        print(e)
-
-    return ''
+        text_frame.show_error('Exception', f'Unknown error, error message "{e}"')
+        return
+        
+    text_frame.update()
+    text_frame.set_scrollbar(path)
 
 
 def load_txt(text_frame: tkinter.Frame, path: str) -> None:
     """
     TODO: test out print per line to make it quicker
-    Loads a text file, alternatively simply inserts text if no special actions are needed.
+    Loads a text file
     """
     # with open(path, 'rb') as f:
     #     for line in f:
@@ -85,8 +73,8 @@ def load_txt(text_frame: tkinter.Frame, path: str) -> None:
 
 def load_mobi(text_frame: tkinter.Frame, path: str) -> None:
     """
-    TODO: delete tempdir
-    Loads .mobi, extracts the file then loads the extension. (Could be .epub, .pdf or .html)
+    Loads .mobi, extracts the file then loads the extension. 
+    (Could be .epub, .pdf or .html)
     """
     _, filepath = mobi.extract(path)
     load_book(text_frame, filepath)
@@ -94,27 +82,22 @@ def load_mobi(text_frame: tkinter.Frame, path: str) -> None:
 
 def load_epub(text_frame: tkinter.Frame, path: str) -> None:
     """
-    TODO: 
-    Loads epub, only loads 'content'
+
     """
     book = epub.read_epub(path)
-    util = ebooklib.utils
     title = book.get_metadata('DC', 'title')
    
     text_frame.insert_text(title, 'h1')
     global images
     images = {}
-    print(book.spine)
     for item in book.get_items():
-        
-
         if item.get_type() == ebooklib.ITEM_DOCUMENT:
             soup = BeautifulSoup(item.get_content(), 'html.parser')
             contents_r_updating(text_frame, soup)
+
         elif item.get_type() == ebooklib.ITEM_IMAGE:
             
             hex_data = item.get_content()
-
             image = Image.open(io.BytesIO(hex_data))
             tk_img = ImageTk.PhotoImage(image)
 
