@@ -98,25 +98,27 @@ def load_epub(text_frame: tkinter.Frame, path: str) -> None:
     Loads epub, only loads 'content'
     """
     book = epub.read_epub(path)
+    util = ebooklib.utils
     title = book.get_metadata('DC', 'title')
    
     text_frame.insert_text(title, 'h1')
     global images
     images = {}
-
+    print(book.spine)
     for item in book.get_items():
         
+
         if item.get_type() == ebooklib.ITEM_DOCUMENT:
             soup = BeautifulSoup(item.get_content(), 'html.parser')
             contents_r_updating(text_frame, soup)
         elif item.get_type() == ebooklib.ITEM_IMAGE:
+            
             hex_data = item.get_content()
 
             image = Image.open(io.BytesIO(hex_data))
             tk_img = ImageTk.PhotoImage(image)
 
             images[tk_img] = text_frame.txt.index(END)
-            print(text_frame.txt.index(END))
             text_frame.txt.image_create(text_frame.txt.index(END), image=tk_img)
             text_frame.update()
 
