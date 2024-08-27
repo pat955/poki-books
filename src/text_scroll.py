@@ -146,13 +146,13 @@ class TextBlock(tk.Text):
             self.write(text, tag, END)
         self.update()
 
-    def update(self, pos_row: int = 0, pos_column: int = 0,
-               sticky_dir: str = 'nsew') -> None:
+    def update(self, pos_row: int = 0, pos_column: int = 0, sticky_dir: str = 'nsew') -> None:
         """
         Refreshed text
         """
         self.grid(row=pos_row, column=pos_column, sticky=sticky_dir)
         self.config(state='disabled')
+
 
     def clear(self) -> None:
         """

@@ -18,6 +18,26 @@ def parse_html(path: str, text_frame: tkinter.Frame, text: str) -> None:
 
     contents_r(text_frame, soup)
 
+def contents_r_updating(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
+    """
+    TODO: improve this
+    """
+    for tag in soup.find_all():
+        try:
+            append(text_frame, tag.string.extract())
+            text_frame.update()
+        except TypeError:
+            contents_r_updating(text_frame, tag)
+            text_frame.update()
+
+        except AttributeError:
+            try:
+                contents_r_updating(text_frame, tag)
+                text_frame.update()
+
+            except Exception as e:
+                print(e)
+                continue
 
 def contents_r(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
     """

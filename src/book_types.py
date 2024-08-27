@@ -4,7 +4,7 @@ Loads books based on extension/type
 """
 import tkinter
 import io
-from tkinter import END, PhotoImage
+from tkinter import END, INSERT, PhotoImage
 from PIL import Image, ImageTk
 
 import ebooklib.epub
@@ -18,7 +18,7 @@ import ebooklib
 from ebooklib import epub
 
 from pypdf import PdfReader
-from tkinter_html import parse_html, contents_r
+from tkinter_html import parse_html, contents_r, contents_r_updating
 from bs4 import BeautifulSoup
 
 
@@ -101,27 +101,24 @@ def load_epub(text_frame: tkinter.Frame, path: str) -> None:
     title = book.get_metadata('DC', 'title')
    
     text_frame.insert_text(title, 'h1')
-    td = ebooklib.plugins.tidyhtml.TidyPlugin()
+    global images
+    images = {}
 
     for item in book.get_items():
+        
         if item.get_type() == ebooklib.ITEM_DOCUMENT:
             soup = BeautifulSoup(item.get_content(), 'html.parser')
-            contents_r(text_frame, soup)
-        continue
-        if item.get_type() == ebooklib.ITEM_IMAGE:
-            global cover
+            contents_r_updating(text_frame, soup)
+        elif item.get_type() == ebooklib.ITEM_IMAGE:
             hex_data = item.get_content()
 
-            # Use Pillow to open the image from binary data
             image = Image.open(io.BytesIO(hex_data))
+            tk_img = ImageTk.PhotoImage(image)
 
-            # Convert the Image to a Tkinter-compatible format
-            cover = ImageTk.PhotoImage(image)
-            # cover = PhotoImage(name=item.get_name(), data=item.get_content())
-
-            text_frame.txt.image_create(END, image=cover)
+            images[tk_img] = text_frame.txt.index(END)
+            print(text_frame.txt.index(END))
+            text_frame.txt.image_create(text_frame.txt.index(END), image=tk_img)
             text_frame.update()
-
 
 def load_html(text_frame: tkinter.Frame, path: str) -> None:
     """
