@@ -3,14 +3,17 @@
 
 """
 import json
+import tkinter
 from tkinter import Frame, Text, END
-from defaults import *
+from defaults import *  # pylint: disable=W0401
+
 
 class NoteBook:
     """
-
+    A Notebook stores all notes by books
     """
-    def __init__(self, parent_frame, cache_path):
+
+    def __init__(self, parent_frame: tkinter.Frame, cache_path: str) -> None:
         self.open = False
         self.cache_path = cache_path
         self.book_path = None
@@ -21,7 +24,7 @@ class NoteBook:
             bd=0,
             width=1,
             highlightbackground=BUTTON_COLOR
-            )
+        )
         self.text = Text(
             self.frame,
             state='normal',
@@ -30,13 +33,15 @@ class NoteBook:
             fg=FONT_COLOR,
             bg=COLOR,
             width=1
-            )
+        )
 
-    def change_book(self, path):
+    def change_book(self, path: str) -> None:
+        """
+        sets current book path
+        """
         self.book_path = path
 
-
-    def toggle(self): # Returns: None
+    def toggle(self) -> None:
         """
         Toggle on and of notes. Inserts notes from cache
         """
@@ -52,12 +57,18 @@ class NoteBook:
         self.text.pack(fill='both', expand=True, anchor='n')
         self.open = True
 
-    def update(self):
+    def update(self) -> None:
+        """
+        TODO: add docs
+        """
         if self.open:
             self.text.delete('1.0', END)
             self.text.insert('1.0', self.get())
 
-    def get(self):
+    def get(self) -> str:
+        """
+        Gets all note text from cache
+        """
         with open(self.cache_path, 'r') as file:
             file_data = json.load(file)
             if self.book_path is None:

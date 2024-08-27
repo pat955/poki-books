@@ -3,10 +3,10 @@
         "notes": "\n",
         "books/The_yellow_wallpaper.txt": {
             "scrollbar": [
-                0.06159744408945687,
-                0.06212502473917838
+                0.08932496075353218,
+                0.11861852433281005
             ],
-            "notes": "\n\n"
+            "notes": "\n"
         },
         "books/Gone girl.txt": {
             "scrollbar": [
@@ -87,15 +87,29 @@
         },
         "books/pdf.pdf": {
             "scrollbar": [
-                0.0,
-                1.0
+                0.04628343978524484,
+                0.08946588910487828
             ],
             "notes": "\n"
         },
         "books/Tender_Is_The_Flesh.mobi": {
             "scrollbar": [
+                0.04037977579501258,
+                0.04482669869595058
+            ],
+            "notes": "\n"
+        },
+        "books/pg1342-images-3.epub": {
+            "scrollbar": [
+                0.026044966282327435,
+                0.02932874378792358
+            ],
+            "notes": "\n"
+        },
+        "books/pg1342-images.epub": {
+            "scrollbar": [
                 0.0,
-                0.01310135647485045
+                0.026801103067907617
             ],
             "notes": "\n"
         }

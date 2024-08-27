@@ -11,48 +11,54 @@ import os
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button, Label
-from defaults import * 
-from basics import dir_empty
+from defaults import *  # pylint: disable=W0401
+from basics import dir_empty, prettify_title
 from book_types import load_book
 
+
 class Library:
-    def __init__(self, window, folder_path='books/'):
-        self.__window = window
-        self.__root = self.__window.text_frame
-        self.notebook = self.__window.notebook
+    """
+    Collection of all books
+    """
+
+    def __init__(self, book_bot, folder_path: str = 'books/') -> None:
+        self.book_bot = book_bot
+        self.__root = self.book_bot.text_frame
+        self.notebook = self.book_bot.notebook
         self.folder_path = folder_path
 
-    def remove(self): # Returns: None
+    def remove(self) -> None:
         """
-        Not implemented
+        Not implemented. Removes book from library
         """
-        self.__window.not_implemented()
+        self.book_bot.not_implemented()
 
-
-    def add(self): # Returns: str 
+    def add(self) -> str:
         """
         Add book from filedialog. Returns book path
         """
-        path = filedialog.askopenfilename(initialdir = str(Path.home() / "Downloads"))
+        path = filedialog.askopenfilename(
+            initialdir=str(Path.home() / "Downloads"))
         if path:
             try:
                 shutil.move(path, self.folder_path)
             except Exception as e:
                 print(e)
             return path
+        return ''
 
-    def see_all(self): # Returns: None
+    def see_all(self) -> None:
         """
-        Shows all books in books folder, presents them as buttons. 
+        Shows all books in books folder, presents them as buttons.
         """
         self.__root.clear_text()
-        
+
         i, j = 0, 0
-        
+
         if dir_empty(self.folder_path):
             label = Label(
                 self.__root.txt,
-                text=f'No Books Added Yet',
+                text='No Books Added Yet',
                 font=(FONT, H1),
                 bg=COLOR,
                 fg=FONT_COLOR,
@@ -60,15 +66,15 @@ class Library:
                 activeforeground=ACTIVE_FONT,
                 width=0,
                 justify='center'
-                )
+            )
             label.grid(sticky='nesw', pady=20, padx=20)
             return
-        
+
         for file in os.scandir(self.folder_path):
-            if  i % 6 == 0:
+            if i % 6 == 0:
                 j += 1
                 i = 0
-            txt = file.name.split('.')[0].replace('_', ' ').capitalize()
+            txt = prettify_title(file.name)
             path = self.folder_path + file.name
             button = Button(
                 self.__root.txt,
@@ -80,11 +86,11 @@ class Library:
                 activeforeground=ACTIVE_FONT,
                 command=partial(self.read, path),
                 width=16
-                )
+            )
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
-    def add_and_open(self): # Returns: None
+    def add_and_open(self) -> None:
         """
         Add book through filedialog, and opens it to instantly read
         """
@@ -92,11 +98,14 @@ class Library:
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
-    def read(self, path): # Returns: None
+    def read(self, path) -> None:
+        """
+        loads book TODO: better docs
+        """
         # self.cache_book()
-        self.__window.current_book = path
-        self.notebook.change_book(self.__window.current_book)
+        self.book_bot.current_book = path
+        self.notebook.change_book(self.book_bot.current_book)
 
-        self.__window.check_entries()
+        self.book_bot.check_entries()
         self.notebook.update()
         load_book(self.__root, path)
