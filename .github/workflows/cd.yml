@@ -193,7 +193,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install ruby-full
           sudo gem install github_changelog_generator
-          github_changelog_generator --user pat955 --project pokibooks -f %d-%m-%Y --since-tag $.CHANGELOG_TAG --token ${{ secrets.GH_TOKEN }}
+          github_changelog_generator --user pat955 --project pokibooks -f %d-%m-%Y --since-tag ${{ env.CHANGELOG_TAG }} --token ${{ secrets.GH_TOKEN }}
       
       - name: Download Artifacts
         uses: actions/download-artifact@v4
