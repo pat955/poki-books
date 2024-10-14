@@ -19,6 +19,7 @@ var addTests = []Case{
 }
 
 func TestAddBook(t *testing.T) {
+
 	for _, test := range addTests {
 		if err := AddBook(test.Title); err != test.ExpectedErr {
 			t.Errorf("Output %v not equal to expected %v", err, test.ExpectedErr)
