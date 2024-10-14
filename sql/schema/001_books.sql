@@ -1,12 +1,10 @@
 -- +goose Up
 CREATE TABLE books (
-    id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    title TEXT NOT NULL,
-    description TEXT NOT NULL DEFAULT '', 
+    id UUID PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    name TEXT NOT NULL
+    title TEXT NOT NULL
 );
 
 -- +goose Down
-DROP TABLE users;
+DROP TABLE books;
