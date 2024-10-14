@@ -1,11 +1,14 @@
 -- name: CreateBook :one
-INSERT INTO books (id, created_at, updated_at, title, content, author)
-(id, title, content, author) VALUES ($1, $4, $5, $6)
+INSERT INTO books (
+  id, created_at, updated_at, title
+) VALUES (
+  ?, ?, ?, ?
+)
 RETURNING *;
 
 -- name: GetBookByID :one
 SELECT * FROM books
-WHERE id = $1;
+WHERE id = ?;
 
 -- name: GetAllBooks :many
 SELECT * FROM books;
