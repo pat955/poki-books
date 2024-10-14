@@ -3,6 +3,8 @@ package api
 import (
 	"database/sql"
 
+	_ "github.com/mattn/go-sqlite3"
+
 	"github.com/pat955/poki_books/internal/database"
 )
 
