@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	"os/exec"
 	"testing"
 )
@@ -21,8 +20,12 @@ var addTests = []Case{
 	{Book{Title: "No content test"}, NoContentError{}, TotalBooksNow + 2},
 }
 
+func setupTestDB() {
+	exec.Command("/bin/sh", "./scripts/test.sh")
+}
+
 func TestAddBook(t *testing.T) {
-	exec.Command("/bin/sh", "./scripts/reset_db.sh")
+	setupTestDB()
 	for _, test := range addTests {
 		if err := AddBook(test.Book); err != test.ExpectedErr {
 			t.Errorf("Output %v not equal to expected %v", err, test.ExpectedErr)
@@ -39,7 +42,7 @@ var contentCases = []Book{
 }
 
 func TestGetContentTitle(t *testing.T) {
-	exec.Command("/bin/sh", "./scripts/reset_db.sh")
+	setupTestDB()
 	for _, book := range contentCases {
 		err := AddBook(book)
 		if err != nil {
@@ -51,5 +54,4 @@ func TestGetContentTitle(t *testing.T) {
 			t.Errorf("Output %v not equal to expected %v", content, expectedContent)
 		}
 	}
-	fmt.Println(GetAllBooks())
 }
