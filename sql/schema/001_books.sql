@@ -3,7 +3,8 @@ CREATE TABLE books (
     id UUID PRIMARY KEY,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    title TEXT NOT NULL
+    title TEXT NOT NULL,
+    content TEXT NOT NULL
 );
 
 -- +goose Down

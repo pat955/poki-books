@@ -12,11 +12,11 @@ import (
 
 const createBook = `-- name: CreateBook :one
 INSERT INTO books (
-  id, created_at, updated_at, title
+  id, created_at, updated_at, title, content
 ) VALUES (
-  ?, ?, ?, ?
+  ?, ?, ?, ?, ?
 )
-RETURNING id, created_at, updated_at, title
+RETURNING id, created_at, updated_at, title, content
 `
 
 type CreateBookParams struct {
@@ -24,6 +24,7 @@ type CreateBookParams struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Title     string
+	Content   string
 }
 
 func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, error) {
@@ -32,6 +33,7 @@ func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, e
 		arg.CreatedAt,
 		arg.UpdatedAt,
 		arg.Title,
+		arg.Content,
 	)
 	var i Book
 	err := row.Scan(
@@ -39,12 +41,13 @@ func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, e
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Title,
+		&i.Content,
 	)
 	return i, err
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-SELECT id, created_at, updated_at, title FROM books
+SELECT id, created_at, updated_at, title, content FROM books
 `
 
 func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
@@ -61,6 +64,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 			&i.CreatedAt,
 			&i.UpdatedAt,
 			&i.Title,
+			&i.Content,
 		); err != nil {
 			return nil, err
 		}
@@ -76,7 +80,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookByID = `-- name: GetBookByID :one
-SELECT id, created_at, updated_at, title FROM books
+SELECT id, created_at, updated_at, title, content FROM books
 WHERE id = ?
 `
 
@@ -88,6 +92,31 @@ func (q *Queries) GetBookByID(ctx context.Context, id interface{}) (Book, error)
 		&i.CreatedAt,
 		&i.UpdatedAt,
 		&i.Title,
+		&i.Content,
 	)
 	return i, err
+}
+
+const getContentByID = `-- name: GetContentByID :one
+SELECT content FROM books
+WHERE id = ?
+`
+
+func (q *Queries) GetContentByID(ctx context.Context, id interface{}) (string, error) {
+	row := q.db.QueryRowContext(ctx, getContentByID, id)
+	var content string
+	err := row.Scan(&content)
+	return content, err
+}
+
+const getContentByTitle = `-- name: GetContentByTitle :one
+SELECT content FROM books
+WHERE title = ?
+`
+
+func (q *Queries) GetContentByTitle(ctx context.Context, title string) (string, error) {
+	row := q.db.QueryRowContext(ctx, getContentByTitle, title)
+	var content string
+	err := row.Scan(&content)
+	return content, err
 }
