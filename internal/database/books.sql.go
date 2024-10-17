@@ -7,47 +7,32 @@ package database
 
 import (
 	"context"
-	"time"
 )
 
 const createBook = `-- name: CreateBook :one
 INSERT INTO books (
-  id, created_at, updated_at, title, content
+  id, title, content
 ) VALUES (
-  ?, ?, ?, ?, ?
+  ?, ?, ?
 )
-RETURNING id, created_at, updated_at, title, content
+RETURNING id, title, content
 `
 
 type CreateBookParams struct {
-	ID        interface{}
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Title     string
-	Content   string
+	ID      interface{}
+	Title   string
+	Content string
 }
 
 func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, error) {
-	row := q.db.QueryRowContext(ctx, createBook,
-		arg.ID,
-		arg.CreatedAt,
-		arg.UpdatedAt,
-		arg.Title,
-		arg.Content,
-	)
+	row := q.db.QueryRowContext(ctx, createBook, arg.ID, arg.Title, arg.Content)
 	var i Book
-	err := row.Scan(
-		&i.ID,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.Title,
-		&i.Content,
-	)
+	err := row.Scan(&i.ID, &i.Title, &i.Content)
 	return i, err
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-SELECT id, created_at, updated_at, title, content FROM books
+SELECT id, title, content FROM books
 `
 
 func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
@@ -59,13 +44,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 	var items []Book
 	for rows.Next() {
 		var i Book
-		if err := rows.Scan(
-			&i.ID,
-			&i.CreatedAt,
-			&i.UpdatedAt,
-			&i.Title,
-			&i.Content,
-		); err != nil {
+		if err := rows.Scan(&i.ID, &i.Title, &i.Content); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -80,20 +59,14 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookByID = `-- name: GetBookByID :one
-SELECT id, created_at, updated_at, title, content FROM books
+SELECT id, title, content FROM books
 WHERE id = ?
 `
 
 func (q *Queries) GetBookByID(ctx context.Context, id interface{}) (Book, error) {
 	row := q.db.QueryRowContext(ctx, getBookByID, id)
 	var i Book
-	err := row.Scan(
-		&i.ID,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-		&i.Title,
-		&i.Content,
-	)
+	err := row.Scan(&i.ID, &i.Title, &i.Content)
 	return i, err
 }
 

@@ -7,7 +7,6 @@ from window import BookBot
 
 
 def main() -> None:
-    con = sqlite3.connect("tutorial.db")
     BookBot()
 
 

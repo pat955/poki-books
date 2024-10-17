@@ -1,8 +1,8 @@
 -- name: CreateBook :one
 INSERT INTO books (
-  id, created_at, updated_at, title, content
+  id, title, content
 ) VALUES (
-  ?, ?, ?, ?, ?
+  ?, ?, ?
 )
 RETURNING *;
 

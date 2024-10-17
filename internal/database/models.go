@@ -4,14 +4,8 @@
 
 package database
 
-import (
-	"time"
-)
-
 type Book struct {
-	ID        interface{}
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Title     string
-	Content   string
+	ID      interface{}
+	Title   string
+	Content string
 }

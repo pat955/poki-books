@@ -2,7 +2,6 @@ package api
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/pat955/poki_books/internal/database"
@@ -28,11 +27,9 @@ func AddBook(book Book) error {
 	newBook, err := cfg.DB.CreateBook(
 		cfg.GenericCtx,
 		database.CreateBookParams{
-			ID:        uuid.New(),
-			CreatedAt: time.Now().UTC(),
-			UpdatedAt: time.Now().UTC(),
-			Title:     book.Title,
-			Content:   book.Content,
+			ID:      uuid.New(),
+			Title:   book.Title,
+			Content: book.Content,
 		})
 	if err != nil {
 		return (err)
