@@ -2569,6 +2569,93 @@ PyObject * _wrap__database_database_DBTX_QueryRowContext(PyObject * PYBINDGEN_UN
 
 
 PyObject *
+_wrap__database_database_CreateBookParams_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
+{
+    PyObject *py_retval;
+    int64_t retval;
+
+    retval = database_CreateBookParams_CTor();
+    py_retval = Py_BuildValue((char *) "L", retval);
+    return py_retval;
+}
+PyObject * _wrap__database_database_CreateBookParams_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs));
+
+
+PyObject *
+_wrap__database_database_CreateBookParams_Title_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    int64_t handle;
+    const char *keywords[] = {"handle", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
+        return NULL;
+    }
+    retval = database_CreateBookParams_Title_Get(handle);
+    py_retval = Py_BuildValue((char *) "s", retval);
+    return py_retval;
+}
+PyObject * _wrap__database_database_CreateBookParams_Title_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__database_database_CreateBookParams_Title_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    int64_t handle;
+    char *val;
+    const char *keywords[] = {"handle", "val", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
+        return NULL;
+    }
+    database_CreateBookParams_Title_Set(handle, val);
+    Py_INCREF(Py_None);
+    py_retval = Py_None;
+    return py_retval;
+}
+PyObject * _wrap__database_database_CreateBookParams_Title_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__database_database_CreateBookParams_Content_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    int64_t handle;
+    const char *keywords[] = {"handle", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
+        return NULL;
+    }
+    retval = database_CreateBookParams_Content_Get(handle);
+    py_retval = Py_BuildValue((char *) "s", retval);
+    return py_retval;
+}
+PyObject * _wrap__database_database_CreateBookParams_Content_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__database_database_CreateBookParams_Content_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    int64_t handle;
+    char *val;
+    const char *keywords[] = {"handle", "val", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
+        return NULL;
+    }
+    database_CreateBookParams_Content_Set(handle, val);
+    Py_INCREF(Py_None);
+    py_retval = Py_None;
+    return py_retval;
+}
+PyObject * _wrap__database_database_CreateBookParams_Content_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
 _wrap__database_database_Queries_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
 {
     PyObject *py_retval;
@@ -2809,93 +2896,6 @@ PyObject * _wrap__database_database_Book_Content_Set(PyObject * PYBINDGEN_UNUSED
 
 
 PyObject *
-_wrap__database_database_CreateBookParams_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
-{
-    PyObject *py_retval;
-    int64_t retval;
-
-    retval = database_CreateBookParams_CTor();
-    py_retval = Py_BuildValue((char *) "L", retval);
-    return py_retval;
-}
-PyObject * _wrap__database_database_CreateBookParams_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs));
-
-
-PyObject *
-_wrap__database_database_CreateBookParams_Title_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
-{
-    PyObject *py_retval;
-    char *retval;
-    int64_t handle;
-    const char *keywords[] = {"handle", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
-        return NULL;
-    }
-    retval = database_CreateBookParams_Title_Get(handle);
-    py_retval = Py_BuildValue((char *) "s", retval);
-    return py_retval;
-}
-PyObject * _wrap__database_database_CreateBookParams_Title_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
-
-
-PyObject *
-_wrap__database_database_CreateBookParams_Title_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
-{
-    PyObject *py_retval;
-    int64_t handle;
-    char *val;
-    const char *keywords[] = {"handle", "val", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
-        return NULL;
-    }
-    database_CreateBookParams_Title_Set(handle, val);
-    Py_INCREF(Py_None);
-    py_retval = Py_None;
-    return py_retval;
-}
-PyObject * _wrap__database_database_CreateBookParams_Title_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
-
-
-PyObject *
-_wrap__database_database_CreateBookParams_Content_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
-{
-    PyObject *py_retval;
-    char *retval;
-    int64_t handle;
-    const char *keywords[] = {"handle", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
-        return NULL;
-    }
-    retval = database_CreateBookParams_Content_Get(handle);
-    py_retval = Py_BuildValue((char *) "s", retval);
-    return py_retval;
-}
-PyObject * _wrap__database_database_CreateBookParams_Content_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
-
-
-PyObject *
-_wrap__database_database_CreateBookParams_Content_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
-{
-    PyObject *py_retval;
-    int64_t handle;
-    char *val;
-    const char *keywords[] = {"handle", "val", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
-        return NULL;
-    }
-    database_CreateBookParams_Content_Set(handle, val);
-    Py_INCREF(Py_None);
-    py_retval = Py_None;
-    return py_retval;
-}
-PyObject * _wrap__database_database_CreateBookParams_Content_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
-
-
-PyObject *
 _wrap__database_database_New(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
@@ -3052,6 +3052,11 @@ static PyMethodDef _database_functions[] = {
     {(char *) "database_DBTX_PrepareContext", (PyCFunction) _wrap__database_database_DBTX_PrepareContext, METH_KEYWORDS|METH_VARARGS, "database_DBTX_PrepareContext(_handle, arg_0, arg_1)\n\ntype: _handle: int64_t\ntype: arg_0: int64_t\ntype: arg_1: char *" },
     {(char *) "database_DBTX_QueryContext", (PyCFunction) _wrap__database_database_DBTX_QueryContext, METH_KEYWORDS|METH_VARARGS, "database_DBTX_QueryContext(_handle, arg_0, arg_1, arg_2)\n\ntype: _handle: int64_t\ntype: arg_0: int64_t\ntype: arg_1: char *\ntype: arg_2: int64_t" },
     {(char *) "database_DBTX_QueryRowContext", (PyCFunction) _wrap__database_database_DBTX_QueryRowContext, METH_KEYWORDS|METH_VARARGS, "database_DBTX_QueryRowContext(_handle, arg_0, arg_1, arg_2)\n\ntype: _handle: int64_t\ntype: arg_0: int64_t\ntype: arg_1: char *\ntype: arg_2: int64_t" },
+    {(char *) "database_CreateBookParams_CTor", (PyCFunction) _wrap__database_database_CreateBookParams_CTor, METH_NOARGS, "database_CreateBookParams_CTor()\n\n" },
+    {(char *) "database_CreateBookParams_Title_Get", (PyCFunction) _wrap__database_database_CreateBookParams_Title_Get, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Title_Get(handle)\n\ntype: handle: int64_t" },
+    {(char *) "database_CreateBookParams_Title_Set", (PyCFunction) _wrap__database_database_CreateBookParams_Title_Set, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Title_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
+    {(char *) "database_CreateBookParams_Content_Get", (PyCFunction) _wrap__database_database_CreateBookParams_Content_Get, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Content_Get(handle)\n\ntype: handle: int64_t" },
+    {(char *) "database_CreateBookParams_Content_Set", (PyCFunction) _wrap__database_database_CreateBookParams_Content_Set, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Content_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
     {(char *) "database_Queries_CTor", (PyCFunction) _wrap__database_database_Queries_CTor, METH_NOARGS, "database_Queries_CTor()\n\n" },
     {(char *) "database_Queries_CreateBook", (PyCFunction) _wrap__database_database_Queries_CreateBook, METH_KEYWORDS|METH_VARARGS, "database_Queries_CreateBook(_handle, ctx, arg)\n\ntype: _handle: int64_t\ntype: ctx: int64_t\ntype: arg: int64_t" },
     {(char *) "database_Queries_GetAllBooks", (PyCFunction) _wrap__database_database_Queries_GetAllBooks, METH_KEYWORDS|METH_VARARGS, "database_Queries_GetAllBooks(_handle, ctx)\n\ntype: _handle: int64_t\ntype: ctx: int64_t" },
@@ -3064,11 +3069,6 @@ static PyMethodDef _database_functions[] = {
     {(char *) "database_Book_Title_Set", (PyCFunction) _wrap__database_database_Book_Title_Set, METH_KEYWORDS|METH_VARARGS, "database_Book_Title_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
     {(char *) "database_Book_Content_Get", (PyCFunction) _wrap__database_database_Book_Content_Get, METH_KEYWORDS|METH_VARARGS, "database_Book_Content_Get(handle)\n\ntype: handle: int64_t" },
     {(char *) "database_Book_Content_Set", (PyCFunction) _wrap__database_database_Book_Content_Set, METH_KEYWORDS|METH_VARARGS, "database_Book_Content_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
-    {(char *) "database_CreateBookParams_CTor", (PyCFunction) _wrap__database_database_CreateBookParams_CTor, METH_NOARGS, "database_CreateBookParams_CTor()\n\n" },
-    {(char *) "database_CreateBookParams_Title_Get", (PyCFunction) _wrap__database_database_CreateBookParams_Title_Get, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Title_Get(handle)\n\ntype: handle: int64_t" },
-    {(char *) "database_CreateBookParams_Title_Set", (PyCFunction) _wrap__database_database_CreateBookParams_Title_Set, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Title_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
-    {(char *) "database_CreateBookParams_Content_Get", (PyCFunction) _wrap__database_database_CreateBookParams_Content_Get, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Content_Get(handle)\n\ntype: handle: int64_t" },
-    {(char *) "database_CreateBookParams_Content_Set", (PyCFunction) _wrap__database_database_CreateBookParams_Content_Set, METH_KEYWORDS|METH_VARARGS, "database_CreateBookParams_Content_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
     {(char *) "database_New", (PyCFunction) _wrap__database_database_New, METH_KEYWORDS|METH_VARARGS, "database_New(db)\n\ntype: db: int64_t" },
     {NULL, NULL, 0, NULL}
 };

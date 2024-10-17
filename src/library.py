@@ -7,13 +7,16 @@ add remove function
 
 import shutil
 import os
+import contextlib
+import uuid
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button, Label
 from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
 from book_types import load_book
-
+import gopy
+import gopy.database
 
 class Library:
     """
@@ -38,6 +41,12 @@ class Library:
         Add book from filedialog. 
         Returns book path
         """
+        gen_ctx = contextlib.nullcontext
+        db_api = gopy.database
+        queries = db_api.Queries()
+        book =  db_api.CreateBookParams(ID=uuid.uuid4(),Title="testing1", Content="content") 
+        queries.CreateBook(ctx=gen_ctx, arg=book)
+
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
         

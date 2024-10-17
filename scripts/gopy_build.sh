@@ -1,2 +1,3 @@
-gopy build -output=out -vm=python3 ./api
+cd src
+gopy build -output=gopy -vm=python3 ../internal/database 
 
