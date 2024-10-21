@@ -2178,41 +2178,6 @@ PyObject * _wrap__api_api_Set_DB_PATH(PyObject * PYBINDGEN_UNUSED(dummy), PyObje
 
 
 PyObject *
-_wrap__api_api_NoTitleError_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
-{
-    PyObject *py_retval;
-    int64_t retval;
-
-    retval = api_NoTitleError_CTor();
-    py_retval = Py_BuildValue((char *) "L", retval);
-    return py_retval;
-}
-PyObject * _wrap__api_api_NoTitleError_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs));
-
-
-PyObject *
-_wrap__api_api_NoTitleError_New(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
-{
-    PyObject *py_retval;
-    char *retval;
-    int64_t _handle;
-    char *message;
-    const char *keywords[] = {"_handle", "message", NULL};
-
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &_handle, &message)) {
-        return NULL;
-    }
-    retval = api_NoTitleError_New(_handle, message);
-    if (PyErr_Occurred()) {
-        return NULL;
-    }
-    py_retval = Py_BuildValue((char *) "s", retval);
-    return py_retval;
-}
-PyObject * _wrap__api_api_NoTitleError_New(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
-
-
-PyObject *
 _wrap__api_api_Book_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
 {
     PyObject *py_retval;
@@ -2387,25 +2352,136 @@ PyObject * _wrap__api_api_NoContentError_CTor(PyObject *PYBINDGEN_UNUSED(_args),
 
 
 PyObject *
-_wrap__api_api_NoContentError_New(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+_wrap__api_api_NoContentError_Message_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    int64_t handle;
+    const char *keywords[] = {"handle", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
+        return NULL;
+    }
+    retval = api_NoContentError_Message_Get(handle);
+    py_retval = Py_BuildValue((char *) "s", retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoContentError_Message_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_NoContentError_Message_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    int64_t handle;
+    char *val;
+    const char *keywords[] = {"handle", "val", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
+        return NULL;
+    }
+    api_NoContentError_Message_Set(handle, val);
+    Py_INCREF(Py_None);
+    py_retval = Py_None;
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoContentError_Message_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_NoContentError_Error(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
     char *retval;
     int64_t _handle;
-    char *message;
-    const char *keywords[] = {"_handle", "message", NULL};
+    const char *keywords[] = {"_handle", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &_handle, &message)) {
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &_handle)) {
         return NULL;
     }
-    retval = api_NoContentError_New(_handle, message);
+    retval = api_NoContentError_Error(_handle);
     if (PyErr_Occurred()) {
+        if (retval != NULL) free(retval);
         return NULL;
     }
     py_retval = Py_BuildValue((char *) "s", retval);
+    free(retval);
     return py_retval;
 }
-PyObject * _wrap__api_api_NoContentError_New(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+PyObject * _wrap__api_api_NoContentError_Error(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_NoTitleError_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
+{
+    PyObject *py_retval;
+    int64_t retval;
+
+    retval = api_NoTitleError_CTor();
+    py_retval = Py_BuildValue((char *) "L", retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoTitleError_CTor(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs));
+
+
+PyObject *
+_wrap__api_api_NoTitleError_Message_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    int64_t handle;
+    const char *keywords[] = {"handle", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &handle)) {
+        return NULL;
+    }
+    retval = api_NoTitleError_Message_Get(handle);
+    py_retval = Py_BuildValue((char *) "s", retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoTitleError_Message_Get(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_NoTitleError_Message_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    int64_t handle;
+    char *val;
+    const char *keywords[] = {"handle", "val", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "Ls", (char **) keywords, &handle, &val)) {
+        return NULL;
+    }
+    api_NoTitleError_Message_Set(handle, val);
+    Py_INCREF(Py_None);
+    py_retval = Py_None;
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoTitleError_Message_Set(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_NoTitleError_Error(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    int64_t _handle;
+    const char *keywords[] = {"_handle", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &_handle)) {
+        return NULL;
+    }
+    retval = api_NoTitleError_Error(_handle);
+    if (PyErr_Occurred()) {
+        if (retval != NULL) free(retval);
+        return NULL;
+    }
+    py_retval = Py_BuildValue((char *) "s", retval);
+    free(retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_NoTitleError_Error(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
 
 
 PyObject *
@@ -2584,8 +2660,6 @@ static PyMethodDef _api_functions[] = {
     {(char *) "Slice_database_Book_append", (PyCFunction) _wrap__api_Slice_database_Book_append, METH_KEYWORDS|METH_VARARGS, "Slice_database_Book_append(handle, value)\n\ntype: handle: int64_t\ntype: value: int64_t" },
     {(char *) "api_DB_PATH", (PyCFunction) _wrap__api_api_DB_PATH, METH_NOARGS, "api_DB_PATH()\n\n" },
     {(char *) "api_Set_DB_PATH", (PyCFunction) _wrap__api_api_Set_DB_PATH, METH_KEYWORDS|METH_VARARGS, "api_Set_DB_PATH(val)\n\ntype: val: char *" },
-    {(char *) "api_NoTitleError_CTor", (PyCFunction) _wrap__api_api_NoTitleError_CTor, METH_NOARGS, "api_NoTitleError_CTor()\n\n" },
-    {(char *) "api_NoTitleError_New", (PyCFunction) _wrap__api_api_NoTitleError_New, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_New(_handle, message)\n\ntype: _handle: int64_t\ntype: message: char *" },
     {(char *) "api_Book_CTor", (PyCFunction) _wrap__api_api_Book_CTor, METH_NOARGS, "api_Book_CTor()\n\n" },
     {(char *) "api_Book_Title_Get", (PyCFunction) _wrap__api_api_Book_Title_Get, METH_KEYWORDS|METH_VARARGS, "api_Book_Title_Get(handle)\n\ntype: handle: int64_t" },
     {(char *) "api_Book_Title_Set", (PyCFunction) _wrap__api_api_Book_Title_Set, METH_KEYWORDS|METH_VARARGS, "api_Book_Title_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
@@ -2596,7 +2670,13 @@ static PyMethodDef _api_functions[] = {
     {(char *) "api_Book_Author_Get", (PyCFunction) _wrap__api_api_Book_Author_Get, METH_KEYWORDS|METH_VARARGS, "api_Book_Author_Get(handle)\n\ntype: handle: int64_t" },
     {(char *) "api_Book_Author_Set", (PyCFunction) _wrap__api_api_Book_Author_Set, METH_KEYWORDS|METH_VARARGS, "api_Book_Author_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
     {(char *) "api_NoContentError_CTor", (PyCFunction) _wrap__api_api_NoContentError_CTor, METH_NOARGS, "api_NoContentError_CTor()\n\n" },
-    {(char *) "api_NoContentError_New", (PyCFunction) _wrap__api_api_NoContentError_New, METH_KEYWORDS|METH_VARARGS, "api_NoContentError_New(_handle, message)\n\ntype: _handle: int64_t\ntype: message: char *" },
+    {(char *) "api_NoContentError_Message_Get", (PyCFunction) _wrap__api_api_NoContentError_Message_Get, METH_KEYWORDS|METH_VARARGS, "api_NoContentError_Message_Get(handle)\n\ntype: handle: int64_t" },
+    {(char *) "api_NoContentError_Message_Set", (PyCFunction) _wrap__api_api_NoContentError_Message_Set, METH_KEYWORDS|METH_VARARGS, "api_NoContentError_Message_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
+    {(char *) "api_NoContentError_Error", (PyCFunction) _wrap__api_api_NoContentError_Error, METH_KEYWORDS|METH_VARARGS, "api_NoContentError_Error(_handle)\n\ntype: _handle: int64_t" },
+    {(char *) "api_NoTitleError_CTor", (PyCFunction) _wrap__api_api_NoTitleError_CTor, METH_NOARGS, "api_NoTitleError_CTor()\n\n" },
+    {(char *) "api_NoTitleError_Message_Get", (PyCFunction) _wrap__api_api_NoTitleError_Message_Get, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Message_Get(handle)\n\ntype: handle: int64_t" },
+    {(char *) "api_NoTitleError_Message_Set", (PyCFunction) _wrap__api_api_NoTitleError_Message_Set, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Message_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
+    {(char *) "api_NoTitleError_Error", (PyCFunction) _wrap__api_api_NoTitleError_Error, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Error(_handle)\n\ntype: _handle: int64_t" },
     {(char *) "api_AddBook", (PyCFunction) _wrap__api_api_AddBook, METH_KEYWORDS|METH_VARARGS, "api_AddBook(book)\n\ntype: book: int64_t" },
     {(char *) "api_GetAllBooks", (PyCFunction) _wrap__api_api_GetAllBooks, METH_NOARGS, "api_GetAllBooks()\n\n" },
     {(char *) "api_GetContentByTitle", (PyCFunction) _wrap__api_api_GetContentByTitle, METH_KEYWORDS|METH_VARARGS, "api_GetContentByTitle(title)\n\ntype: title: char *" },

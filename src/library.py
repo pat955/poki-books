@@ -51,7 +51,7 @@ class Library:
         if path:
             try:
                 shutil.move(path, self.folder_path)
-                a = api.AddBook(book=Book(title=path, content="something here"))
+                a = api.AddBook(book=api.Book(Title="path", Content="something here", handle=200))
                 print(a)
             except Exception as e:
                 print(e)
@@ -123,20 +123,3 @@ class Library:
         self.book_bot.check_entries()
         self.notebook.update()
         load_book(self.__root, path)
-
-"""
-type Book struct {
-	Title   string
-	Content string
-	Notes   string
-	Author  string
-}
-"""
-class Book():
-    def __init__(self, title, content, notes=None, author=None):
-        self.title = title
-        self.content = content
-        self.notes = notes
-        self.author = author
-        self.handle = 200
-    

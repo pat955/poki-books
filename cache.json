@@ -39,7 +39,7 @@
         "books/epub.epub": {
             "scrollbar": [
                 0.0,
-                1.0
+                0.21430246189917937
             ],
             "notes": "\n"
         },
@@ -76,7 +76,7 @@
                 0.0,
                 1.0
             ],
-            "notes": "\n\n\n"
+            "notes": "\n"
         },
         "books/sample3.html": {
             "scrollbar": [

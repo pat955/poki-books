@@ -302,11 +302,6 @@ extern void Slice_database_Book_append(long long int handle, long long int _vl);
 extern char* api_DB_PATH();
 extern void api_Set_DB_PATH(char* val);
 
-// --- wrapping struct: api.NoTitleError ---
-//
-extern long long int api_NoTitleError_CTor();
-extern char* api_NoTitleError_New(long long int _handle, char* message);
-
 // --- wrapping struct: api.Book ---
 //
 extern long long int api_Book_CTor();
@@ -322,7 +317,16 @@ extern void api_Book_Author_Set(long long int handle, char* val);
 // --- wrapping struct: api.NoContentError ---
 //
 extern long long int api_NoContentError_CTor();
-extern char* api_NoContentError_New(long long int _handle, char* message);
+extern char* api_NoContentError_Message_Get(long long int handle);
+extern void api_NoContentError_Message_Set(long long int handle, char* val);
+extern char* api_NoContentError_Error(long long int _handle);
+
+// --- wrapping struct: api.NoTitleError ---
+//
+extern long long int api_NoTitleError_CTor();
+extern char* api_NoTitleError_Message_Get(long long int handle);
+extern void api_NoTitleError_Message_Set(long long int handle, char* val);
+extern char* api_NoTitleError_Error(long long int _handle);
 extern char* api_AddBook(long long int book);
 extern long long int api_GetAllBooks();
 extern char* api_GetContentByTitle(char* title);
