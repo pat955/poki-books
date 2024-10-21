@@ -7,7 +7,6 @@ add remove function
 
 import shutil
 import os
-import contextlib
 import uuid
 from functools import partial
 from pathlib import Path
@@ -17,6 +16,9 @@ from basics import dir_empty, prettify_title
 from book_types import load_book
 import gopy
 import gopy.database
+class Context:
+    def __init__(self, handle):
+        self.handle = handle
 
 class Library:
     """
@@ -36,16 +38,18 @@ class Library:
         """
         self.book_bot.text_frame.show_error('NotImplementedError', 'remove function current not implemented, simply remove book from folder')
 
+
+
     def add(self) -> str:
         """
         Add book from filedialog. 
         Returns book path
         """
-        gen_ctx = contextlib.nullcontext
+        
         db_api = gopy.database
         queries = db_api.Queries()
-        book =  db_api.CreateBookParams(ID=uuid.uuid4(),Title="testing1", Content="content") 
-        queries.CreateBook(ctx=gen_ctx, arg=book)
+        book =  db_api.CreateBookParams(ID=uuid.uuid4(),Title="testing1", Content="content")
+        queries.CreateBook(Context(200), book)
 
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
