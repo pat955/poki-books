@@ -1,21 +1,23 @@
 package api
 
-import (
-	"errors"
-)
+import "fmt"
 
+// NoTitleError is a custom error type for missing title errors.
 type NoTitleError struct {
-}
-
-func (e NoTitleError) New(message string) error {
-	return errors.New("NoTitleError: " + message)
+	Message string
 }
 
 // Implement the Error() method for NoTitleError to satisfy the error interface.
-
-type NoContentError struct {
+func (e *NoTitleError) Error() string {
+	return fmt.Sprintf("NoTitleError: %s", e.Message)
 }
 
-func (e NoContentError) New(message string) error {
-	return errors.New("NoContentError: " + message)
+// NoContentError is a custom error type for missing content errors.
+type NoContentError struct {
+	Message string
+}
+
+// Implement the Error() method for NoContentError to satisfy the error interface.
+func (e *NoContentError) Error() string {
+	return fmt.Sprintf("NoContentError: %s", e.Message)
 }

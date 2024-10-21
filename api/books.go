@@ -18,11 +18,14 @@ type Book struct {
 
 func AddBook(book Book) error {
 	if book.Title == "" {
-		return NoTitleError{}.New("Unamed book")
+		return &NoTitleError{"unamed book"}
 	} else if book.Content == "" {
-		return NoContentError{}.New("Empty book")
+		return &NoContentError{"empty book"}
 	}
 	cfg := connect(DB_PATH)
+	if cfg == nil || cfg.DB == nil {
+		return fmt.Errorf("failed to connect to the database")
+	}
 
 	newBook, err := cfg.DB.CreateBook(
 		cfg.GenericCtx,
@@ -32,7 +35,7 @@ func AddBook(book Book) error {
 			Content: book.Content,
 		})
 	if err != nil {
-		return (err)
+		return err
 	}
 	fmt.Println(newBook)
 	return nil

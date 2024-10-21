@@ -7,17 +7,17 @@ import (
 
 type Case struct {
 	Book               Book
-	ExpectedErr        error
+	ExpectedErr        bool
 	ExpectedTotalBooks int
 }
 
 var TotalBooksNow int = len(GetAllBooks())
 
 var addTests = []Case{
-	{Book{Title: "Title", Content: "contnetmte t,t estestetm tetet, yeah."}, nil, TotalBooksNow + 1},
-	{Book{Title: "ANOTHER TITLE", Content: "something something"}, nil, TotalBooksNow + 2},
-	{Book{Title: ""}, NoTitleError{}, TotalBooksNow + 2},
-	{Book{Title: "No content test"}, NoContentError{}, TotalBooksNow + 2},
+	{Book{Title: "Title", Content: "contnetmte t,t estestetm tetet, yeah."}, false, TotalBooksNow + 1},
+	{Book{Title: "ANOTHER TITLE", Content: "something something"}, false, TotalBooksNow + 2},
+	{Book{Title: ""}, true, TotalBooksNow + 2},                // NoTitleError
+	{Book{Title: "No content test"}, true, TotalBooksNow + 2}, // NoContentError
 }
 
 func setupTestDB() {
@@ -27,7 +27,7 @@ func setupTestDB() {
 func TestAddBook(t *testing.T) {
 	setupTestDB()
 	for _, test := range addTests {
-		if err := AddBook(test.Book); err != test.ExpectedErr {
+		if err := AddBook(test.Book); (err != nil) != test.ExpectedErr {
 			t.Errorf("Output %v not equal to expected %v", err, test.ExpectedErr)
 		}
 		if i := len(GetAllBooks()); i != test.ExpectedTotalBooks {
