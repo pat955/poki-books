@@ -19,7 +19,7 @@ typedef struct { const char *p; ptrdiff_t n; } _GoString_;
 /* Start of preamble from import "C" comments.  */
 
 
-#line 9 "database.go"
+#line 9 "api.go"
 
 
 
@@ -288,24 +288,6 @@ extern long long int Slice_uint8_subslice(long long int handle, GoInt _st, GoInt
 extern void Slice_uint8_set(long long int handle, GoInt _idx, unsigned char _vl);
 extern void Slice_uint8_append(long long int handle, unsigned char _vl);
 
-// --- wrapping slice: []*sql.ColumnType ---
-//
-extern long long int Slice_Ptr_sql_ColumnType_CTor();
-extern GoInt Slice_Ptr_sql_ColumnType_len(long long int handle);
-extern long long int Slice_Ptr_sql_ColumnType_elem(long long int handle, GoInt _idx);
-extern long long int Slice_Ptr_sql_ColumnType_subslice(long long int handle, GoInt _st, GoInt _ed);
-extern void Slice_Ptr_sql_ColumnType_set(long long int handle, GoInt _idx, long long int _vl);
-extern void Slice_Ptr_sql_ColumnType_append(long long int handle, long long int _vl);
-
-// --- wrapping slice: []any ---
-//
-extern long long int Slice_any_CTor();
-extern GoInt Slice_any_len(long long int handle);
-extern long long int Slice_any_elem(long long int handle, GoInt _idx);
-extern long long int Slice_any_subslice(long long int handle, GoInt _st, GoInt _ed);
-extern void Slice_any_set(long long int handle, GoInt _idx, long long int _vl);
-extern void Slice_any_append(long long int handle, long long int _vl);
-
 // --- wrapping slice: []database.Book ---
 //
 extern long long int Slice_database_Book_CTor();
@@ -315,45 +297,35 @@ extern long long int Slice_database_Book_subslice(long long int handle, GoInt _s
 extern void Slice_database_Book_set(long long int handle, GoInt _idx, long long int _vl);
 extern void Slice_database_Book_append(long long int handle, long long int _vl);
 
-// --- wrapping slice: []interface{} ---
+// ---- Global Variables: can only use functions to access ---
 //
-extern long long int Slice_interface__CTor();
-extern GoInt Slice_interface__len(long long int handle);
-extern char* Slice_interface__elem(long long int handle, GoInt _idx);
-extern long long int Slice_interface__subslice(long long int handle, GoInt _st, GoInt _ed);
-extern void Slice_interface__set(long long int handle, GoInt _idx, char* _vl);
-extern void Slice_interface__append(long long int handle, char* _vl);
-extern long long int database_DBTX_ExecContext(long long int _handle, long long int arg_0, char* arg_1, long long int arg_2);
-extern long long int database_DBTX_PrepareContext(long long int _handle, long long int arg_0, char* arg_1);
-extern long long int database_DBTX_QueryContext(long long int _handle, long long int arg_0, char* arg_1, long long int arg_2);
-extern long long int database_DBTX_QueryRowContext(long long int _handle, long long int arg_0, char* arg_1, long long int arg_2);
+extern char* api_DB_PATH();
+extern void api_Set_DB_PATH(char* val);
 
-// --- wrapping struct: database.CreateBookParams ---
+// --- wrapping struct: api.NoTitleError ---
 //
-extern long long int database_CreateBookParams_CTor();
-extern char* database_CreateBookParams_Title_Get(long long int handle);
-extern void database_CreateBookParams_Title_Set(long long int handle, char* val);
-extern char* database_CreateBookParams_Content_Get(long long int handle);
-extern void database_CreateBookParams_Content_Set(long long int handle, char* val);
+extern long long int api_NoTitleError_CTor();
+extern char* api_NoTitleError_New(long long int _handle, char* message);
 
-// --- wrapping struct: database.Queries ---
+// --- wrapping struct: api.Book ---
 //
-extern long long int database_Queries_CTor();
-extern long long int database_Queries_CreateBook(long long int _handle, long long int ctx, long long int arg);
-extern long long int database_Queries_GetAllBooks(long long int _handle, long long int ctx);
-extern long long int database_Queries_GetBookByID(long long int _handle, long long int ctx, char* id);
-extern char* database_Queries_GetContentByID(long long int _handle, long long int ctx, char* id);
-extern char* database_Queries_GetContentByTitle(long long int _handle, long long int ctx, char* title);
-extern long long int database_Queries_WithTx(long long int _handle, long long int tx);
+extern long long int api_Book_CTor();
+extern char* api_Book_Title_Get(long long int handle);
+extern void api_Book_Title_Set(long long int handle, char* val);
+extern char* api_Book_Content_Get(long long int handle);
+extern void api_Book_Content_Set(long long int handle, char* val);
+extern char* api_Book_Notes_Get(long long int handle);
+extern void api_Book_Notes_Set(long long int handle, char* val);
+extern char* api_Book_Author_Get(long long int handle);
+extern void api_Book_Author_Set(long long int handle, char* val);
 
-// --- wrapping struct: database.Book ---
+// --- wrapping struct: api.NoContentError ---
 //
-extern long long int database_Book_CTor();
-extern char* database_Book_Title_Get(long long int handle);
-extern void database_Book_Title_Set(long long int handle, char* val);
-extern char* database_Book_Content_Get(long long int handle);
-extern void database_Book_Content_Set(long long int handle, char* val);
-extern long long int database_New(long long int db);
+extern long long int api_NoContentError_CTor();
+extern char* api_NoContentError_New(long long int _handle, char* message);
+extern char* api_AddBook(long long int book);
+extern long long int api_GetAllBooks();
+extern char* api_GetContentByTitle(char* title);
 
 #ifdef __cplusplus
 }

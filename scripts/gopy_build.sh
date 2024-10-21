@@ -1,3 +1,2 @@
 cd src
-gopy build -output=gopy -vm=python3 ../internal/database 
-
+gopy build -build-tags="v" -output=gopy -vm=python3 ../api

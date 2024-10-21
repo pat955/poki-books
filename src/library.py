@@ -6,6 +6,7 @@ add remove function
 """
 
 import shutil
+import sqlite3
 import os
 import uuid
 from functools import partial
@@ -15,10 +16,7 @@ from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
 from book_types import load_book
 import gopy
-import gopy.database
-class Context:
-    def __init__(self, handle):
-        self.handle = handle
+import gopy.api
 
 class Library:
     """
@@ -39,17 +37,13 @@ class Library:
         self.book_bot.text_frame.show_error('NotImplementedError', 'remove function current not implemented, simply remove book from folder')
 
 
-
     def add(self) -> str:
         """
         Add book from filedialog. 
         Returns book path
         """
+        api = gopy.api
         
-        db_api = gopy.database
-        queries = db_api.Queries()
-        book =  db_api.CreateBookParams(ID=uuid.uuid4(),Title="testing1", Content="content")
-        queries.CreateBook(Context(200), book)
 
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
@@ -57,6 +51,8 @@ class Library:
         if path:
             try:
                 shutil.move(path, self.folder_path)
+                a = api.AddBook(book=Book(title=path, content="something here"))
+                print(a)
             except Exception as e:
                 print(e)
             return path
@@ -127,3 +123,20 @@ class Library:
         self.book_bot.check_entries()
         self.notebook.update()
         load_book(self.__root, path)
+
+"""
+type Book struct {
+	Title   string
+	Content string
+	Notes   string
+	Author  string
+}
+"""
+class Book():
+    def __init__(self, title, content, notes=None, author=None):
+        self.title = title
+        self.content = content
+        self.notes = notes
+        self.author = author
+        self.handle = 200
+    

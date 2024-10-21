@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/google/uuid"
-	"github.com/pat955/poki_books/internal/database"
+	"github.com/pat955/poki_books/api/database"
 )
 
 var DB_PATH string = "../sql/poki_books.db"
@@ -18,9 +18,9 @@ type Book struct {
 
 func AddBook(book Book) error {
 	if book.Title == "" {
-		return NoTitleError{}
+		return NoTitleError{}.New("Unamed book")
 	} else if book.Content == "" {
-		return NoContentError{}
+		return NoContentError{}.New("Empty book")
 	}
 	cfg := connect(DB_PATH)
 

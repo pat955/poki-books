@@ -1,3 +1,5 @@
+github.com/go-faster/errors v0.7.1 h1:MkJTnDoEdi9pDabt1dpWf7AA8/BaSYZqibYyhZ20AYg=
+github.com/go-faster/errors v0.7.1/go.mod h1:5ySTjWFiphBs07IKuiL69nxdfd5+fzh1u7FPGZP2quo=
 github.com/go-python/gopy v0.4.10 h1:Ec3x+NTSzLsw9f6FTdDLwQCQlmlNmJIu4J6nSnyugqE=
 github.com/go-python/gopy v0.4.10/go.mod h1:zMV/gSSYa9u/8Zp0WYR+L/z+kOIqIUtMg/a1/GRy5uw=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=

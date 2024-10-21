@@ -6,7 +6,7 @@ import (
 
 	_ "github.com/mattn/go-sqlite3"
 
-	"github.com/pat955/poki_books/internal/database"
+	"github.com/pat955/poki_books/api/database"
 )
 
 // Entry point to the DB
