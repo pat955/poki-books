@@ -31,13 +31,16 @@ class Library:
         self.folder_path = folder_path
         self.db_path = "./sql/poki_books.db"
 
-    def remove(self) -> None:
+    def remove(self, path) -> None:
         """
         Not implemented. Removes book from library
         """
-        self.book_bot.text_frame.show_error(
-            'NotImplementedError',
-            'remove function current not implemented, simply remove book from folder')
+        api = gopy.api
+        print(f"Trying to remove book at: {path}")
+
+        err = api.RemoveBook(path)
+        print(f"Removing book... Error: {err}")
+        
 
     def add(self) -> str:
         """
@@ -52,12 +55,11 @@ class Library:
         if path:
             try:
                 shutil.move(path, self.folder_path)
-                a = api.AddBook(self.db_path,
-                    book=api.Book(
-                        Title="path",
-                        Content="something here",
-                        handle=200))
-                print(a)
+
+                api.AddBook(self.db_path,
+                            book=api.Book(
+                                Path=path,
+                                handle=200))
             except Exception as e:
                 print(e)
             return path
@@ -116,7 +118,7 @@ class Library:
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
-    def read(self, path) -> None:
+    def read(self, path: str) -> None:
         """
         Sets this book as current, changes book in notebook
         Checks entries, inserts notes and loads book contents

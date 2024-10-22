@@ -6,6 +6,7 @@ package database
 
 type Book struct {
 	ID      interface{}
+	Path    string
 	Title   string
 	Content string
 }

@@ -302,9 +302,25 @@ extern void Slice_database_Book_append(long long int handle, long long int _vl);
 extern char* api_DB_PATH();
 extern void api_Set_DB_PATH(char* val);
 
+// --- wrapping struct: api.NoPathError ---
+//
+extern long long int api_NoPathError_CTor();
+extern char* api_NoPathError_Message_Get(long long int handle);
+extern void api_NoPathError_Message_Set(long long int handle, char* val);
+extern char* api_NoPathError_Error(long long int _handle);
+
+// --- wrapping struct: api.NoTitleError ---
+//
+extern long long int api_NoTitleError_CTor();
+extern char* api_NoTitleError_Message_Get(long long int handle);
+extern void api_NoTitleError_Message_Set(long long int handle, char* val);
+extern char* api_NoTitleError_Error(long long int _handle);
+
 // --- wrapping struct: api.Book ---
 //
 extern long long int api_Book_CTor();
+extern char* api_Book_Path_Get(long long int handle);
+extern void api_Book_Path_Set(long long int handle, char* val);
 extern char* api_Book_Title_Get(long long int handle);
 extern void api_Book_Title_Set(long long int handle, char* val);
 extern char* api_Book_Content_Get(long long int handle);
@@ -320,16 +336,11 @@ extern long long int api_NoContentError_CTor();
 extern char* api_NoContentError_Message_Get(long long int handle);
 extern void api_NoContentError_Message_Set(long long int handle, char* val);
 extern char* api_NoContentError_Error(long long int _handle);
-
-// --- wrapping struct: api.NoTitleError ---
-//
-extern long long int api_NoTitleError_CTor();
-extern char* api_NoTitleError_Message_Get(long long int handle);
-extern void api_NoTitleError_Message_Set(long long int handle, char* val);
-extern char* api_NoTitleError_Error(long long int _handle);
+extern long long int api_GetBookByPath(char* db_path, char* path);
+extern char* api_GetContentByTitle(char* db_path, char* title);
+extern char* api_RemoveBook(char* db_path, char* path);
 extern char* api_AddBook(char* db_path, long long int book);
 extern long long int api_GetAllBooks(char* db_path);
-extern char* api_GetContentByTitle(char* db_path, char* title);
 
 #ifdef __cplusplus
 }

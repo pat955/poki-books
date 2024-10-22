@@ -2,6 +2,16 @@ package api
 
 import "fmt"
 
+// NoPathError is a custom error type for missing title errors.
+type NoPathError struct {
+	Message string
+}
+
+// Implement the Error() method for NoPathError to satisfy the error interface.
+func (e *NoPathError) Error() string {
+	return fmt.Sprintf("NoPathError: %s", e.Message)
+}
+
 // NoTitleError is a custom error type for missing title errors.
 type NoTitleError struct {
 	Message string

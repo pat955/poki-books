@@ -11,28 +11,39 @@ import (
 
 const createBook = `-- name: CreateBook :one
 INSERT INTO books (
-  id, title, content
+  id, path, title, content
 ) VALUES (
-  ?, ?, ?
+  ?, ?, ?, ?
 )
-RETURNING id, title, content
+RETURNING id, path, title, content
 `
 
 type CreateBookParams struct {
 	ID      interface{}
+	Path    string
 	Title   string
 	Content string
 }
 
 func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, error) {
-	row := q.db.QueryRowContext(ctx, createBook, arg.ID, arg.Title, arg.Content)
+	row := q.db.QueryRowContext(ctx, createBook,
+		arg.ID,
+		arg.Path,
+		arg.Title,
+		arg.Content,
+	)
 	var i Book
-	err := row.Scan(&i.ID, &i.Title, &i.Content)
+	err := row.Scan(
+		&i.ID,
+		&i.Path,
+		&i.Title,
+		&i.Content,
+	)
 	return i, err
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-SELECT id, title, content FROM books
+SELECT id, path, title, content FROM books
 `
 
 func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
@@ -44,7 +55,12 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 	var items []Book
 	for rows.Next() {
 		var i Book
-		if err := rows.Scan(&i.ID, &i.Title, &i.Content); err != nil {
+		if err := rows.Scan(
+			&i.ID,
+			&i.Path,
+			&i.Title,
+			&i.Content,
+		); err != nil {
 			return nil, err
 		}
 		items = append(items, i)
@@ -59,24 +75,46 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookByID = `-- name: GetBookByID :one
-SELECT id, title, content FROM books
+SELECT id, path, title, content FROM books
 WHERE id = ?
 `
 
 func (q *Queries) GetBookByID(ctx context.Context, id interface{}) (Book, error) {
 	row := q.db.QueryRowContext(ctx, getBookByID, id)
 	var i Book
-	err := row.Scan(&i.ID, &i.Title, &i.Content)
+	err := row.Scan(
+		&i.ID,
+		&i.Path,
+		&i.Title,
+		&i.Content,
+	)
 	return i, err
 }
 
-const getContentByID = `-- name: GetContentByID :one
-SELECT content FROM books
-WHERE id = ?
+const getBookByPath = `-- name: GetBookByPath :one
+SELECT id, path, title, content FROM books
+WHERE path = ?
 `
 
-func (q *Queries) GetContentByID(ctx context.Context, id interface{}) (string, error) {
-	row := q.db.QueryRowContext(ctx, getContentByID, id)
+func (q *Queries) GetBookByPath(ctx context.Context, path string) (Book, error) {
+	row := q.db.QueryRowContext(ctx, getBookByPath, path)
+	var i Book
+	err := row.Scan(
+		&i.ID,
+		&i.Path,
+		&i.Title,
+		&i.Content,
+	)
+	return i, err
+}
+
+const getContentByPath = `-- name: GetContentByPath :one
+SELECT content FROM books
+WHERE path = ?
+`
+
+func (q *Queries) GetContentByPath(ctx context.Context, path string) (string, error) {
+	row := q.db.QueryRowContext(ctx, getContentByPath, path)
 	var content string
 	err := row.Scan(&content)
 	return content, err
@@ -92,4 +130,14 @@ func (q *Queries) GetContentByTitle(ctx context.Context, title string) (string, 
 	var content string
 	err := row.Scan(&content)
 	return content, err
+}
+
+const removeBook = `-- name: RemoveBook :exec
+DELETE FROM books 
+WHERE path = ?
+`
+
+func (q *Queries) RemoveBook(ctx context.Context, path string) error {
+	_, err := q.db.ExecContext(ctx, removeBook, path)
+	return err
 }
