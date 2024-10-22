@@ -17,7 +17,7 @@ type apiConfig struct {
 	GenericCtx context.Context
 }
 
-// use this to connect to the db
+// Connects to database with a database path string.
 func connect(DBPATH string) *apiConfig {
 	db, err := sql.Open("sqlite3", DBPATH)
 	if err != nil {
