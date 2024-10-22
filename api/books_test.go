@@ -1,9 +1,10 @@
 package api
 
 import (
-	"os/exec"
 	"testing"
 )
+
+var DB_PATH_TEST string = "../sql/test.db"
 
 type Case struct {
 	Book               Book
@@ -11,26 +12,19 @@ type Case struct {
 	ExpectedTotalBooks int
 }
 
-var TotalBooksNow int = len(GetAllBooks())
-
 var addTests = []Case{
-	{Book{Title: "Title", Content: "contnetmte t,t estestetm tetet, yeah."}, false, TotalBooksNow + 1},
-	{Book{Title: "ANOTHER TITLE", Content: "something something"}, false, TotalBooksNow + 2},
-	{Book{Title: ""}, true, TotalBooksNow + 2},                // NoTitleError
-	{Book{Title: "No content test"}, true, TotalBooksNow + 2}, // NoContentError
-}
-
-func setupTestDB() {
-	exec.Command("/bin/sh", "./scripts/test.sh")
+	{Book{Title: "Title", Content: "contnetmte t,t estestetm tetet, yeah."}, false, 1},
+	{Book{Title: "ANOTHER TITLE", Content: "something something"}, false, 2},
+	{Book{Title: ""}, true, 2},                // NoTitleError
+	{Book{Title: "No content test"}, true, 2}, // NoContentError
 }
 
 func TestAddBook(t *testing.T) {
-	setupTestDB()
 	for _, test := range addTests {
-		if err := AddBook(test.Book); (err != nil) != test.ExpectedErr {
+		if err := AddBook(DB_PATH_TEST, test.Book); (err != nil) != test.ExpectedErr {
 			t.Errorf("Output %v not equal to expected %v", err, test.ExpectedErr)
 		}
-		if i := len(GetAllBooks()); i != test.ExpectedTotalBooks {
+		if i := len(GetAllBooks(DB_PATH_TEST)); i != test.ExpectedTotalBooks {
 			t.Errorf("Output %v not equal to expected %v", i, test.ExpectedTotalBooks)
 		}
 	}
@@ -42,15 +36,14 @@ var contentCases = []Book{
 }
 
 func TestGetContentTitle(t *testing.T) {
-	setupTestDB()
 	for _, book := range contentCases {
-		err := AddBook(book)
+		err := AddBook(DB_PATH_TEST, book)
 		if err != nil {
 			panic(err)
 		}
 		title := book.Title
 		expectedContent := book.Content
-		if content := GetContentByTitle(title); content != expectedContent {
+		if content := GetContentByTitle(DB_PATH_TEST, title); content != expectedContent {
 			t.Errorf("Output %v not equal to expected %v", content, expectedContent)
 		}
 	}

@@ -1406,10 +1406,10 @@ func api_NoTitleError_Error(_handle CGoHandle) *C.char {
 // ---- Functions ---
 
 //export api_AddBook
-func api_AddBook(book CGoHandle) *C.char {
+func api_AddBook(db_path *C.char, book CGoHandle) *C.char {
 	_saved_thread := C.PyEval_SaveThread()
 	var __err error
-	__err = api.AddBook(*ptrFromHandle_api_Book(book))
+	__err = api.AddBook(C.GoString(db_path), *ptrFromHandle_api_Book(book))
 
 	C.PyEval_RestoreThread(_saved_thread)
 	if __err != nil {
@@ -1421,18 +1421,18 @@ func api_AddBook(book CGoHandle) *C.char {
 }
 
 //export api_GetAllBooks
-func api_GetAllBooks() CGoHandle {
+func api_GetAllBooks(db_path *C.char) CGoHandle {
 	_saved_thread := C.PyEval_SaveThread()
 	defer C.PyEval_RestoreThread(_saved_thread)
-	cret := api.GetAllBooks()
+	cret := api.GetAllBooks(C.GoString(db_path))
 
 	return handleFromPtr_Slice_database_Book(&cret)
 }
 
 //export api_GetContentByTitle
-func api_GetContentByTitle(title *C.char) *C.char {
+func api_GetContentByTitle(db_path *C.char, title *C.char) *C.char {
 	_saved_thread := C.PyEval_SaveThread()
 	defer C.PyEval_RestoreThread(_saved_thread)
-	return C.CString(api.GetContentByTitle(C.GoString(title)))
+	return C.CString(api.GetContentByTitle(C.GoString(db_path), C.GoString(title)))
 
 }

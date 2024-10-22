@@ -174,9 +174,9 @@ mod.add_function('api_NoTitleError_CTor', retval('int64_t'), [])
 mod.add_function('api_NoTitleError_Message_Get', retval('char*'), [param('int64_t', 'handle')])
 mod.add_function('api_NoTitleError_Message_Set', None, [param('int64_t', 'handle'), param('char*', 'val')])
 add_checked_string_function(mod, 'api_NoTitleError_Error', retval('char*'), [param('int64_t', '_handle')])
-add_checked_function(mod, 'api_AddBook', retval('char*'), [param('int64_t', 'book')])
-add_checked_function(mod, 'api_GetAllBooks', retval('int64_t'), [])
-add_checked_string_function(mod, 'api_GetContentByTitle', retval('char*'), [param('char*', 'title')])
+add_checked_function(mod, 'api_AddBook', retval('char*'), [param('char*', 'db_path'), param('int64_t', 'book')])
+add_checked_function(mod, 'api_GetAllBooks', retval('int64_t'), [param('char*', 'db_path')])
+add_checked_string_function(mod, 'api_GetContentByTitle', retval('char*'), [param('char*', 'db_path'), param('char*', 'title')])
 
 mod.generate(open('api.c', 'w'))
 

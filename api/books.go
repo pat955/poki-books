@@ -7,8 +7,6 @@ import (
 	"github.com/pat955/poki_books/api/database"
 )
 
-var DB_PATH string = "../sql/poki_books.db"
-
 type Book struct {
 	Title   string
 	Content string
@@ -16,13 +14,13 @@ type Book struct {
 	Author  string
 }
 
-func AddBook(book Book) error {
+func AddBook(db_path string, book Book) error {
+	cfg := connect(db_path)
 	if book.Title == "" {
 		return &NoTitleError{"unamed book"}
 	} else if book.Content == "" {
 		return &NoContentError{"empty book"}
 	}
-	cfg := connect(DB_PATH)
 	if cfg == nil || cfg.DB == nil {
 		return fmt.Errorf("failed to connect to the database")
 	}
@@ -41,8 +39,8 @@ func AddBook(book Book) error {
 	return nil
 }
 
-func GetAllBooks() []database.Book {
-	cfg := connect(DB_PATH)
+func GetAllBooks(db_path string) []database.Book {
+	cfg := connect(db_path)
 	books, err := cfg.DB.GetAllBooks(cfg.GenericCtx)
 	if err != nil {
 		panic(err)
@@ -50,8 +48,8 @@ func GetAllBooks() []database.Book {
 	return books
 }
 
-func GetContentByTitle(title string) string {
-	cfg := connect(DB_PATH)
+func GetContentByTitle(db_path, title string) string {
+	cfg := connect(db_path)
 	content, err := cfg.DB.GetContentByTitle(cfg.GenericCtx, title)
 	if err != nil {
 		panic(err)

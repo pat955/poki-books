@@ -8,6 +8,7 @@ from tkinter import Frame, Text, END
 from defaults import *  # pylint: disable=W0401
 from text_scroll import TextBlock
 
+
 class NoteBook:
     """
     A Notebook stores all notes by books
@@ -46,7 +47,7 @@ class NoteBook:
             self.frame.pack(side='bottom', fill='both', expand=True, pady=15)
             self.text.config(state='normal')
             self.text.write(self.get())
-            
+
             self.text.config(state='normal')
             self.text.pack(anchor='n', fill='both', expand=True)
 
@@ -69,7 +70,8 @@ class NoteBook:
                 return file_data['books']['notes']
             return file_data['books'][self.book_path]['notes']
 
-    def get_current_text(self, start_index: str ='1.0', end_index:str =END) -> str:
+    def get_current_text(self, start_index: str = '1.0',
+                         end_index: str = END) -> str:
         """
         Get text displayed
         """

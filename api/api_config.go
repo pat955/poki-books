@@ -9,6 +9,8 @@ import (
 	"github.com/pat955/poki_books/api/database"
 )
 
+var DB_PATH string = "../sql/poki_books.db"
+
 // Entry point to the DB
 type apiConfig struct {
 	DB         *database.Queries
@@ -23,4 +25,8 @@ func connect(DBPATH string) *apiConfig {
 	}
 	dbQueries := database.New(db)
 	return &apiConfig{DB: dbQueries, GenericCtx: context.Background()}
+}
+
+func Connect() *apiConfig {
+	return connect(DB_PATH)
 }

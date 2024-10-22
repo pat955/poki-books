@@ -1,5 +1,2 @@
-cd sql/schema 
-goose sqlite3 ../poki_books.db reset
-cd ..
-cd ..
+rm -f ./sql/poki_books.db
 ./scripts/migrate.sh

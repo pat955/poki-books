@@ -327,9 +327,9 @@ extern long long int api_NoTitleError_CTor();
 extern char* api_NoTitleError_Message_Get(long long int handle);
 extern void api_NoTitleError_Message_Set(long long int handle, char* val);
 extern char* api_NoTitleError_Error(long long int _handle);
-extern char* api_AddBook(long long int book);
-extern long long int api_GetAllBooks();
-extern char* api_GetContentByTitle(char* title);
+extern char* api_AddBook(char* db_path, long long int book);
+extern long long int api_GetAllBooks(char* db_path);
+extern char* api_GetContentByTitle(char* db_path, char* title);
 
 #ifdef __cplusplus
 }

@@ -368,14 +368,17 @@ class NoTitleError(go.GoClass):
 
 
 # ---- Functions ---
-def AddBook(book):
-	"""AddBook(object book) str"""
-	return _api.api_AddBook(book.handle)
-def GetAllBooks():
-	"""GetAllBooks() []object"""
-	return Slice_database_Book(handle=_api.api_GetAllBooks())
-def GetContentByTitle(title):
-	"""GetContentByTitle(str title) str"""
-	return _api.api_GetContentByTitle(title)
+def AddBook(db_path, book):
+	"""AddBook(str db_path, object book) str"""
+	return _api.api_AddBook(db_path, book.handle)
+def GetAllBooks(db_path):
+	"""GetAllBooks(str db_path) []object
+	
+	//export GetAllBooks
+	"""
+	return Slice_database_Book(handle=_api.api_GetAllBooks(db_path))
+def GetContentByTitle(db_path, title):
+	"""GetContentByTitle(str db_path, str title) str"""
+	return _api.api_GetContentByTitle(db_path, title)
 
 

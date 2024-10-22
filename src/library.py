@@ -6,9 +6,7 @@ add remove function
 """
 
 import shutil
-import sqlite3
 import os
-import uuid
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button, Label
@@ -18,10 +16,12 @@ from book_types import load_book
 import gopy
 import gopy.api
 
+
 class Library:
     """
     Collection of all books
     """
+
     def __init__(self, book_bot, folder_path: str = 'books/') -> None:
         """
         """
@@ -29,29 +29,34 @@ class Library:
         self.__root = self.book_bot.text_frame
         self.notebook = self.book_bot.notebook
         self.folder_path = folder_path
+        self.db_path = "./sql/poki_books.db"
 
     def remove(self) -> None:
         """
         Not implemented. Removes book from library
         """
-        self.book_bot.text_frame.show_error('NotImplementedError', 'remove function current not implemented, simply remove book from folder')
-
+        self.book_bot.text_frame.show_error(
+            'NotImplementedError',
+            'remove function current not implemented, simply remove book from folder')
 
     def add(self) -> str:
         """
-        Add book from filedialog. 
+        Add book from filedialog.
         Returns book path
         """
         api = gopy.api
-        
 
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
-        
+
         if path:
             try:
                 shutil.move(path, self.folder_path)
-                a = api.AddBook(book=api.Book(Title="path", Content="something here", handle=200))
+                a = api.AddBook(self.db_path,
+                    book=api.Book(
+                        Title="path",
+                        Content="something here",
+                        handle=200))
                 print(a)
             except Exception as e:
                 print(e)

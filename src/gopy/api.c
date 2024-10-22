@@ -2489,13 +2489,14 @@ _wrap__api_api_AddBook(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObj
 {
     PyObject *py_retval;
     char *retval;
+    char *db_path;
     int64_t book;
-    const char *keywords[] = {"book", NULL};
+    const char *keywords[] = {"db_path", "book", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "L", (char **) keywords, &book)) {
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "sL", (char **) keywords, &db_path, &book)) {
         return NULL;
     }
-    retval = api_AddBook(book);
+    retval = api_AddBook(db_path, book);
     if (PyErr_Occurred()) {
         return NULL;
     }
@@ -2506,19 +2507,24 @@ PyObject * _wrap__api_api_AddBook(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *
 
 
 PyObject *
-_wrap__api_api_GetAllBooks(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs))
+_wrap__api_api_GetAllBooks(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
     int64_t retval;
+    char *db_path;
+    const char *keywords[] = {"db_path", NULL};
 
-    retval = api_GetAllBooks();
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "s", (char **) keywords, &db_path)) {
+        return NULL;
+    }
+    retval = api_GetAllBooks(db_path);
     if (PyErr_Occurred()) {
         return NULL;
     }
     py_retval = Py_BuildValue((char *) "L", retval);
     return py_retval;
 }
-PyObject * _wrap__api_api_GetAllBooks(PyObject *PYBINDGEN_UNUSED(_args), PyObject *PYBINDGEN_UNUSED(_kwargs));
+PyObject * _wrap__api_api_GetAllBooks(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
 
 
 PyObject *
@@ -2526,13 +2532,14 @@ _wrap__api_api_GetContentByTitle(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *a
 {
     PyObject *py_retval;
     char *retval;
+    char *db_path;
     char *title;
-    const char *keywords[] = {"title", NULL};
+    const char *keywords[] = {"db_path", "title", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "s", (char **) keywords, &title)) {
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &db_path, &title)) {
         return NULL;
     }
-    retval = api_GetContentByTitle(title);
+    retval = api_GetContentByTitle(db_path, title);
     if (PyErr_Occurred()) {
         if (retval != NULL) free(retval);
         return NULL;
@@ -2677,9 +2684,9 @@ static PyMethodDef _api_functions[] = {
     {(char *) "api_NoTitleError_Message_Get", (PyCFunction) _wrap__api_api_NoTitleError_Message_Get, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Message_Get(handle)\n\ntype: handle: int64_t" },
     {(char *) "api_NoTitleError_Message_Set", (PyCFunction) _wrap__api_api_NoTitleError_Message_Set, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Message_Set(handle, val)\n\ntype: handle: int64_t\ntype: val: char *" },
     {(char *) "api_NoTitleError_Error", (PyCFunction) _wrap__api_api_NoTitleError_Error, METH_KEYWORDS|METH_VARARGS, "api_NoTitleError_Error(_handle)\n\ntype: _handle: int64_t" },
-    {(char *) "api_AddBook", (PyCFunction) _wrap__api_api_AddBook, METH_KEYWORDS|METH_VARARGS, "api_AddBook(book)\n\ntype: book: int64_t" },
-    {(char *) "api_GetAllBooks", (PyCFunction) _wrap__api_api_GetAllBooks, METH_NOARGS, "api_GetAllBooks()\n\n" },
-    {(char *) "api_GetContentByTitle", (PyCFunction) _wrap__api_api_GetContentByTitle, METH_KEYWORDS|METH_VARARGS, "api_GetContentByTitle(title)\n\ntype: title: char *" },
+    {(char *) "api_AddBook", (PyCFunction) _wrap__api_api_AddBook, METH_KEYWORDS|METH_VARARGS, "api_AddBook(db_path, book)\n\ntype: db_path: char *\ntype: book: int64_t" },
+    {(char *) "api_GetAllBooks", (PyCFunction) _wrap__api_api_GetAllBooks, METH_KEYWORDS|METH_VARARGS, "api_GetAllBooks(db_path)\n\ntype: db_path: char *" },
+    {(char *) "api_GetContentByTitle", (PyCFunction) _wrap__api_api_GetContentByTitle, METH_KEYWORDS|METH_VARARGS, "api_GetContentByTitle(db_path, title)\n\ntype: db_path: char *\ntype: title: char *" },
     {NULL, NULL, 0, NULL}
 };
 #if PY_VERSION_HEX >= 0x03000000
