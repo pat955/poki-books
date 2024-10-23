@@ -15,7 +15,7 @@ INSERT INTO books (
 ) VALUES (
   ?, ?, ?, ?
 )
-RETURNING id, path, title, content
+RETURNING id, path, title, content, extension
 `
 
 type CreateBookParams struct {
@@ -38,12 +38,13 @@ func (q *Queries) CreateBook(ctx context.Context, arg CreateBookParams) (Book, e
 		&i.Path,
 		&i.Title,
 		&i.Content,
+		&i.Extension,
 	)
 	return i, err
 }
 
 const getAllBooks = `-- name: GetAllBooks :many
-SELECT id, path, title, content FROM books
+SELECT id, path, title, content, extension FROM books
 `
 
 func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
@@ -60,6 +61,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 			&i.Path,
 			&i.Title,
 			&i.Content,
+			&i.Extension,
 		); err != nil {
 			return nil, err
 		}
@@ -75,7 +77,7 @@ func (q *Queries) GetAllBooks(ctx context.Context) ([]Book, error) {
 }
 
 const getBookByID = `-- name: GetBookByID :one
-SELECT id, path, title, content FROM books
+SELECT id, path, title, content, extension FROM books
 WHERE id = ?
 `
 
@@ -87,12 +89,13 @@ func (q *Queries) GetBookByID(ctx context.Context, id interface{}) (Book, error)
 		&i.Path,
 		&i.Title,
 		&i.Content,
+		&i.Extension,
 	)
 	return i, err
 }
 
 const getBookByPath = `-- name: GetBookByPath :one
-SELECT id, path, title, content FROM books
+SELECT id, path, title, content, extension FROM books
 WHERE path = ?
 `
 
@@ -104,6 +107,7 @@ func (q *Queries) GetBookByPath(ctx context.Context, path string) (Book, error) 
 		&i.Path,
 		&i.Title,
 		&i.Content,
+		&i.Extension,
 	)
 	return i, err
 }

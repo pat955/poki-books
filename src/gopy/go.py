@@ -1475,6 +1475,50 @@ class Slice_uint8(GoClass):
 
 # ---- External Types Outside of Targeted Packages ---
 
+# Python type for sql.NullString
+class sql_NullString(GoClass):
+	""""""
+	def __init__(self, *args, **kwargs):
+		"""
+		handle=A Go-side object is always initialized with an explicit handle=arg
+		"""
+		if len(kwargs) == 1 and 'handle' in kwargs:
+			self.handle = kwargs['handle']
+			_api.IncRef(self.handle)
+		elif len(args) == 1 and isinstance(args[0], GoClass):
+			self.handle = args[0].handle
+			_api.IncRef(self.handle)
+		elif len(args) == 1 and isinstance(args[0], int):
+			self.handle = args[0]
+			_api.IncRef(self.handle)
+		else:
+			self.handle = 0
+	def __del__(self):
+		_api.DecRef(self.handle)
+	
+
+# Python type for driver.Value
+class driver_Value(GoClass):
+	""""""
+	def __init__(self, *args, **kwargs):
+		"""
+		handle=A Go-side object is always initialized with an explicit handle=arg
+		"""
+		if len(kwargs) == 1 and 'handle' in kwargs:
+			self.handle = kwargs['handle']
+			_api.IncRef(self.handle)
+		elif len(args) == 1 and isinstance(args[0], GoClass):
+			self.handle = args[0].handle
+			_api.IncRef(self.handle)
+		elif len(args) == 1 and isinstance(args[0], int):
+			self.handle = args[0]
+			_api.IncRef(self.handle)
+		else:
+			self.handle = 0
+	def __del__(self):
+		_api.DecRef(self.handle)
+	
+
 # Python type for database.Book
 class database_Book(GoClass):
 	""""""

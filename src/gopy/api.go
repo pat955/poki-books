@@ -56,6 +56,9 @@ import (
 
 	"github.com/go-python/gopy/gopyh" // handler
 
+	"database/sql"
+	"database/sql/driver"
+
 	"github.com/pat955/poki_books/api"
 	"github.com/pat955/poki_books/api/database"
 )
@@ -145,6 +148,30 @@ func errorGoToPy(e error) *C.char {
 // --- generated code for package: api below: ---
 
 // ---- External Types Outside of Targeted Packages ---
+
+// Converters for non-pointer handles for type: sql.NullString
+func ptrFromHandle_sql_NullString(h CGoHandle) *sql.NullString {
+	p := gopyh.VarFromHandle((gopyh.CGoHandle)(h), "sql.NullString")
+	if p == nil {
+		return nil
+	}
+	return gopyh.Embed(p, reflect.TypeOf(sql.NullString{})).(*sql.NullString)
+}
+func handleFromPtr_sql_NullString(p interface{}) CGoHandle {
+	return CGoHandle(gopyh.Register("sql.NullString", p))
+}
+
+// Converters for pointer handles for type: driver.Value
+func ptrFromHandle_driver_Value(h CGoHandle) driver.Value {
+	p := gopyh.VarFromHandle((gopyh.CGoHandle)(h), "driver.Value")
+	if p == nil {
+		return nil
+	}
+	return p.(driver.Value)
+}
+func handleFromPtr_driver_Value(p interface{}) CGoHandle {
+	return CGoHandle(gopyh.Register("driver.Value", p))
+}
 
 // Converters for non-pointer handles for type: database.Book
 func ptrFromHandle_database_Book(h CGoHandle) *database.Book {
@@ -1240,6 +1267,18 @@ func Slice_database_Book_append(handle CGoHandle, _vl CGoHandle) {
 	*s = append(*s, *ptrFromHandle_database_Book(_vl))
 }
 
+// Converters for pointer handles for type: any
+func ptrFromHandle_any(h CGoHandle) any {
+	p := gopyh.VarFromHandle((gopyh.CGoHandle)(h), "any")
+	if p == nil {
+		return nil
+	}
+	return p.(any)
+}
+func handleFromPtr_any(p interface{}) CGoHandle {
+	return CGoHandle(gopyh.Register("any", p))
+}
+
 // Converters for non-pointer handles for type: api.Book
 func ptrFromHandle_api_Book(h CGoHandle) *api.Book {
 	p := gopyh.VarFromHandle((gopyh.CGoHandle)(h), "api.Book")
@@ -1304,6 +1343,116 @@ func api_Set_DB_PATH(val *C.char) {
 
 // ---- Structs ---
 
+// --- wrapping struct: api.Book ---
+//
+//export api_Book_CTor
+func api_Book_CTor() CGoHandle {
+	return CGoHandle(handleFromPtr_api_Book(&api.Book{}))
+}
+
+//export api_Book_Path_Get
+func api_Book_Path_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Path)
+}
+
+//export api_Book_Path_Set
+func api_Book_Path_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Path = C.GoString(val)
+}
+
+//export api_Book_Title_Get
+func api_Book_Title_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Title)
+}
+
+//export api_Book_Title_Set
+func api_Book_Title_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Title = C.GoString(val)
+}
+
+//export api_Book_Content_Get
+func api_Book_Content_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Content)
+}
+
+//export api_Book_Content_Set
+func api_Book_Content_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Content = C.GoString(val)
+}
+
+//export api_Book_Extension_Get
+func api_Book_Extension_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Extension)
+}
+
+//export api_Book_Extension_Set
+func api_Book_Extension_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Extension = C.GoString(val)
+}
+
+//export api_Book_Notes_Get
+func api_Book_Notes_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Notes)
+}
+
+//export api_Book_Notes_Set
+func api_Book_Notes_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Notes = C.GoString(val)
+}
+
+//export api_Book_Author_Get
+func api_Book_Author_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_Book(handle)
+	return C.CString(op.Author)
+}
+
+//export api_Book_Author_Set
+func api_Book_Author_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_Book(handle)
+	op.Author = C.GoString(val)
+}
+
+// --- wrapping struct: api.NoContentError ---
+//
+//export api_NoContentError_CTor
+func api_NoContentError_CTor() CGoHandle {
+	return CGoHandle(handleFromPtr_api_NoContentError(&api.NoContentError{}))
+}
+
+//export api_NoContentError_Message_Get
+func api_NoContentError_Message_Get(handle CGoHandle) *C.char {
+	op := ptrFromHandle_api_NoContentError(handle)
+	return C.CString(op.Message)
+}
+
+//export api_NoContentError_Message_Set
+func api_NoContentError_Message_Set(handle CGoHandle, val *C.char) {
+	op := ptrFromHandle_api_NoContentError(handle)
+	op.Message = C.GoString(val)
+}
+
+//export api_NoContentError_Error
+func api_NoContentError_Error(_handle CGoHandle) *C.char {
+	_saved_thread := C.PyEval_SaveThread()
+	defer C.PyEval_RestoreThread(_saved_thread)
+	vifc, __err := gopyh.VarFromHandleTry((gopyh.CGoHandle)(_handle), "*api.NoContentError")
+	if __err != nil {
+		return C.CString("")
+	}
+	return C.CString(gopyh.Embed(vifc, reflect.TypeOf(api.NoContentError{})).(*api.NoContentError).Error())
+
+}
+
 // --- wrapping struct: api.NoPathError ---
 //
 //export api_NoPathError_CTor
@@ -1366,111 +1515,11 @@ func api_NoTitleError_Error(_handle CGoHandle) *C.char {
 
 }
 
-// --- wrapping struct: api.Book ---
-//
-//export api_Book_CTor
-func api_Book_CTor() CGoHandle {
-	return CGoHandle(handleFromPtr_api_Book(&api.Book{}))
-}
-
-//export api_Book_Path_Get
-func api_Book_Path_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_Book(handle)
-	return C.CString(op.Path)
-}
-
-//export api_Book_Path_Set
-func api_Book_Path_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_Book(handle)
-	op.Path = C.GoString(val)
-}
-
-//export api_Book_Title_Get
-func api_Book_Title_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_Book(handle)
-	return C.CString(op.Title)
-}
-
-//export api_Book_Title_Set
-func api_Book_Title_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_Book(handle)
-	op.Title = C.GoString(val)
-}
-
-//export api_Book_Content_Get
-func api_Book_Content_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_Book(handle)
-	return C.CString(op.Content)
-}
-
-//export api_Book_Content_Set
-func api_Book_Content_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_Book(handle)
-	op.Content = C.GoString(val)
-}
-
-//export api_Book_Notes_Get
-func api_Book_Notes_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_Book(handle)
-	return C.CString(op.Notes)
-}
-
-//export api_Book_Notes_Set
-func api_Book_Notes_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_Book(handle)
-	op.Notes = C.GoString(val)
-}
-
-//export api_Book_Author_Get
-func api_Book_Author_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_Book(handle)
-	return C.CString(op.Author)
-}
-
-//export api_Book_Author_Set
-func api_Book_Author_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_Book(handle)
-	op.Author = C.GoString(val)
-}
-
-// --- wrapping struct: api.NoContentError ---
-//
-//export api_NoContentError_CTor
-func api_NoContentError_CTor() CGoHandle {
-	return CGoHandle(handleFromPtr_api_NoContentError(&api.NoContentError{}))
-}
-
-//export api_NoContentError_Message_Get
-func api_NoContentError_Message_Get(handle CGoHandle) *C.char {
-	op := ptrFromHandle_api_NoContentError(handle)
-	return C.CString(op.Message)
-}
-
-//export api_NoContentError_Message_Set
-func api_NoContentError_Message_Set(handle CGoHandle, val *C.char) {
-	op := ptrFromHandle_api_NoContentError(handle)
-	op.Message = C.GoString(val)
-}
-
-//export api_NoContentError_Error
-func api_NoContentError_Error(_handle CGoHandle) *C.char {
-	_saved_thread := C.PyEval_SaveThread()
-	defer C.PyEval_RestoreThread(_saved_thread)
-	vifc, __err := gopyh.VarFromHandleTry((gopyh.CGoHandle)(_handle), "*api.NoContentError")
-	if __err != nil {
-		return C.CString("")
-	}
-	return C.CString(gopyh.Embed(vifc, reflect.TypeOf(api.NoContentError{})).(*api.NoContentError).Error())
-
-}
-
 // ---- Slices ---
 
 // ---- Maps ---
 
 // ---- Constructors ---
-
-// ---- Functions ---
 
 //export api_GetBookByPath
 func api_GetBookByPath(db_path *C.char, path *C.char) CGoHandle {
@@ -1482,9 +1531,41 @@ func api_GetBookByPath(db_path *C.char, path *C.char) CGoHandle {
 		estr := C.CString(__err.Error())
 		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
 		C.free(unsafe.Pointer(estr))
-		return handleFromPtr_database_Book(nil)
+		return handleFromPtr_api_Book(nil)
 	}
-	return handleFromPtr_database_Book(&cret)
+	return handleFromPtr_api_Book(&cret)
+}
+
+// ---- Functions ---
+
+//export api_AddBook
+func api_AddBook(db_path *C.char, book CGoHandle) *C.char {
+	_saved_thread := C.PyEval_SaveThread()
+	var __err error
+	__err = api.AddBook(C.GoString(db_path), *ptrFromHandle_api_Book(book))
+
+	C.PyEval_RestoreThread(_saved_thread)
+	if __err != nil {
+		estr := C.CString(__err.Error())
+		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
+		return estr
+	}
+	return C.CString("")
+}
+
+//export api_GetAllBooks
+func api_GetAllBooks(db_path *C.char) CGoHandle {
+	_saved_thread := C.PyEval_SaveThread()
+	cret, __err := api.GetAllBooks(C.GoString(db_path))
+
+	C.PyEval_RestoreThread(_saved_thread)
+	if __err != nil {
+		estr := C.CString(__err.Error())
+		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
+		C.free(unsafe.Pointer(estr))
+		return handleFromPtr_Slice_database_Book(nil)
+	}
+	return handleFromPtr_Slice_database_Book(&cret)
 }
 
 //export api_GetContentByTitle
@@ -1515,34 +1596,4 @@ func api_RemoveBook(db_path *C.char, path *C.char) *C.char {
 		return estr
 	}
 	return C.CString("")
-}
-
-//export api_AddBook
-func api_AddBook(db_path *C.char, book CGoHandle) *C.char {
-	_saved_thread := C.PyEval_SaveThread()
-	var __err error
-	__err = api.AddBook(C.GoString(db_path), *ptrFromHandle_api_Book(book))
-
-	C.PyEval_RestoreThread(_saved_thread)
-	if __err != nil {
-		estr := C.CString(__err.Error())
-		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
-		return estr
-	}
-	return C.CString("")
-}
-
-//export api_GetAllBooks
-func api_GetAllBooks(db_path *C.char) CGoHandle {
-	_saved_thread := C.PyEval_SaveThread()
-	cret, __err := api.GetAllBooks(C.GoString(db_path))
-
-	C.PyEval_RestoreThread(_saved_thread)
-	if __err != nil {
-		estr := C.CString(__err.Error())
-		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
-		C.free(unsafe.Pointer(estr))
-		return handleFromPtr_Slice_database_Book(nil)
-	}
-	return handleFromPtr_Slice_database_Book(&cret)
 }

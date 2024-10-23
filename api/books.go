@@ -8,11 +8,12 @@ import (
 )
 
 type Book struct {
-	Path    string
-	Title   string
-	Content string
-	Notes   string
-	Author  string
+	Path      string
+	Title     string
+	Content   string
+	Extension string
+	Notes     string
+	Author    string
 }
 
 // Connects to db and adds book to database
@@ -66,16 +67,21 @@ func GetContentByTitle(db_path, title string) (string, error) {
 }
 
 // Returns book from db with path as argument
-func GetBookByPath(db_path, path string) (database.Book, error) {
+func GetBookByPath(db_path, path string) (Book, error) {
 	cfg := connect(db_path)
 	if cfg == nil || cfg.DB == nil {
-		return database.Book{}, fmt.Errorf("failed to connect to the database")
+		return Book{}, fmt.Errorf("failed to connect to the database")
 	}
 	book, err := cfg.DB.GetBookByPath(cfg.GenericCtx, path)
 	if err != nil {
-		panic(err)
+		return Book{}, err
 	}
-	return book, nil
+	return Book{
+		Path:      book.Path,
+		Title:     book.Title,
+		Content:   book.Content,
+		Extension: book.Extension.String,
+	}, nil
 }
 
 // Removes book from database

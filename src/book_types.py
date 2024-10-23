@@ -7,6 +7,7 @@ import re
 import io
 import mobi
 import ebooklib
+import gopy.api
 
 from tkinter import END
 from PIL import Image, ImageTk
@@ -25,6 +26,115 @@ def get_extension(path: str) -> str | None:
         return None
     return ext.group(1)
 
+def prepare_book(book: gopy.api.Book) -> tuple[gopy.api.Book, Exception]:
+    """
+    Returns book so it can be put into the database with all found info
+    """
+    path = book.Path
+    ext = get_extension(path)
+    book.Extension = ext
+    types = {
+        'txt': prepare_txt,
+        'mobi': prepare_mobi,
+        'html': prepare_txt,
+        'pdf': prepare_pdf,
+        'epub': prepare_epub,
+        'csv': prepare_txt
+    }
+    try:
+        book = types[ext](book) # Initializes matching function to type
+
+    except KeyError:
+        return None, Exception(f'KeyError: Unsupported format "{ext}"')
+
+    except Exception as e:
+        return None, Exception(f'Exception: Error message "{e}"')
+
+    return book, None
+
+def prepare_txt(book: gopy.api.Book) -> gopy.api.Book:
+    """
+    Adds content to book object
+    """
+    with open(book.Path, 'r') as f:
+        book.Content = f.read()
+        f.close()
+    return book
+
+def prepare_mobi(book: gopy.api.Book) -> gopy.api.Book:
+    i, book.Path = mobi.extract(book.Path)
+    print("mobi:"+i)
+    return prepare_book(book)
+
+def prepare_pdf(book: gopy.api.Book) -> gopy.api.Book:
+    reader = PdfReader(book.Path)
+    meta = reader.metadata
+    if meta:
+        if meta.title:
+            book.Title = meta.title
+        if meta.author:
+            book.Author = meta.author
+
+    content = ""
+    for page in reader.pages:
+        content += page.extract_text()
+    book.Content = content
+    return book
+
+def prepare_epub(book: gopy.api.Book) -> gopy.api.Book:
+    try:
+        epub_obj = epub.read_epub(book.Path)
+    except Exception as e:
+        print(f"here1 {e}")
+    try:
+        e = epub_obj.get_metadata('DC', 'title')[0]
+        print(e)
+    except Exception as e:
+        print(f"here2 {e}")
+        return
+
+    # tkinter will delete the image if it isn't global
+    # global images
+    # images = {}
+    content = ""
+    for item in epub_obj.get_items():
+        # html converted to normal text
+        if item.get_type() == ebooklib.ITEM_DOCUMENT:
+            soup = BeautifulSoup(item.get_content(), 'html.parser')
+            content += content_soup_r(soup)
+            print(content)
+    book.Content = content
+    return book
+        # # images :)
+        # elif item.get_type() == ebooklib.ITEM_IMAGE:
+
+        #     hex_data = item.get_content()
+        #     image = Image.open(io.BytesIO(hex_data))
+        #     tk_img = ImageTk.PhotoImage(image)
+
+        #     images[tk_img] = text_frame.txt.index(END)
+        #     text_frame.txt.image_create(
+        #         text_frame.txt.index(END), image=tk_img)
+        #     text_frame.update()
+
+def content_soup_r(soup: BeautifulSoup) -> str:
+    content = ""
+    for tag in soup.find_all():
+        try:
+            content += tag.string.extract()
+        except TypeError:
+            return content_soup_r(tag)
+        except AttributeError:
+            try:
+                return content_soup_r(tag)
+            except Exception as e:
+                print(type(e))
+                print(f'Unknown error: {e}')
+                continue
+    return content
+
+
+### --- loads text onto tkinter frame directly without database ---
 
 def load_book(text_frame: tkinter.Frame, path: str) -> None:
     """

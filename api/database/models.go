@@ -4,9 +4,14 @@
 
 package database
 
+import (
+	"database/sql"
+)
+
 type Book struct {
-	ID      interface{}
-	Path    string
-	Title   string
-	Content string
+	ID        interface{}
+	Path      string
+	Title     string
+	Content   string
+	Extension sql.NullString
 }

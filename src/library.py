@@ -7,14 +7,13 @@ add remove function
 
 import shutil
 import os
+import gopy.api
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button, Label
 from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
-from book_types import load_book
-import gopy
-import gopy.api
+from book_types import prepare_book
 
 
 class Library:
@@ -33,16 +32,17 @@ class Library:
 
     def remove(self, path) -> None:
         """
-        Not implemented. Removes book from library
+        Removes book from database
+        TODO: remove from folder
         """
         api = gopy.api
         print(f"Trying to remove book at: {path}")
 
         err = api.RemoveBook(path)
         print(f"Removing book... Error: {err}")
-        
+    
 
-    def add(self) -> str:
+    def add(self) -> str :
         """
         Add book from filedialog.
         Returns book path
@@ -53,17 +53,37 @@ class Library:
             initialdir=str(Path.home() / "Downloads"))
 
         if path:
+            book, err = prepare_book(api.Book(
+                Path=path,
+                handle=200
+            ))
+            if err != None:
+                print(f"ERROR {err}")
+                return ""
+            
             try:
-                shutil.move(path, self.folder_path)
-
-                api.AddBook(self.db_path,
-                            book=api.Book(
-                                Path=path,
-                                handle=200))
+                new_path = shutil.move(path, self.folder_path)
+                book.Path = new_path
             except Exception as e:
                 print(e)
+                return ""
+            try:
+                api.AddBook(self.db_path, book)
+            except Exception as e:
+                print(f"NEW ERROR {e}")
+                return ""
+
+            
             return path
         return ''
+    
+    def add_and_open(self) -> None:
+        """
+        Add book through filedialog, and opens it to instantly read
+        """
+        path = self.add()
+        if path:
+            self.read(self.folder_path + path.split('/')[-1])
 
     def see_all(self) -> None:
         """
@@ -110,23 +130,17 @@ class Library:
             button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
             i += 1
 
-    def add_and_open(self) -> None:
-        """
-        Add book through filedialog, and opens it to instantly read
-        """
-        path = self.add()
-        if path:
-            self.read(self.folder_path + path.split('/')[-1])
-
     def read(self, path: str) -> None:
         """
         Sets this book as current, changes book in notebook
         Checks entries, inserts notes and loads book contents
         """
+        book = gopy.api.GetBookByPath(self.db_path, path)
+        
         # self.cache_book()
         self.book_bot.current_book = path
         self.notebook.set_path(self.book_bot.current_book)
 
         self.book_bot.check_entries()
         self.notebook.update()
-        load_book(self.__root, path)
+        self.__root.insert_text(book.Content)
