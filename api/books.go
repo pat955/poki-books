@@ -41,16 +41,20 @@ func AddBook(db_path string, book Book) error {
 }
 
 // Gets all books from db in a slice with books structs
-func GetAllBooks(db_path string) ([]database.Book, error) {
+func GetAllBooks(db_path string) ([]Book, error) {
 	cfg := connect(db_path)
 	if cfg == nil || cfg.DB == nil {
-		return []database.Book{}, fmt.Errorf("failed to connect to the database")
+		return []Book{}, fmt.Errorf("failed to connect to the database")
 	}
 	books, err := cfg.DB.GetAllBooks(cfg.GenericCtx)
 	if err != nil {
 		panic(err)
 	}
-	return books, nil
+	convertedBook := []Book{}
+	for _, book := range books {
+		convertedBook = append(convertedBook, convertToPyBook(book))
+	}
+	return convertedBook, nil
 }
 
 // From database gets content with title as argument
@@ -66,6 +70,15 @@ func GetContentByTitle(db_path, title string) (string, error) {
 	return content, nil
 }
 
+func convertToPyBook(book database.Book) Book {
+	return Book{
+		Path:      book.Path,
+		Title:     book.Title,
+		Content:   book.Content,
+		Extension: book.Extension.String,
+	}
+}
+
 // Returns book from db with path as argument
 func GetBookByPath(db_path, path string) (Book, error) {
 	cfg := connect(db_path)
@@ -76,12 +89,7 @@ func GetBookByPath(db_path, path string) (Book, error) {
 	if err != nil {
 		return Book{}, err
 	}
-	return Book{
-		Path:      book.Path,
-		Title:     book.Title,
-		Content:   book.Content,
-		Extension: book.Extension.String,
-	}, nil
+	return convertToPyBook(book), nil
 }
 
 // Removes book from database

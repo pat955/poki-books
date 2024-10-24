@@ -288,35 +288,19 @@ extern long long int Slice_uint8_subslice(long long int handle, GoInt _st, GoInt
 extern void Slice_uint8_set(long long int handle, GoInt _idx, unsigned char _vl);
 extern void Slice_uint8_append(long long int handle, unsigned char _vl);
 
-// --- wrapping slice: []database.Book ---
+// --- wrapping slice: []api.Book ---
 //
-extern long long int Slice_database_Book_CTor();
-extern GoInt Slice_database_Book_len(long long int handle);
-extern long long int Slice_database_Book_elem(long long int handle, GoInt _idx);
-extern long long int Slice_database_Book_subslice(long long int handle, GoInt _st, GoInt _ed);
-extern void Slice_database_Book_set(long long int handle, GoInt _idx, long long int _vl);
-extern void Slice_database_Book_append(long long int handle, long long int _vl);
+extern long long int Slice_api_Book_CTor();
+extern GoInt Slice_api_Book_len(long long int handle);
+extern long long int Slice_api_Book_elem(long long int handle, GoInt _idx);
+extern long long int Slice_api_Book_subslice(long long int handle, GoInt _st, GoInt _ed);
+extern void Slice_api_Book_set(long long int handle, GoInt _idx, long long int _vl);
+extern void Slice_api_Book_append(long long int handle, long long int _vl);
 
 // ---- Global Variables: can only use functions to access ---
 //
 extern char* api_DB_PATH();
 extern void api_Set_DB_PATH(char* val);
-
-// --- wrapping struct: api.Book ---
-//
-extern long long int api_Book_CTor();
-extern char* api_Book_Path_Get(long long int handle);
-extern void api_Book_Path_Set(long long int handle, char* val);
-extern char* api_Book_Title_Get(long long int handle);
-extern void api_Book_Title_Set(long long int handle, char* val);
-extern char* api_Book_Content_Get(long long int handle);
-extern void api_Book_Content_Set(long long int handle, char* val);
-extern char* api_Book_Extension_Get(long long int handle);
-extern void api_Book_Extension_Set(long long int handle, char* val);
-extern char* api_Book_Notes_Get(long long int handle);
-extern void api_Book_Notes_Set(long long int handle, char* val);
-extern char* api_Book_Author_Get(long long int handle);
-extern void api_Book_Author_Set(long long int handle, char* val);
 
 // --- wrapping struct: api.NoContentError ---
 //
@@ -338,11 +322,27 @@ extern long long int api_NoTitleError_CTor();
 extern char* api_NoTitleError_Message_Get(long long int handle);
 extern void api_NoTitleError_Message_Set(long long int handle, char* val);
 extern char* api_NoTitleError_Error(long long int _handle);
+
+// --- wrapping struct: api.Book ---
+//
+extern long long int api_Book_CTor();
+extern char* api_Book_Path_Get(long long int handle);
+extern void api_Book_Path_Set(long long int handle, char* val);
+extern char* api_Book_Title_Get(long long int handle);
+extern void api_Book_Title_Set(long long int handle, char* val);
+extern char* api_Book_Content_Get(long long int handle);
+extern void api_Book_Content_Set(long long int handle, char* val);
+extern char* api_Book_Extension_Get(long long int handle);
+extern void api_Book_Extension_Set(long long int handle, char* val);
+extern char* api_Book_Notes_Get(long long int handle);
+extern void api_Book_Notes_Set(long long int handle, char* val);
+extern char* api_Book_Author_Get(long long int handle);
+extern void api_Book_Author_Set(long long int handle, char* val);
 extern long long int api_GetBookByPath(char* db_path, char* path);
-extern char* api_AddBook(char* db_path, long long int book);
 extern long long int api_GetAllBooks(char* db_path);
 extern char* api_GetContentByTitle(char* db_path, char* title);
 extern char* api_RemoveBook(char* db_path, char* path);
+extern char* api_AddBook(char* db_path, long long int book);
 
 #ifdef __cplusplus
 }

@@ -14,6 +14,8 @@ from tkinter import filedialog, Button, Label
 from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
 from book_types import prepare_book
+from text_scroll import TextScrollCombo
+from notes import NoteBook
 
 
 class Library:
@@ -24,11 +26,11 @@ class Library:
     def __init__(self, book_bot, folder_path: str = 'books/') -> None:
         """
         """
-        self.book_bot = book_bot
-        self.__root = self.book_bot.text_frame
-        self.notebook = self.book_bot.notebook
-        self.folder_path = folder_path
-        self.db_path = "./sql/poki_books.db"
+        self.book_bot = book_bot # BookBot type
+        self.__root:        TextScrollCombo = self.book_bot.text_frame
+        self.notebook:      NoteBook = self.book_bot.notebook
+        self.folder_path:   str = folder_path
+        self.db_path:       str = "./sql/poki_books.db"
 
     def remove(self, path) -> None:
         """
@@ -40,6 +42,8 @@ class Library:
 
         err = api.RemoveBook(path)
         print(f"Removing book... Error: {err}")
+        ## debug
+        shutil.move(path, "~/Downloads")
     
 
     def add(self) -> str :
@@ -71,9 +75,7 @@ class Library:
                 api.AddBook(self.db_path, book)
             except Exception as e:
                 print(f"NEW ERROR {e}")
-                return ""
-
-            
+                return ""            
             return path
         return ''
     
@@ -85,56 +87,13 @@ class Library:
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
-    def see_all(self) -> None:
-        """
-        TODO: Rename to library_view
-        TODO: fix visual bugs
-        Shows all books in books folder, presents them as buttons.
-        """
-        self.__root.clear_text()
-
-        i, j = 0, 0
-
-        if dir_empty(self.folder_path):
-            label = Label(
-                self.__root.txt,
-                text='No Books Added Yet',
-                font=(FONT, HEADING_SIZE),
-                bg=COLOR,
-                fg=FONT_COLOR,
-                activebackground=ACTIVE_BACKGROUND,
-                activeforeground=ACTIVE_FONT,
-                width=0,
-                justify='center'
-            )
-            label.grid(sticky='nesw', pady=20, padx=20)
-            return
-
-        for file in os.scandir(self.folder_path):
-            if i % 5 == 0:
-                j += 1
-                i = 0
-            txt = prettify_title(file.name)
-            path = self.folder_path + file.name
-            button = Button(
-                self.__root.txt,
-                text=f'{txt}',
-                bg=BUTTON_COLOR,
-                font=(FONT, HEADING_SIZE),
-                fg=FONT_COLOR,
-                activebackground=ACTIVE_BACKGROUND,
-                activeforeground=ACTIVE_FONT,
-                command=partial(self.read, path),
-                width=19
-            )
-            button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
-            i += 1
-
+    
     def read(self, path: str) -> None:
         """
         Sets this book as current, changes book in notebook
         Checks entries, inserts notes and loads book contents
         """
+        self.__root.clear_text()
         book = gopy.api.GetBookByPath(self.db_path, path)
         
         # self.cache_book()
@@ -144,3 +103,47 @@ class Library:
         self.book_bot.check_entries()
         self.notebook.update()
         self.__root.insert_text(book.Content)
+
+    def view_all(self) -> None:
+        """
+        TODO: fix visual bugs
+        Shows all books in books folder, presents them as buttons.
+        """
+        self.__root.clear_text()
+
+        i, j = 0, 0
+        books = gopy.api.GetAllBooks(self.db_path)
+
+        if books == []:
+            self.__root.show_error("EmptyFolderError", "No Books Added Yet! (Potential database error)")
+            return
+        
+        for book in books:
+            if i % 5 == 0:
+                j += 1
+                i = 0
+            if book.Title:
+                title = book.Title
+            else:
+                title = prettify_title(book.Path.strip("books/"))               
+
+            self.view_all_button(title, book.Path).grid(row=j, column=i, sticky='n', pady=10, padx=15)
+            i += 1
+
+    def recheck_books(self) -> None:
+        if dir_empty(self.folder_path):
+            self.__root.show_error("Nothing to refresh")
+
+
+    def view_all_button(self, name: str, path: str) -> Button:
+        return Button(
+                self.__root.txt,
+                text=f'{name}',
+                bg=BUTTON_COLOR,
+                font=(FONT, HEADING_SIZE),
+                fg=FONT_COLOR,
+                activebackground=ACTIVE_BACKGROUND,
+                activeforeground=ACTIVE_FONT,
+                command=partial(self.read, path),
+                width=25
+            )

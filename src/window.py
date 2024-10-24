@@ -118,7 +118,7 @@ class BookBot:
         # Book menu
         self.books_menu.add_command(
             label="Go to all books",
-            command=self.library.see_all)
+            command=self.library.view_all)
         self.books_menu.add_separator()
         self.books_menu.add_command(
             label="Clear Text",
@@ -146,7 +146,7 @@ class BookBot:
 
     # Buttons
         self.all_books_button = basic_button(
-            self.sidebar, 'All Books', self.library.see_all)
+            self.sidebar, 'All Books', self.library.view_all)
         self.add_n_read_button = basic_button(
             self.sidebar, 'Add n\' Read Book', self.library.add_and_open)
         self.refresh_button = basic_button(
