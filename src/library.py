@@ -93,7 +93,7 @@ class Library:
         Sets this book as current, changes book in notebook
         Checks entries, inserts notes and loads book contents
         """
-        self.__root.clear_text()
+        self.__root.reset()
         book = gopy.api.GetBookByPath(self.db_path, path)
         
         # self.cache_book()

@@ -46,7 +46,7 @@
         "books/test.pdf": {
             "scrollbar": [
                 0.0,
-                0.865530303030303
+                1.0
             ],
             "notes": "\n"
         },
@@ -67,7 +67,7 @@
         "books/txt.txt": {
             "scrollbar": [
                 0.0,
-                1.0
+                0.1941376380628717
             ],
             "notes": "\n"
         },

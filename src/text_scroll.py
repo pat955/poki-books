@@ -62,6 +62,7 @@ class TextScrollCombo(tk.Frame):
         Clears all text
         """
         self.txt.clear()
+        
 
     def insert_text(
         self,
