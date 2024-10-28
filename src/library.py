@@ -35,7 +35,7 @@ class Library:
         self.api = gopy.api
     
     def remove_page(self):
-        self.view_all(self.remove)
+        self.view_all(command=self.remove)
 
     def remove(self, path) -> None:
         """
@@ -47,7 +47,6 @@ class Library:
         if err:
             print(f"Removing book... Error: {err}")
         print("Book removed")
-        print(path)
         send2trash("./" + path)
         self.__root.reset()
     
@@ -67,7 +66,6 @@ class Library:
             if err != None:
                 print(f"ERROR {err}")
                 return ""
-            
             try:
                 new_path = shutil.move(path, self.folder_path)
                 book.Path = new_path
@@ -84,44 +82,38 @@ class Library:
             return path
         return ''
     
-    def add(self) -> str :
+    def add(self, path: str) -> str :
         """
-        Add book from filedialog.
-        Returns book path
         """
-        path = filedialog.askopenfilename(
-            initialdir=str(Path.home() / "Downloads"))
-
-        if path:
-            book, err = prepare_book(self.api.Book(
-                Path=path,
-                handle=200
-            ))
-            if err != None:
-                print(f"ERROR {err}")
-                return ""
+        book, err = prepare_book(self.api.Book(
+            Path=path,
+            handle=200
+        ))
+        if err != None:
+            print(f"ERROR: {err}")
+            return ""
             
-            try:
-                new_path = shutil.move(path, self.folder_path)
-                book.Path = new_path
-            except Exception as e:
+        try:
+            new_path = shutil.move(path, self.folder_path)
+            book.Path = new_path
+        except shutil.Error as e:
+            if "already exists" not in str(e):
                 print(e)
                 return ""
             
-            try:
-                self.api.AddBook(self.db_path, book)
-            except Exception as e:
-                print(f"NEW ERROR {e}")
-                return "" 
+        try:
+            self.api.AddBook(self.db_path, book)
+        except Exception as e:
+            print(f"ERROR: {e}")
+            return "" 
                        
-            return path
-        return ''
+        return path
     
     def add_and_open(self) -> None:
         """
         Add book through filedialog, and opens it to instantly read
         """
-        path = self.add()
+        path = self.add_filedialog()
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
@@ -143,18 +135,16 @@ class Library:
         self.__root.insert_text(book.Content)
 
     def view_all(self, command=None) -> None:
-        if not command:
-            command=self.read
         """
         Shows all books in books folder, presents them as buttons.
         """
-        self.__root.clear_text()
-
+        self.__root.reset()
+        if command == None:
+            command=self.read
         i, j = 0, 0
         books = self.api.GetAllBooks(self.db_path)
-
-        if books == []:
-            self.__root.show_error("EmptyFolderError", "No Books Added Yet! (Potential database error)")
+        if len(books) == 0:
+            self.__root.show_error("EmptyFolderError", "No Books Added Yet! (Potential database error)\nTry to use the refresh button in the settings menu")
             return
         
         for book in books:
@@ -174,10 +164,12 @@ class Library:
         Checks all files in books folder and updates and adds book to database
         """
         if dir_empty(self.folder_path):
-            self.__root.show_error("Nothing to refresh")
+            self.__root.show_error("EmptyFolderError", "Nothing to refresh")
+
+        self.api.ResetTable(self.db_path)  
         for file in os.scandir("books/"):
-            self.api.ResetTable(self.db_path)
-            self.add(file)
+            self.add(file.path)
+        self.view_all()
         
 
     def view_all_button(self, name: str, path: str, command) -> Button:
