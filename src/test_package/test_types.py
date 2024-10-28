@@ -1,5 +1,5 @@
 import unittest 
-from book_types import get_extension
+from helper_functions import get_extension
 
 
 class TypesTest(unittest.TestCase):

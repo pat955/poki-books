@@ -3,11 +3,10 @@
 Loads books based on extension/type
 """
 import tkinter
-import re
 import io
 import mobi
 import ebooklib
-import gopy
+import gopy.api
 
 from tkinter import END
 from PIL import Image, ImageTk
@@ -15,16 +14,7 @@ from ebooklib import epub
 from pypdf import PdfReader
 from bs4 import BeautifulSoup
 from tkinter_html import parse_html, contents_r
-
-
-def get_extension(path: str) -> str | None:
-    """
-    Returns file extension or None. Format: 'mobi', 'txt', ...
-    """
-    ext = re.search(r'\.(\w*?)$', path)
-    if not ext:
-        return None
-    return ext.group(1)
+from helper_functions import get_extension
 
 
 def prepare_book(book: gopy.api.Book) -> tuple[gopy.api.Book, Exception]:
