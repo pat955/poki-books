@@ -25,7 +25,10 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Run unit tests
-        run: python -m unittest discover -s ./src/ -p 'test_*.py'
+        run: |
+          cd src
+          python -m unittest test_package/test_*.py
+          cd ..
         
       - name: Install bandit
         run: pip install bandit
@@ -51,6 +54,9 @@ jobs:
       
       - name: Install go mod
         run: go mod download
+      
+      - name: Install goose
+        run: go install github.com/pressly/goose/v3/cmd/goose@latest
   
       - name: Run go unit tests
         run: sudo ./scripts/test.sh
