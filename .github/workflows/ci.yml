@@ -76,7 +76,7 @@ jobs:
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
       - name: Check for security issues
-        run: gosec -exclude-generated -exclude-dir ./src/gopy ./...
+        run: gosec --exclude-generated --exclude-dir ./api/database/ ./api/...
 
   style-py:
     name: Style Python
