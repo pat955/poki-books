@@ -1531,6 +1531,21 @@ func api_AddBook(db_path *C.char, book CGoHandle) *C.char {
 	return C.CString("")
 }
 
+//export api_AddNotesByPath
+func api_AddNotesByPath(db_path *C.char, notes *C.char, path *C.char) *C.char {
+	_saved_thread := C.PyEval_SaveThread()
+	var __err error
+	__err = api.AddNotesByPath(C.GoString(db_path), C.GoString(notes), C.GoString(path))
+
+	C.PyEval_RestoreThread(_saved_thread)
+	if __err != nil {
+		estr := C.CString(__err.Error())
+		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
+		return estr
+	}
+	return C.CString("")
+}
+
 //export api_GetAllBooks
 func api_GetAllBooks(db_path *C.char) CGoHandle {
 	_saved_thread := C.PyEval_SaveThread()
@@ -1550,6 +1565,21 @@ func api_GetAllBooks(db_path *C.char) CGoHandle {
 func api_GetContentByTitle(db_path *C.char, title *C.char) *C.char {
 	_saved_thread := C.PyEval_SaveThread()
 	cret, __err := api.GetContentByTitle(C.GoString(db_path), C.GoString(title))
+
+	C.PyEval_RestoreThread(_saved_thread)
+	if __err != nil {
+		estr := C.CString(__err.Error())
+		C.PyErr_SetString(C.PyExc_RuntimeError, estr)
+		C.free(unsafe.Pointer(estr))
+		return C.CString("")
+	}
+	return C.CString(cret)
+}
+
+//export api_GetNotesByPath
+func api_GetNotesByPath(db_path *C.char, path *C.char) *C.char {
+	_saved_thread := C.PyEval_SaveThread()
+	cret, __err := api.GetNotesByPath(C.GoString(db_path), C.GoString(path))
 
 	C.PyEval_RestoreThread(_saved_thread)
 	if __err != nil {

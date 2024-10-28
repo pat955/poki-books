@@ -2719,6 +2719,29 @@ PyObject * _wrap__api_api_AddBook(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *
 
 
 PyObject *
+_wrap__api_api_AddNotesByPath(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    char *db_path;
+    char *notes;
+    char *path;
+    const char *keywords[] = {"db_path", "notes", "path", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "sss", (char **) keywords, &db_path, &notes, &path)) {
+        return NULL;
+    }
+    retval = api_AddNotesByPath(db_path, notes, path);
+    if (PyErr_Occurred()) {
+        return NULL;
+    }
+    py_retval = Py_BuildValue((char *) "s", retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_AddNotesByPath(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
 _wrap__api_api_GetAllBooks(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
@@ -2761,6 +2784,30 @@ _wrap__api_api_GetContentByTitle(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *a
     return py_retval;
 }
 PyObject * _wrap__api_api_GetContentByTitle(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
+
+
+PyObject *
+_wrap__api_api_GetNotesByPath(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs)
+{
+    PyObject *py_retval;
+    char *retval;
+    char *db_path;
+    char *path;
+    const char *keywords[] = {"db_path", "path", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &db_path, &path)) {
+        return NULL;
+    }
+    retval = api_GetNotesByPath(db_path, path);
+    if (PyErr_Occurred()) {
+        if (retval != NULL) free(retval);
+        return NULL;
+    }
+    py_retval = Py_BuildValue((char *) "s", retval);
+    free(retval);
+    return py_retval;
+}
+PyObject * _wrap__api_api_GetNotesByPath(PyObject * PYBINDGEN_UNUSED(dummy), PyObject *args, PyObject *kwargs);
 
 static PyMethodDef _api_functions[] = {
     {(char *) "GoPyInit", (PyCFunction) _wrap__api_GoPyInit, METH_NOARGS, "GoPyInit()\n\n" },
@@ -2908,8 +2955,10 @@ static PyMethodDef _api_functions[] = {
     {(char *) "api_RemoveBook", (PyCFunction) _wrap__api_api_RemoveBook, METH_KEYWORDS|METH_VARARGS, "api_RemoveBook(db_path, path)\n\ntype: db_path: char *\ntype: path: char *" },
     {(char *) "api_ResetTable", (PyCFunction) _wrap__api_api_ResetTable, METH_KEYWORDS|METH_VARARGS, "api_ResetTable(dp_path)\n\ntype: dp_path: char *" },
     {(char *) "api_AddBook", (PyCFunction) _wrap__api_api_AddBook, METH_KEYWORDS|METH_VARARGS, "api_AddBook(db_path, book)\n\ntype: db_path: char *\ntype: book: int64_t" },
+    {(char *) "api_AddNotesByPath", (PyCFunction) _wrap__api_api_AddNotesByPath, METH_KEYWORDS|METH_VARARGS, "api_AddNotesByPath(db_path, notes, path)\n\ntype: db_path: char *\ntype: notes: char *\ntype: path: char *" },
     {(char *) "api_GetAllBooks", (PyCFunction) _wrap__api_api_GetAllBooks, METH_KEYWORDS|METH_VARARGS, "api_GetAllBooks(db_path)\n\ntype: db_path: char *" },
     {(char *) "api_GetContentByTitle", (PyCFunction) _wrap__api_api_GetContentByTitle, METH_KEYWORDS|METH_VARARGS, "api_GetContentByTitle(db_path, title)\n\ntype: db_path: char *\ntype: title: char *" },
+    {(char *) "api_GetNotesByPath", (PyCFunction) _wrap__api_api_GetNotesByPath, METH_KEYWORDS|METH_VARARGS, "api_GetNotesByPath(db_path, path)\n\ntype: db_path: char *\ntype: path: char *" },
     {NULL, NULL, 0, NULL}
 };
 #if PY_VERSION_HEX >= 0x03000000

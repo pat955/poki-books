@@ -2,9 +2,11 @@
 -- notebook.py --
 Class Notebook to controll and stroe notes
 """
-import json
 import tkinter
-from tkinter import Frame, Text, END
+from tkinter import Frame, END
+
+# Local imports 
+import gopy.api
 from defaults import *  # pylint: disable=W0401
 from text_scroll import TextBlock
 
@@ -14,23 +16,24 @@ class NoteBook:
     A Notebook stores all notes by books
     """
 
-    def __init__(self, parent_frame: tkinter.Frame, cache_path: str) -> None:
+    def __init__(self, parent_frame: tkinter.Frame) -> None:
         """
         """
-        self.open = False
-        self.cache_path = cache_path
-        self.book_path = None
+        self.open:      bool            = False
+        self.book_path: str             = None
 
-        self.frame = Frame(
+        self.frame:     tkinter.Frame   = Frame(
             parent_frame,
             highlightthickness=0,
             bd=0,
             width=1,
             highlightbackground=BUTTON_COLOR
         )
-        self.text = TextBlock(self.frame)
+        self.text:      TextBlock       = TextBlock(self.frame)
+        self.api:       gopy.api        = gopy.api
+        self.db_path: str = "./sql/poki_books.db"
 
-    def set_path(self, path: str) -> None:
+    def set_book_path(self, path: str) -> None:
         """
         sets current book path
         """
@@ -62,13 +65,14 @@ class NoteBook:
 
     def get(self) -> str:
         """
-        Gets all note text from cache
+        Gets all note text from database
         """
-        with open(self.cache_path, 'r') as file:
-            file_data = json.load(file)
-            if self.book_path is None:
-                return file_data['books']['notes']
-            return file_data['books'][self.book_path]['notes']
+        notes, err = self.api.GetNotesByPath(self.db_path, self.book_path)
+        if err != None:
+            print(err)
+            exit(0)
+        return notes
+        
 
     def get_current_text(self, start_index: str = '1.0',
                          end_index: str = END) -> str:

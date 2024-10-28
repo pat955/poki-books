@@ -22,6 +22,8 @@ import platform
 from functools import partial
 from tkinter import Frame, Button, Tk, Checkbutton, Entry, Menu, Label
 from library import Library
+
+import gopy.api
 from notes import NoteBook
 from text_scroll import TextScrollCombo
 from themes import AllThemes
@@ -57,11 +59,11 @@ class BookBot:
         self.__root.rowconfigure(0, weight=1)
 
         self.current_book = None
-        self.book_path = 'books/'
-        self.cache_path = 'cache.json'
+        self.book_folder = 'books/'
+        self.api = gopy.api
 
-        if not os.path.exists(self.book_path):
-            os.makedirs(self.book_path)
+        if not os.path.exists(self.book_folder):
+            os.makedirs(self.book_folder)
 
     # Frames and textscrollcombos
         self.text_container = make_full_frame(self.__root)
@@ -110,7 +112,7 @@ class BookBot:
         self.settings_menu.add_command(label="Exit", command=self._quit)
 
         # Notes
-        self.notebook = NoteBook(self.sidebar, self.cache_path)
+        self.notebook = NoteBook(self.sidebar)
         self.notes_button = Button(
             self.sidebar,
             text='Notebook',
@@ -121,7 +123,7 @@ class BookBot:
         )
 
         # Library
-        self.library = Library(self, self.book_path)
+        self.library = Library(self, self.book_folder)
 
         # Book menu
         self.books_menu.add_command(
@@ -131,12 +133,8 @@ class BookBot:
         self.books_menu.add_separator()
 
         self.books_menu.add_command(
-            label="Clear Text",
-            command=self.clear_text)
-
-        self.books_menu.add_command(
-            label="Clear Cache",
-            command=self.clear_cache)
+            label="Clear Notes",
+            command=self.reset_all_notes)
 
         self.books_menu.add_command(
             label="Add book",
@@ -203,7 +201,7 @@ class BookBot:
         self.notes_button.pack(side='top', fill='x')
 
     # Library
-        self.library = Library(self, self.book_path)
+        self.library = Library(self, self.book_folder)
 
     # Themes
         self.themes_button = Menu(
@@ -220,52 +218,20 @@ class BookBot:
             i += 1
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
 
-        self.make_cache()
-
         self.__root.mainloop()
 
-    def make_cache(self) -> None:
-        """
-        Make cache.json file
-        """
-        if not os.path.exists(self.cache_path):
-            with open(self.cache_path, 'w', encoding="utf-8") as file:
-                json.dump({'books': {'notes': ''}}, file, indent=4)
-                file.close()
 
-    def clear_cache(self) -> None:
+    def reset_all_notes(self) -> None:
         """
         clears all cache and re initalizes cache
         """
-        os.remove(self.cache_path)
-        self.make_cache()
+        self.not_implemented
 
     def cache_book(self) -> None:
         """
-        cache book info
-        TODO: imporve this text :)
         """
-        data = None
-        with open(self.cache_path, 'r+', encoding="utf-8") as file:
-            data = json.load(file)
-
-        notes = self.notebook.get_current_text()
-        if self.current_book is not None:
-
-            if self.current_book not in data['books']:
-                data['books'][self.current_book] = {}
-
-            data['books'][self.current_book]['scrollbar'] = self.text_frame.scrollb.get()
-
-            if notes != '':
-                data['books'][self.current_book]['notes'] = notes
-        else:
-            if notes != '':
-                data['books']['notes'] = notes
-
-        with open(self.cache_path, 'w', encoding="utf-8") as file:
-            json.dump(data, file, indent=4)
-            file.close()
+        notes = self.notebook.cache()
+        
 
     def clear_text(self) -> None:
         """

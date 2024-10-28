@@ -14,4 +14,5 @@ type Book struct {
 	Title     string
 	Content   string
 	Extension sql.NullString
+	Notes     sql.NullString
 }

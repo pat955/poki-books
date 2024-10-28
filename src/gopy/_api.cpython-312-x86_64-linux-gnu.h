@@ -342,8 +342,10 @@ extern long long int api_GetBookByPath(char* db_path, char* path);
 extern char* api_RemoveBook(char* db_path, char* path);
 extern char* api_ResetTable(char* dp_path);
 extern char* api_AddBook(char* db_path, long long int book);
+extern char* api_AddNotesByPath(char* db_path, char* notes, char* path);
 extern long long int api_GetAllBooks(char* db_path);
 extern char* api_GetContentByTitle(char* db_path, char* title);
+extern char* api_GetNotesByPath(char* db_path, char* path);
 
 #ifdef __cplusplus
 }
