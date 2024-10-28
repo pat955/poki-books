@@ -57,10 +57,21 @@ jobs:
       
       - name: Install goose
         run: go install github.com/pressly/goose/v3/cmd/goose@latest
-  
-      - name: Run go unit tests
-        run: sudo ./scripts/test.sh
       
+      - name: Check for goose
+        run: goose --version
+
+      - name: Setup test database
+        run: |
+          sudo rm -f ./sql/test.db 
+          cd sql/schema
+          goose sqlite3 ../test.db up
+          cd ..
+          cd ..
+
+      - name: Unit tests
+        run: go test ./api
+        
       - name: Install gosec
         run: go install github.com/securego/gosec/v2/cmd/gosec@latest
 
