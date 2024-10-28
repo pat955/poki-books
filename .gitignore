@@ -9,6 +9,7 @@ dist/
 *.zip
 *.tar.gz
 release/
+*.db
 
 # github boilerplate:
 # Byte-compiled / optimized / DLL files

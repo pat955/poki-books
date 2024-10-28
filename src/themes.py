@@ -77,6 +77,7 @@ class AllThemes:
              'button_color': 'lavender',
              'active_background': 'white',
              'active_font': 'black'},
+
             {'name': 'Dark',
              'color': 'gray11',
              'font_color': 'white',
@@ -86,30 +87,35 @@ class AllThemes:
              'font': 'Times New Roman',
              'font_size': 20,
              'heading_size': 30},
+
             {'name': 'Cute',
              'color': '#E4F1EE',
              'font_color': 'black',
              'button_color': '#DEDAF4',
              'active_background': 'pink',
              'active_font': 'black'},
+
             {'name': 'Latte',
              'color': '#fdf7e4',
              'font_color': '#75543d',
              'button_color': '#dfcbae',
              'active_background': '#e6dac7',
              'active_font': '#432411'},
+
             {'name': 'Froggy',
              'color': 'ivory2',
              'font_color': '#667b68',
              'button_color': '#dde6d5',
              'active_background': '#a3b899',
              'active_font': '#3a453b'},
+
             {'name': 'Discord',
              'color': '#2c2f33',
              'font_color': 'white',
              'button_color': '#7289da',
              'active_background': '#99aab5',
              'active_font': 'white'},
+
             {'name': 'Vintage',
              'color': '#e2d9b3',
              'font_color': 'black',
@@ -128,5 +134,5 @@ class AllThemes:
             self.__make_themes()
         return self.themes
 
-    def make_theme(self):
-        pass
+    # def make_theme(self):
+    #     pass

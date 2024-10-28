@@ -1,5 +1,5 @@
-import unittest
-import book_types
+import unittest 
+from helper_functions import get_extension
 
 
 class TypesTest(unittest.TestCase):
@@ -19,5 +19,5 @@ class TypesTest(unittest.TestCase):
         ]
         for case in test_cases:
             with self.subTest(case=case):
-                extension = book_types.get_extension(case[0])
+                extension = get_extension(case[0])
                 self.assertEqual(extension, case[1])

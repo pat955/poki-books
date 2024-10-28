@@ -13,6 +13,7 @@ TODO:
 # Back to top button
 # Add error handling
 # user added themes
+# fix theme bugs with view all and read
 """
 import tkinter as tk
 import os
@@ -90,14 +91,21 @@ class BookBot:
         self.settings_menu.add_command(
             label="Fullscreen",
             command=self.toggle_fullscreen)
+
         self.settings_menu.add_separator()
+
+        self.settings_menu.add_command(
+            label="Refresh books",
+            command=self.refresh_books)
 
         self.settings_menu.add_command(
             label='Set default theme',
             command=self.not_implemented)
+
         self.settings_menu.add_command(
             label="Toggle Sidebar",
             command=self.toggle_sidebar)
+
         self.settings_menu.add_separator()
         self.settings_menu.add_command(label="Exit", command=self._quit)
 
@@ -118,18 +126,25 @@ class BookBot:
         # Book menu
         self.books_menu.add_command(
             label="Go to all books",
-            command=self.library.see_all)
+            command=self.library.view_all)
+
         self.books_menu.add_separator()
+
         self.books_menu.add_command(
             label="Clear Text",
             command=self.clear_text)
+
         self.books_menu.add_command(
             label="Clear Cache",
             command=self.clear_cache)
-        self.books_menu.add_command(label="Add book", command=self.library.add)
+
+        self.books_menu.add_command(
+            label="Add book",
+            command=self.library.add)
+
         self.books_menu.add_command(
             label="Remove book",
-            command=self.library.remove)
+            command=self.library.remove_page)  # self.library.remove
 
         # Help Menu
         self.help_menu.add_command(
@@ -146,7 +161,7 @@ class BookBot:
 
     # Buttons
         self.all_books_button = basic_button(
-            self.sidebar, 'All Books', self.library.see_all)
+            self.sidebar, 'All Books', self.library.view_all)
         self.add_n_read_button = basic_button(
             self.sidebar, 'Add n\' Read Book', self.library.add_and_open)
         self.refresh_button = basic_button(
@@ -369,6 +384,12 @@ class BookBot:
         """
         self.text_frame.center_text()
 
+    def refresh_books(self) -> None:
+        """
+        Adds and updates books in book folder to database.
+        """
+        self.library.recheck_books()
+
     def toggle_sidebar(self) -> None:
         """
         Toggles sidebar
@@ -401,6 +422,6 @@ class BookBot:
 
     def not_implemented(self) -> None:
         """
-        TODO: Add not implemented error
+        not implemented error
         """
-        self.text_frame.insert_text("Error: Not Implemented")
+        self.text_frame.show_error("Error: Not Implemented", "")

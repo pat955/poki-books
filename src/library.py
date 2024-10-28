@@ -1,116 +1,199 @@
 """
 -- library.py --
-Class Library, collection of books
-TODO:
-add remove function
+Class Library, collection of books and methods that come with it
 """
 
 import shutil
 import os
+import gopy.api
 from functools import partial
 from pathlib import Path
-from tkinter import filedialog, Button, Label
+from tkinter import filedialog, Button
+from send2trash import send2trash
 from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
-from book_types import load_book
+from book_types import prepare_book
+from text_scroll import TextScrollCombo
+from notes import NoteBook
 
 
 class Library:
     """
     Collection of all books
     """
+
     def __init__(self, book_bot, folder_path: str = 'books/') -> None:
         """
         """
-        self.book_bot = book_bot
-        self.__root = self.book_bot.text_frame
-        self.notebook = self.book_bot.notebook
-        self.folder_path = folder_path
+        self.book_bot = book_bot  # BookBot type
+        self.__root: TextScrollCombo = self.book_bot.text_frame
+        self.notebook: NoteBook = self.book_bot.notebook
+        self.folder_path: str = folder_path
+        self.db_path: str = "./sql/poki_books.db"
+        self.api: gopy.api = gopy.api
 
-    def remove(self) -> None:
+    def remove_page(self):
         """
-        Not implemented. Removes book from library
+        Pulls up a page with all books, if you press one of them it will remove that book.
         """
-        self.book_bot.text_frame.show_error('NotImplementedError', 'remove function current not implemented, simply remove book from folder')
+        self.view_all(command=self.remove)
 
-    def add(self) -> str:
+    def remove(self, path) -> None:
         """
-        Add book from filedialog. 
+        Removes book from database and folder
+        """
+        print(f"Trying to remove book at: {path}")
+
+        err = self.api.RemoveBook(self.db_path, path)
+        if err:
+            print(f"Removing book... Error: {err}")
+        print("Book removed")
+        send2trash("./" + path)
+        self.__root.reset()
+
+    def add_filedialog(self) -> str:
+        """
+        Add book from filedialog.
         Returns book path
         """
         path = filedialog.askopenfilename(
             initialdir=str(Path.home() / "Downloads"))
-        
+
         if path:
+            book, err = prepare_book(self.api.Book(
+                Path=path,
+                handle=200
+            ))
+            if err is not None:
+                print(f"ERROR {err}")
+                return ""
             try:
-                shutil.move(path, self.folder_path)
+                new_path = shutil.move(path, self.folder_path)
+                book.Path = new_path
             except Exception as e:
                 print(e)
+                return ""
+
+            try:
+                self.api.AddBook(self.db_path, book)
+            except Exception as e:
+                print(f"NEW ERROR {e}")
+                return ""
+
             return path
         return ''
 
-    def see_all(self) -> None:
+    def add(self, path: str) -> str:
         """
-        TODO: Rename to library_view
-        TODO: fix visual bugs
-        Shows all books in books folder, presents them as buttons.
+        Adds book from path.
         """
-        self.__root.clear_text()
+        book, err = prepare_book(self.api.Book(
+            Path=path,
+            handle=200
+        ))
+        if err is not None:
+            print(f"ERROR: {err}")
+            return ""
 
-        i, j = 0, 0
+        try:
+            new_path = shutil.move(path, self.folder_path)
+            book.Path = new_path
+        except shutil.Error as e:
+            if "already exists" not in str(e):
+                print(e)
+                return ""
 
-        if dir_empty(self.folder_path):
-            label = Label(
-                self.__root.txt,
-                text='No Books Added Yet',
-                font=(FONT, HEADING_SIZE),
-                bg=COLOR,
-                fg=FONT_COLOR,
-                activebackground=ACTIVE_BACKGROUND,
-                activeforeground=ACTIVE_FONT,
-                width=0,
-                justify='center'
-            )
-            label.grid(sticky='nesw', pady=20, padx=20)
-            return
+        try:
+            self.api.AddBook(self.db_path, book)
+        except Exception as e:
+            print(f"ERROR: {e}")
+            return ""
 
-        for file in os.scandir(self.folder_path):
-            if i % 5 == 0:
-                j += 1
-                i = 0
-            txt = prettify_title(file.name)
-            path = self.folder_path + file.name
-            button = Button(
-                self.__root.txt,
-                text=f'{txt}',
-                bg=BUTTON_COLOR,
-                font=(FONT, HEADING_SIZE),
-                fg=FONT_COLOR,
-                activebackground=ACTIVE_BACKGROUND,
-                activeforeground=ACTIVE_FONT,
-                command=partial(self.read, path),
-                width=19
-            )
-            button.grid(row=j, column=i, sticky='n', pady=10, padx=20)
-            i += 1
+        return path
 
     def add_and_open(self) -> None:
         """
         Add book through filedialog, and opens it to instantly read
         """
-        path = self.add()
+        path = self.add_filedialog()
         if path:
             self.read(self.folder_path + path.split('/')[-1])
 
-    def read(self, path) -> None:
+    def read(self, path: str) -> None:
         """
         Sets this book as current, changes book in notebook
         Checks entries, inserts notes and loads book contents
         """
+        self.__root.reset()
+        book = self.api.GetBookByPath(self.db_path, path)
+
         # self.cache_book()
         self.book_bot.current_book = path
         self.notebook.set_path(self.book_bot.current_book)
 
         self.book_bot.check_entries()
         self.notebook.update()
-        load_book(self.__root, path)
+        self.__root.insert_text(book.Content)
+
+    def view_all(self, command=None) -> None:
+        """
+        Shows all books in books folder, presents them as buttons.
+        """
+        self.__root.reset()
+        if command is None:
+            command = self.read
+        i, j = 0, 0
+        books = self.api.GetAllBooks(self.db_path)
+        if len(books) == 0:
+            self.__root.show_error(
+                "EmptyFolderError",
+                "No Books Added Yet! (Potential database error)\nTry to use the refresh button in the settings menu")
+            return
+
+        for book in books:
+            if i % 5 == 0:
+                j += 1
+                i = 0
+            if book.Title:
+                title = book.Title
+            else:
+                title = prettify_title(book.Path.strip("books/"))
+
+            self.view_all_button(
+                title,
+                book.Path,
+                command).grid(
+                row=j,
+                column=i,
+                sticky='n',
+                pady=10,
+                padx=15)
+            i += 1
+
+    def recheck_books(self) -> None:
+        """
+        Checks all files in books folder and updates and adds book to database
+        """
+        if dir_empty(self.folder_path):
+            self.__root.show_error("EmptyFolderError", "Nothing to refresh")
+
+        self.api.ResetTable(self.db_path)
+        for file in os.scandir("books/"):
+            self.add(file.path)
+        self.view_all()
+
+    def view_all_button(self, name: str, path: str, command) -> Button:
+        """
+        Returns a read button for the view all page
+        """
+        return Button(
+            self.__root.txt,
+            text=f'{name}',
+            bg=BUTTON_COLOR,
+            font=(FONT, HEADING_SIZE),
+            fg=FONT_COLOR,
+            activebackground=ACTIVE_BACKGROUND,
+            activeforeground=ACTIVE_FONT,
+            command=partial(command, path),
+            width=25
+        )

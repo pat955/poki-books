@@ -12,6 +12,7 @@ global FONT_SIZE
 global HEADING_SIZE
 global H1
 
+# default theme
 COLOR = 'white'
 BUTTON_COLOR = 'lavender'
 ACTIVE_BACKGROUND = '#f1f1f1'

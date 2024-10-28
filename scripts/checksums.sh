@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Makes checksums for the release zipfiles 
+
 # Directory containing the zip files
 DIR="release"
 

@@ -16,6 +16,7 @@ def parse_html(path: str, text_frame: tkinter.Frame, text: str) -> None:
     text_frame.insert_text(extract_title(path, soup), 'h1')
     contents_r(text_frame, soup)
 
+
 def contents_r(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
     """
     Recursively go through a html tree and renders content
@@ -33,6 +34,7 @@ def contents_r(text_frame: tkinter.Frame, soup: BeautifulSoup) -> None:
                 print(type(e))
                 print('Unknown error: ' + e)
                 continue
+
 
 def extract_title(path: str, soup: BeautifulSoup) -> str:
     """
