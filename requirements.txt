@@ -1,7 +1,7 @@
-toml==0.10.2
-Pillow==10.4.0
-pyinstaller==6.9.0
-mobi==0.3.3
-pypdf==4.3.1
-EbookLib==0.18
 beautifulsoup4==4.12.3
+EbookLib==0.18
+mobi==0.3.3
+Pillow==11.0.0
+PyBindGen==0.22.1
+pypdf==5.1.0
+Send2Trash==1.8.3

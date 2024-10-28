@@ -33,6 +33,7 @@ class BookBot:
     """
     Makes the bookbot window, all buttons, frames, checkboxes and so forth.
     """
+
     def __init__(self) -> None:
         self.__root = Tk()
         self.__root.title("PokiBooks")
@@ -90,7 +91,7 @@ class BookBot:
         self.settings_menu.add_command(
             label="Fullscreen",
             command=self.toggle_fullscreen)
-        
+
         self.settings_menu.add_separator()
 
         self.settings_menu.add_command(
@@ -100,11 +101,11 @@ class BookBot:
         self.settings_menu.add_command(
             label='Set default theme',
             command=self.not_implemented)
-        
+
         self.settings_menu.add_command(
             label="Toggle Sidebar",
             command=self.toggle_sidebar)
-        
+
         self.settings_menu.add_separator()
         self.settings_menu.add_command(label="Exit", command=self._quit)
 
@@ -126,24 +127,24 @@ class BookBot:
         self.books_menu.add_command(
             label="Go to all books",
             command=self.library.view_all)
-        
+
         self.books_menu.add_separator()
 
         self.books_menu.add_command(
             label="Clear Text",
             command=self.clear_text)
-        
+
         self.books_menu.add_command(
             label="Clear Cache",
             command=self.clear_cache)
-        
+
         self.books_menu.add_command(
             label="Add book",
             command=self.library.add)
 
         self.books_menu.add_command(
             label="Remove book",
-            command=self.library.remove_page) # self.library.remove
+            command=self.library.remove_page)  # self.library.remove
 
         # Help Menu
         self.help_menu.add_command(
@@ -423,4 +424,4 @@ class BookBot:
         """
         not implemented error
         """
-        self.text_frame.show_error("Error: Not Implemented")
+        self.text_frame.show_error("Error: Not Implemented", "")

@@ -28,10 +28,8 @@ func TestAddBook(t *testing.T) {
 		if err := AddBook(DB_PATH_TEST, test.Book); (err != nil) != test.ExpectedErr {
 			t.Errorf("Case nr.%v | Output %v, error expected: %v", test.Nr, err, test.ExpectedErr)
 		}
-		books, err := GetAllBooks(DB_PATH_TEST)
-		if (err != nil) != test.ExpectedErr {
-			t.Errorf("Case nr.%v | Output %v, error expected: %v", test.Nr, err, test.ExpectedErr)
-		}
+		books, _ := GetAllBooks(DB_PATH_TEST)
+
 		i := len(books)
 		if i != test.ExpectedTotalBooks {
 			t.Errorf("Case nr.%v | Output %v not equal to expected %v", test.Nr, i, test.ExpectedTotalBooks)

@@ -26,6 +26,7 @@ def get_extension(path: str) -> str | None:
         return None
     return ext.group(1)
 
+
 def prepare_book(book: gopy.api.Book) -> tuple[gopy.api.Book, Exception]:
     """
     Returns book so it can be put into the database with all found info
@@ -42,7 +43,7 @@ def prepare_book(book: gopy.api.Book) -> tuple[gopy.api.Book, Exception]:
         'csv': prepare_txt
     }
     try:
-        book = types[ext](book) # Initializes matching function to type
+        book = types[ext](book)  # Initializes matching function to type
 
     except KeyError:
         return None, Exception(f'KeyError: Unsupported format "{ext}"')
@@ -51,6 +52,7 @@ def prepare_book(book: gopy.api.Book) -> tuple[gopy.api.Book, Exception]:
         return None, Exception(f'Exception: Error message "{e}"')
 
     return book, None
+
 
 def prepare_txt(book: gopy.api.Book) -> gopy.api.Book:
     """
@@ -61,13 +63,15 @@ def prepare_txt(book: gopy.api.Book) -> gopy.api.Book:
         f.close()
     return book
 
+
 def prepare_mobi(book: gopy.api.Book) -> gopy.api.Book:
     """
     Extracts "inner book" from mobi then calls prepare book on that inner book
     """
     i, book.Path = mobi.extract(book.Path)
-    print("mobi:"+i)
+    print("mobi:" + i)
     return prepare_book(book)
+
 
 def prepare_pdf(book: gopy.api.Book) -> gopy.api.Book:
     """
@@ -87,6 +91,7 @@ def prepare_pdf(book: gopy.api.Book) -> gopy.api.Book:
         content += page.extract_text()
     book.Content = content
     return book
+
 
 def prepare_epub(book: gopy.api.Book) -> gopy.api.Book:
     """
@@ -116,17 +121,18 @@ def prepare_epub(book: gopy.api.Book) -> gopy.api.Book:
             print(content)
     book.Content = content
     return book
-        # # images :)
-        # elif item.get_type() == ebooklib.ITEM_IMAGE:
+    # # images :)
+    # elif item.get_type() == ebooklib.ITEM_IMAGE:
 
-        #     hex_data = item.get_content()
-        #     image = Image.open(io.BytesIO(hex_data))
-        #     tk_img = ImageTk.PhotoImage(image)
+    #     hex_data = item.get_content()
+    #     image = Image.open(io.BytesIO(hex_data))
+    #     tk_img = ImageTk.PhotoImage(image)
 
-        #     images[tk_img] = text_frame.txt.index(END)
-        #     text_frame.txt.image_create(
-        #         text_frame.txt.index(END), image=tk_img)
-        #     text_frame.update()
+    #     images[tk_img] = text_frame.txt.index(END)
+    #     text_frame.txt.image_create(
+    #         text_frame.txt.index(END), image=tk_img)
+    #     text_frame.update()
+
 
 def content_soup_r(soup: BeautifulSoup) -> str:
     """
@@ -148,7 +154,7 @@ def content_soup_r(soup: BeautifulSoup) -> str:
     return content
 
 
-### --- loads text onto tkinter frame directly without database ---
+# --- loads text onto tkinter frame directly without database ---
 
 def load_book(text_frame: tkinter.Frame, path: str) -> None:
     """

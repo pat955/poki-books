@@ -12,6 +12,7 @@ class Theme:
     TODO: add one more public method
     Theme, name not optional.
     """
+
     def __init__(
             self,
             name: str,
