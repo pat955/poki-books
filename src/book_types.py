@@ -7,7 +7,7 @@ import re
 import io
 import mobi
 import ebooklib
-import gopy.api
+import gopy
 
 from tkinter import END
 from PIL import Image, ImageTk
