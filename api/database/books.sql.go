@@ -145,3 +145,12 @@ func (q *Queries) RemoveBook(ctx context.Context, path string) error {
 	_, err := q.db.ExecContext(ctx, removeBook, path)
 	return err
 }
+
+const resetTable = `-- name: ResetTable :exec
+DELETE FROM books
+`
+
+func (q *Queries) ResetTable(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, resetTable)
+	return err
+}

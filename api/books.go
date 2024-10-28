@@ -104,3 +104,16 @@ func RemoveBook(db_path, path string) error {
 	}
 	return nil
 }
+
+// Removes all rows from table
+func ResetTable(dp_path string) error {
+	cfg := connect(dp_path)
+	if cfg == nil || cfg.DB == nil {
+		return fmt.Errorf("failed to connect to the database")
+	}
+	err := cfg.DB.ResetTable(cfg.GenericCtx)
+	if err != nil {
+		return err
+	}
+	return nil
+}

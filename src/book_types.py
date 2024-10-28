@@ -62,11 +62,18 @@ def prepare_txt(book: gopy.api.Book) -> gopy.api.Book:
     return book
 
 def prepare_mobi(book: gopy.api.Book) -> gopy.api.Book:
+    """
+    Extracts "inner book" from mobi then calls prepare book on that inner book
+    """
     i, book.Path = mobi.extract(book.Path)
     print("mobi:"+i)
     return prepare_book(book)
 
 def prepare_pdf(book: gopy.api.Book) -> gopy.api.Book:
+    """
+    Gets metadata, adds author, adds title if available
+    Then extracts content and adds to book object
+    """
     reader = PdfReader(book.Path)
     meta = reader.metadata
     if meta:
@@ -82,6 +89,10 @@ def prepare_pdf(book: gopy.api.Book) -> gopy.api.Book:
     return book
 
 def prepare_epub(book: gopy.api.Book) -> gopy.api.Book:
+    """
+    Gets metadata, adds title if available
+    Then extracts content and adds to book object
+    """
     try:
         epub_obj = epub.read_epub(book.Path)
     except Exception as e:
@@ -118,6 +129,9 @@ def prepare_epub(book: gopy.api.Book) -> gopy.api.Book:
         #     text_frame.update()
 
 def content_soup_r(soup: BeautifulSoup) -> str:
+    """
+    Recurssive function to get all contents from html tree
+    """
     content = ""
     for tag in soup.find_all():
         try:

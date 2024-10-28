@@ -71,6 +71,9 @@ def dir_empty(dir_path: str) -> bool:
 
 
 def prettify_title(title: str) -> str:
+    """
+    Removes underscores and dots to use as a title
+    """
     return title.split('.')[0].replace('_', ' ').capitalize()
 
 

@@ -13,7 +13,6 @@ class TextScrollCombo(tk.Frame):
     """
     Combines a frame for text widget and a scrollbar
     """
-
     def __init__(self, *args, **kwargs) -> None:
         """
         Subclass of tkinter.Frame
@@ -61,8 +60,7 @@ class TextScrollCombo(tk.Frame):
         """
         Clears all text
         """
-        self.txt.clear()
-        
+        self.txt.clear() 
 
     def insert_text(
         self,

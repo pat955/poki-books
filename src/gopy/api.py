@@ -147,6 +147,125 @@ def Set_DB_PATH(value):
 
 # ---- Structs ---
 
+# Python type for struct api.Book
+class Book(go.GoClass):
+	""""""
+	def __init__(self, *args, **kwargs):
+		"""
+		handle=A Go-side object is always initialized with an explicit handle=arg
+		otherwise parameters can be unnamed in order of field names or named fields
+		in which case a new Go object is constructed first
+		"""
+		if len(kwargs) == 1 and 'handle' in kwargs:
+			self.handle = kwargs['handle']
+			_api.IncRef(self.handle)
+		elif len(args) == 1 and isinstance(args[0], go.GoClass):
+			self.handle = args[0].handle
+			_api.IncRef(self.handle)
+		else:
+			self.handle = _api.api_Book_CTor()
+			_api.IncRef(self.handle)
+			if  0 < len(args):
+				self.Path = args[0]
+			if "Path" in kwargs:
+				self.Path = kwargs["Path"]
+			if  1 < len(args):
+				self.Title = args[1]
+			if "Title" in kwargs:
+				self.Title = kwargs["Title"]
+			if  2 < len(args):
+				self.Content = args[2]
+			if "Content" in kwargs:
+				self.Content = kwargs["Content"]
+			if  3 < len(args):
+				self.Extension = args[3]
+			if "Extension" in kwargs:
+				self.Extension = kwargs["Extension"]
+			if  4 < len(args):
+				self.Notes = args[4]
+			if "Notes" in kwargs:
+				self.Notes = kwargs["Notes"]
+			if  5 < len(args):
+				self.Author = args[5]
+			if "Author" in kwargs:
+				self.Author = kwargs["Author"]
+	def __del__(self):
+		_api.DecRef(self.handle)
+	def __str__(self):
+		pr = [(p, getattr(self, p)) for p in dir(self) if not p.startswith('__')]
+		sv = 'api.Book{'
+		first = True
+		for v in pr:
+			if callable(v[1]):
+				continue
+			if first:
+				first = False
+			else:
+				sv += ', '
+			sv += v[0] + '=' + str(v[1])
+		return sv + '}'
+	def __repr__(self):
+		pr = [(p, getattr(self, p)) for p in dir(self) if not p.startswith('__')]
+		sv = 'api.Book ( '
+		for v in pr:
+			if not callable(v[1]):
+				sv += v[0] + '=' + str(v[1]) + ', '
+		return sv + ')'
+	@property
+	def Path(self):
+		return _api.api_Book_Path_Get(self.handle)
+	@Path.setter
+	def Path(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Path_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Path_Set(self.handle, value)
+	@property
+	def Title(self):
+		return _api.api_Book_Title_Get(self.handle)
+	@Title.setter
+	def Title(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Title_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Title_Set(self.handle, value)
+	@property
+	def Content(self):
+		return _api.api_Book_Content_Get(self.handle)
+	@Content.setter
+	def Content(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Content_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Content_Set(self.handle, value)
+	@property
+	def Extension(self):
+		return _api.api_Book_Extension_Get(self.handle)
+	@Extension.setter
+	def Extension(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Extension_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Extension_Set(self.handle, value)
+	@property
+	def Notes(self):
+		return _api.api_Book_Notes_Get(self.handle)
+	@Notes.setter
+	def Notes(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Notes_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Notes_Set(self.handle, value)
+	@property
+	def Author(self):
+		return _api.api_Book_Author_Get(self.handle)
+	@Author.setter
+	def Author(self, value):
+		if isinstance(value, go.GoClass):
+			_api.api_Book_Author_Set(self.handle, value.handle)
+		else:
+			_api.api_Book_Author_Set(self.handle, value)
+
 # Python type for struct api.NoContentError
 class NoContentError(go.GoClass):
 	"""NoContentError is a custom error type for missing content errors.\n"""
@@ -327,125 +446,6 @@ class NoTitleError(go.GoClass):
 		"""
 		return _api.api_NoTitleError_Error(self.handle)
 
-# Python type for struct api.Book
-class Book(go.GoClass):
-	""""""
-	def __init__(self, *args, **kwargs):
-		"""
-		handle=A Go-side object is always initialized with an explicit handle=arg
-		otherwise parameters can be unnamed in order of field names or named fields
-		in which case a new Go object is constructed first
-		"""
-		if len(kwargs) == 1 and 'handle' in kwargs:
-			self.handle = kwargs['handle']
-			_api.IncRef(self.handle)
-		elif len(args) == 1 and isinstance(args[0], go.GoClass):
-			self.handle = args[0].handle
-			_api.IncRef(self.handle)
-		else:
-			self.handle = _api.api_Book_CTor()
-			_api.IncRef(self.handle)
-			if  0 < len(args):
-				self.Path = args[0]
-			if "Path" in kwargs:
-				self.Path = kwargs["Path"]
-			if  1 < len(args):
-				self.Title = args[1]
-			if "Title" in kwargs:
-				self.Title = kwargs["Title"]
-			if  2 < len(args):
-				self.Content = args[2]
-			if "Content" in kwargs:
-				self.Content = kwargs["Content"]
-			if  3 < len(args):
-				self.Extension = args[3]
-			if "Extension" in kwargs:
-				self.Extension = kwargs["Extension"]
-			if  4 < len(args):
-				self.Notes = args[4]
-			if "Notes" in kwargs:
-				self.Notes = kwargs["Notes"]
-			if  5 < len(args):
-				self.Author = args[5]
-			if "Author" in kwargs:
-				self.Author = kwargs["Author"]
-	def __del__(self):
-		_api.DecRef(self.handle)
-	def __str__(self):
-		pr = [(p, getattr(self, p)) for p in dir(self) if not p.startswith('__')]
-		sv = 'api.Book{'
-		first = True
-		for v in pr:
-			if callable(v[1]):
-				continue
-			if first:
-				first = False
-			else:
-				sv += ', '
-			sv += v[0] + '=' + str(v[1])
-		return sv + '}'
-	def __repr__(self):
-		pr = [(p, getattr(self, p)) for p in dir(self) if not p.startswith('__')]
-		sv = 'api.Book ( '
-		for v in pr:
-			if not callable(v[1]):
-				sv += v[0] + '=' + str(v[1]) + ', '
-		return sv + ')'
-	@property
-	def Path(self):
-		return _api.api_Book_Path_Get(self.handle)
-	@Path.setter
-	def Path(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Path_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Path_Set(self.handle, value)
-	@property
-	def Title(self):
-		return _api.api_Book_Title_Get(self.handle)
-	@Title.setter
-	def Title(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Title_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Title_Set(self.handle, value)
-	@property
-	def Content(self):
-		return _api.api_Book_Content_Get(self.handle)
-	@Content.setter
-	def Content(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Content_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Content_Set(self.handle, value)
-	@property
-	def Extension(self):
-		return _api.api_Book_Extension_Get(self.handle)
-	@Extension.setter
-	def Extension(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Extension_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Extension_Set(self.handle, value)
-	@property
-	def Notes(self):
-		return _api.api_Book_Notes_Get(self.handle)
-	@Notes.setter
-	def Notes(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Notes_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Notes_Set(self.handle, value)
-	@property
-	def Author(self):
-		return _api.api_Book_Author_Get(self.handle)
-	@Author.setter
-	def Author(self, value):
-		if isinstance(value, go.GoClass):
-			_api.api_Book_Author_Set(self.handle, value.handle)
-		else:
-			_api.api_Book_Author_Set(self.handle, value)
-
 
 # ---- Slices ---
 
@@ -463,6 +463,24 @@ def GetBookByPath(db_path, path):
 
 
 # ---- Functions ---
+def RemoveBook(db_path, path):
+	"""RemoveBook(str db_path, str path) str
+	
+	Removes book from database
+	"""
+	return _api.api_RemoveBook(db_path, path)
+def ResetTable(dp_path):
+	"""ResetTable(str dp_path) str
+	
+	Removes all rows from table
+	"""
+	return _api.api_ResetTable(dp_path)
+def AddBook(db_path, book):
+	"""AddBook(str db_path, object book) str
+	
+	Connects to db and adds book to database
+	"""
+	return _api.api_AddBook(db_path, book.handle)
 def GetAllBooks(db_path):
 	"""GetAllBooks(str db_path) []object, str"""
 	return Slice_api_Book(handle=_api.api_GetAllBooks(db_path))
@@ -472,17 +490,5 @@ def GetContentByTitle(db_path, title):
 	From database gets content with title as argument
 	"""
 	return _api.api_GetContentByTitle(db_path, title)
-def RemoveBook(db_path, path):
-	"""RemoveBook(str db_path, str path) str
-	
-	Removes book from database
-	"""
-	return _api.api_RemoveBook(db_path, path)
-def AddBook(db_path, book):
-	"""AddBook(str db_path, object book) str
-	
-	Connects to db and adds book to database
-	"""
-	return _api.api_AddBook(db_path, book.handle)
 
 

@@ -31,3 +31,7 @@ WHERE path = ?;
 -- name: GetBookByID :one
 SELECT * FROM books
 WHERE id = ?;
+
+
+-- name: ResetTable :exec
+DELETE FROM books;
