@@ -2,15 +2,18 @@
 
 a = Analysis(
     [('src/poki_books.py'),
+    ('src/gopy/__init__.py'),
+    ('src/gopy/api.py'),
     ],
     pathex=[],
     binaries=[],
     datas=[
-        ('static/*', 'static')  # Ensure static files go into a 'static' folder| add readme
+        ('static/*', 'static')  # Ensure static files go into a 'static' folder
     ],
     hiddenimports=[
         ('src.gopy.api'),
-
+        ('gopy.api'),
+        ('gopy'),
     ],
     hookspath=[],
     runtime_hooks=[],

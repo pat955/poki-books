@@ -2,6 +2,8 @@
 
 a = Analysis(
     [('src/poki_books.py'),
+    ('src/gopy/__init__.py'),
+    ('src/gopy/api.py'),
     ],
     pathex=[],
     binaries=[],
@@ -10,6 +12,8 @@ a = Analysis(
     ],
     hiddenimports=[
         ('src.gopy.api'),
+        ('gopy.api'),
+        ('gopy'),
     ],
     hookspath=[],
     runtime_hooks=[],
