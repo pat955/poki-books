@@ -32,11 +32,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Dependencies
-        run: |
-          pip install -r ./requirements.txt
-          pip install pyinstaller
-          pyinstaller -v
+      - name: Install Requirements
+        run: pip install -r ./requirements.txt
+          
+      - name: Install pyinstaller
+        run: pip install pyinstaller && pyinstaller -v
 
       - name: Build Windows 
         run: pyinstaller PokiBooksWin.spec 
@@ -82,11 +82,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Install Dependencies
-        run: |
-          pip install -r ./requirements.txt
-          pip install pyinstaller
-          pyinstaller -v
+      - name: Install Requirements
+        run: pip install -r ./requirements.txt
+          
+      - name: Install pyinstaller
+        run: pip install pyinstaller && pyinstaller -v
 
       - name: Build Linux 
         run: pyinstaller PokiBooksLinux.spec        
@@ -130,8 +130,6 @@ jobs:
       
       - name: Install Dependencies
         run: |
-          pip install pyinstaller
-          pyinstaller -v
           pip install -r ./requirements.txt
           brew install python-tk
       
@@ -147,7 +145,9 @@ jobs:
             echo "Tcl/Tk libraries are missing."
             exit 1
           fi
-  
+      - name: Install pyinstaller
+        run: pip install pyinstaller 
+        
       - name: Build macOS Application
         run: pyinstaller PokiBooksMacOs.spec
 
