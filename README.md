@@ -56,16 +56,17 @@ python -m unittest discover -s ./tests/ -p 'test_*.py'
 If you'd like to contribute, please fork the repository and open a pull request to the `main` branch.
 
 # Roadmap
-- [ ] Switch to sql db
 - [ ] Keybinds, back to top button
 - [ ] Add contact info and how to use section
 - [ ] Pictures, maybe api gets book covers, goodreads API?
-- [ ] Clean up code, add documentation, better structure, fix bugs
 - [ ] Search, bookmarking, highlighting
 - [ ] Page numbers for pdf or when available.
 - [ ] Recognize chapters?
 ## 
+- [x] Switch to sql db
 - [x] ePub, pdf & mobi support
 - [x] Simple logo & better name
 - [x] Linux, windows & macOs release
 - [x] Themes with fonts and font sizes & more themes
+- [x] Clean up code, add documentation, better structure, fix bugs
+
