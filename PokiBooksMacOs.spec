@@ -9,7 +9,7 @@ a = Analysis(
         ('static/*', 'static')  # Ensure static files go into a 'static' folder| add readme
     ],
     hiddenimports=[
-        ('gopy.api'),
+        ('src/gopy'),
     ],
     hookspath=[],
     runtime_hooks=[],
