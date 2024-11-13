@@ -9,6 +9,7 @@ The main reason i continued working on this project is because I love reading, b
 # Download
 **You will most likely get a security warning, code signing and certificates are very expensive for windows and mac. It would cost me $150 - $450 each year to fix this. That is simply far too much to spend on a free open source project. Hope that is understandable**
 
+| Note: The current code is newer but there are issues with the actual releases which i am currently trying to fix. A few are missing because of pyinstaller not found error concerning a local module used for databases
 Download latest release: [github.com/pat955/poki_books/releases/latest](https://github.com/pat955/poki_books/releases/latest)
 
 Remember to choose the one based on your operating system!
