@@ -9,9 +9,11 @@ import (
 )
 
 type Book struct {
-	ID        interface{}
-	Path      string
-	Title     string
-	Content   string
-	Extension sql.NullString
+	ID                interface{}
+	Path              string
+	Title             string
+	Content           string
+	Extension         sql.NullString
+	Notes             sql.NullString
+	ScrollbarPosition sql.NullString
 }
