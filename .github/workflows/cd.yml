@@ -188,16 +188,17 @@ jobs:
           echo "CURRENT_TAG=${CURRENT_TAG}" >> $GITHUB_ENV
           echo "CHANGELOG_TAG=${CHANGELOG_TAG}" >> $GITHUB_ENV
 
-      - name: Make Changelog
-        env:
-          CURRENT_TAG: ${{  env.CURRENT_TAG}}
-          CHANGELOG_TAG: ${{ env.CHANGELOG_TAG }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: |      
-          sudo apt-get update
-          sudo apt-get install ruby-full
-          sudo gem install github_changelog_generator
-          github_changelog_generator --user pat955 --project pokibooks -f %d-%m-%Y --since-tag ${{ env.CHANGELOG_TAG }} --due-tag ${{ env.CHANGELOG_TAG }} --token ${{ secrets.GH_TOKEN }} --simple-list
+      # currently not working as intended TODO: fix
+      # - name: Make Changelog
+      #   env:
+      #     CURRENT_TAG: ${{  env.CURRENT_TAG}}
+      #     CHANGELOG_TAG: ${{ env.CHANGELOG_TAG }}
+      #     GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      #   run: |      
+      #     sudo apt-get update
+      #     sudo apt-get install ruby-full
+      #     sudo gem install github_changelog_generator
+      #     github_changelog_generator --user pat955 --project pokibooks -f %d-%m-%Y --since-tag ${{ env.CHANGELOG_TAG }} --due-tag ${{ env.CHANGELOG_TAG }} --token ${{ secrets.GH_TOKEN }} --simple-list
       
       - name: Download Artifacts
         uses: actions/download-artifact@v4
