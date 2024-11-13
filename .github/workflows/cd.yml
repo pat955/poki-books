@@ -208,7 +208,7 @@ jobs:
           release_name: v${{ env.VERSION }}
           draft: false
           prerelease: false
-          body_path: CHANGELOG.md
+          # body_path: CHANGELOG.md
   
       - name: Upload Windows Version
         id: upload-release-asset-windows
