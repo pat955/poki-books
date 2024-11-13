@@ -5,3 +5,4 @@ Pillow==11.0.0
 PyBindGen==0.22.1
 pypdf==5.1.0
 Send2Trash==1.8.3
+pyinstaller
