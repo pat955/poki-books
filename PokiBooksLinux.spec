@@ -10,7 +10,6 @@ a = Analysis(
     ],
     hiddenimports=[
         ('gopy.api'),
-        ('gopy')
     ],
     hookspath=[],
     runtime_hooks=[],
