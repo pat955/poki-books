@@ -67,10 +67,10 @@ class NoteBook:
         """
         Gets all note text from database
         """
-        notes, err = self.api.GetNotesByPath(self.db_path, self.book_path)
-        if err != None:
-            print(err)
-            exit(0)
+        notes = self.api.GetNotesByPath(self.db_path, self.book_path)
+        # if err != None:
+        #     print(err)
+        #     exit(0)
         return notes
         
 
@@ -80,3 +80,21 @@ class NoteBook:
         Get text displayed
         """
         return self.text.get(start_index, end_index)
+
+
+    def clear_all(self) -> None:
+        """
+        Resets all notes
+        """
+        self.api.ResetNotes(self.db_path)
+     
+    def cache(self) -> None:
+        """
+        Add current books note to database
+        """
+        notes = self.get_current_text()
+        err = self.api.AddNotesByPath(self.db_path, notes, self.book_path)
+        if err != None:
+            print(err)
+            exit(1)
+        return 

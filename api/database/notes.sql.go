@@ -36,3 +36,12 @@ func (q *Queries) GetNotesByPath(ctx context.Context, path string) (sql.NullStri
 	err := row.Scan(&notes)
 	return notes, err
 }
+
+const resetNotes = `-- name: ResetNotes :exec
+UPDATE books SET notes = ""
+`
+
+func (q *Queries) ResetNotes(ctx context.Context) error {
+	_, err := q.db.ExecContext(ctx, resetNotes)
+	return err
+}

@@ -40,3 +40,19 @@ func GetNotesByPath(db_path, path string) (string, error) {
 	}
 	return notes.String, nil
 }
+
+// Empties all notes
+func ResetNotes(db_path string) error {
+	cfg := connect(db_path)
+	if cfg == nil || cfg.DB == nil {
+		return fmt.Errorf("failed to connect to the database")
+	}
+	err := cfg.DB.ResetNotes(
+		cfg.GenericCtx,
+	)
+	if err != nil {
+		print(err)
+		return err
+	}
+	return nil
+}

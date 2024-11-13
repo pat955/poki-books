@@ -2,14 +2,16 @@
 -- library.py --
 Class Library, collection of books and methods that come with it
 """
-
+# Third party imports
 import shutil
 import os
-import gopy.api
 from functools import partial
 from pathlib import Path
 from tkinter import filedialog, Button
 from send2trash import send2trash
+
+# First party imports
+import gopy.api
 from defaults import *  # pylint: disable=W0401
 from basics import dir_empty, prettify_title
 from book_types import prepare_book
@@ -127,9 +129,8 @@ class Library:
         self.__root.reset()
         book = self.api.GetBookByPath(self.db_path, path)
 
-        # self.cache_book()
         self.book_bot.current_book = path
-        self.notebook.set_path(self.book_bot.current_book)
+        self.notebook.set_book_path(self.book_bot.current_book)
 
         self.book_bot.check_entries()
         self.notebook.update()

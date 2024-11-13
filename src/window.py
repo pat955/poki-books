@@ -61,7 +61,8 @@ class BookBot:
         self.current_book = None
         self.book_folder = 'books/'
         self.api = gopy.api
-
+        
+        
         if not os.path.exists(self.book_folder):
             os.makedirs(self.book_folder)
 
@@ -136,13 +137,15 @@ class BookBot:
             label="Clear Notes",
             command=self.reset_all_notes)
 
+        self.books_menu.add_separator()
+
         self.books_menu.add_command(
             label="Add book",
-            command=self.library.add)
+            command=self.library.add_filedialog)
 
         self.books_menu.add_command(
             label="Remove book",
-            command=self.library.remove_page)  # self.library.remove
+            command=self.library.remove_page)
 
         # Help Menu
         self.help_menu.add_command(
@@ -164,12 +167,10 @@ class BookBot:
             self.sidebar, 'Add n\' Read Book', self.library.add_and_open)
         self.refresh_button = basic_button(
             self.sidebar, 'Refresh', self.check_entries)
-        self.ph = basic_button(self.sidebar, 'Placeholder Button', self._quit)
 
         self.all_books_button.pack(side='top', fill='x')
         self.add_n_read_button.pack(side='top', fill='x', pady=10)
         self.refresh_button.pack(side='top', fill='x')
-        self.ph.pack(side='top', fill='x', pady=10)
 
     # Entries and Labels
         self.text_size_label = basic_label(self.sidebar, 'Text Size')
@@ -217,26 +218,30 @@ class BookBot:
             theme.add(self, i)
             i += 1
         self.menubar.add_cascade(label="Themes", menu=self.themes_button)
-
         self.__root.mainloop()
 
 
     def reset_all_notes(self) -> None:
         """
-        clears all cache and re initalizes cache
+        Clears all notes from database
         """
-        self.not_implemented
+        self.notebook.clear_all()
 
     def cache_book(self) -> None:
         """
+        Caches current book
         """
-        notes = self.notebook.cache()
-        
+        self.notebook.book_path = self.current_book
+        self.notebook.cache()
+        scrollbar_pos = self.text_frame.scrollb.get()
+        print(scrollbar_pos)
+
 
     def clear_text(self) -> None:
         """
         Clear all text from text_frame. For debugging
         """
+        
         self.text_frame.clear_text()
 
     # change theme
@@ -382,7 +387,11 @@ class BookBot:
         """
         Quit program
         """
-        self.cache_book()
+        try:
+            self.cache_book()
+        except Exception:
+            print("Didnt cache book when quitting, ignore if no books were opened")
+            pass
         self.__root.quit()
         self.__root.destroy()
 
